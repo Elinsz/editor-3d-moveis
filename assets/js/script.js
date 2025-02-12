@@ -1,60 +1,69 @@
-// Configuração da cena
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
-
-// Luzes
-const light = new THREE.AmbientLight(0xffffff, 0.8);
-scene.add(light);
-const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-directionalLight.position.set(10, 10, 10);
-scene.add(directionalLight);
-
-// Posição da câmera
-camera.position.set(0, 100, 200);
-camera.lookAt(0, 0, 0);
-
+let scene, camera, renderer;
 let modules = [];
 
-// Função para adicionar um módulo
+function init() {
+    scene = new THREE.Scene();
+
+    // Ambiente 3D com paredes, piso e teto
+    const roomSize = 500;
+    const wallMaterial = new THREE.MeshBasicMaterial({ color: 0xdddddd, side: THREE.BackSide });
+
+    const roomGeometry = new THREE.BoxGeometry(roomSize, roomSize, roomSize);
+    const room = new THREE.Mesh(roomGeometry, wallMaterial);
+    room.position.y = roomSize / 2;
+    scene.add(room);
+
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(100, 100, 200);
+    camera.lookAt(0, 0, 0);
+
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth - 250, window.innerHeight);
+    document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+    animate();
+}
+
 function addModule() {
-    const width = parseFloat(document.getElementById("width").value);
-    const height = parseFloat(document.getElementById("height").value);
-    const depth = parseFloat(document.getElementById("depth").value);
+    const width = parseFloat(document.getElementById('width').value);
+    const height = parseFloat(document.getElementById('height').value);
+    const depth = parseFloat(document.getElementById('depth').value);
 
     const geometry = new THREE.BoxGeometry(width, height, depth);
-    const material = new THREE.MeshStandardMaterial({ color: 0x8B4513 });
+    const material = new THREE.MeshBasicMaterial({ color: 0x8b4513 });
     const module = new THREE.Mesh(geometry, material);
-
-    module.position.set(0, height / 2, 0);
+    module.position.y = height / 2;
+    modules.push(module);
     scene.add(module);
-    modules.push({ width, height, depth, position: module.position });
 }
 
-// Função para salvar os módulos no LocalStorage
 function saveModules() {
-    localStorage.setItem("modulos", JSON.stringify(modules));
-    alert("Módulos salvos!");
+    const moduleData = modules.map(mod => ({ x: mod.position.x, y: mod.position.y, z: mod.position.z }));
+    localStorage.setItem('modules', JSON.stringify(moduleData));
 }
 
-// Função para carregar módulos salvos
 function loadModules() {
-    const savedModules = JSON.parse(localStorage.getItem("modulos") || "[]");
-    savedModules.forEach(data => {
-        const geometry = new THREE.BoxGeometry(data.width, data.height, data.depth);
-        const material = new THREE.MeshStandardMaterial({ color: 0x8B4513 });
+    const moduleData = JSON.parse(localStorage.getItem('modules')) || [];
+    moduleData.forEach(data => {
+        const geometry = new THREE.BoxGeometry(50, 80, 50);
+        const material = new THREE.MeshBasicMaterial({ color: 0x8b4513 });
         const module = new THREE.Mesh(geometry, material);
-
-        module.position.set(data.position.x, data.position.y, data.position.z);
+        module.position.set(data.x, data.y, data.z);
+        modules.push(module);
         scene.add(module);
     });
 }
 
-// Render loop
 function animate() {
     requestAnimationFrame(animate);
     renderer.render(scene, camera);
 }
-animate();
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.dropdown-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            button.parentElement.classList.toggle('active');
+        });
+    });
+    init();
+});
