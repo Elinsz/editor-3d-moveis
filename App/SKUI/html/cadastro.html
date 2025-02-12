@@ -1,0 +1,168 @@
+<!--
+<?php
+
+	require_once 'CLASSES/usuarios.php';
+	$u = new Usuario;
+
+?> -->
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<title>cadastro</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+	<link rel="stylesheet" type="text/css" href="../css/main-cads.css">
+
+	<link rel="stylesheet" type="text/PHP" media="screen" href="../SKUI/CLASSES/usuarios.php"/>
+    <link rel="stylesheet" type="text/PHP" media="screen" href="../SKUI/PHP/cadastro_isset.php"/>
+
+</head>
+<body>
+	<div class="container">
+		<div class="container-login">
+			<div class="wrap-login">
+				<form class="login-form" method="POST" id="login-form">
+					<span class="login-form-title">
+						Elinsz 3D
+					</br>
+					<ul class="bemVindos">
+					  <li class="margin-top-8 margin-botton-8">
+						<span class="text1">
+						  Bem vindo(a) ao cadastro
+						</span></a></li>
+					</ul>
+					</span>
+					<div class="wrap-input margin-top-35 margin-bottom-35">
+						<input class="input-form" type="text" name="nome"  maxlength="80" autocomplete="off">
+						<span class="focus-input-form" data-placeholder="Nome"></span>
+					</div>
+					<div class="wrap-input margin-top-35 margin-bottom-35">
+						<input class="input-form" type="email" name="email"  maxlength="80" autocomplete="off">
+						<span class="focus-input-form" data-placeholder="E-mail"></span>
+					</div>
+					<div class="wrap-input margin-bottom-35">
+						<input class="input-form" type="password" name="senha" maxlength="32" >
+						<span class="focus-input-form" data-placeholder="Senha"></span>
+					</div>
+					<div class="wrap-input margin-bottom-35">
+						<input class="input-form" type="password" name="confSenha" maxlength="32" >
+						<span class="focus-input-form" data-placeholder="Confirme sua senha"></span>
+					</div>
+					<div class="container-login-form-btn">
+						<button class="login-form-btn" type="submit">
+							Cadastrar
+						</button>
+					</div>
+					<ul class="login-utils">
+						<li class="margin-top-8 margin-botton-8">
+						  <span class="text1">
+							Voltar a página de
+						  </span>
+						  <a href="login.html" class="text2">
+							Login?
+						  </a>
+						</li>
+			   		</ul>
+				</form>
+			</div>
+		</div>
+	</div>
+<!--
+<?php
+//verificar se clicou no botão
+if(isset($_POST['email']))
+{
+  $nome = addslashes($_POST['nome']);
+  $email = addslashes($_POST['email']);
+  $senha = addslashes($_POST['senha']);
+  $confirmarSenha = addslashes($_POST['confSenha']);
+
+  //VERIFICAR SE ESTA PREENCHIDO
+  if(!empty($nome) && !empty($email) && !empty($senha) && !empty($confirmarSenha))
+  {
+    $u->conectar("plugin_elinsz","localhost","root","");
+    if($u->msgErro == "")//se esta tudo ok
+    {
+      if($senha == $confirmarSenha)
+      {
+
+        if($u->cadastrar($nome,$email,$senha))
+
+        {
+		?>
+
+		<div id="msg-sucesso">
+        Cadastrado com Sucesso! Acesse a página de Login!
+		</div>
+
+		<?php
+        }
+        else
+        {
+		?>
+		<div class="msg-erro">
+        Email ja cadastrado!
+		</div>
+		<?php
+        }
+      }
+      else
+      {
+		?>
+		<div class="msg-erro">
+        Senha e confirmar senha não correspondem!
+		</div>
+		<?php
+      }
+    }
+    else
+    {
+	?>
+	<div class="msg-erro">
+    <?php echo "Erro: ".$u->msgErro;?>
+	</div>
+	<?php
+    }
+   }else
+  {
+	?>
+	<div class="msg-erro">
+    Preencha todos os campos!
+	</div>
+
+	<?php
+  }
+}
+
+?>
+-->
+
+<script>
+	let inputs = document.getElementsByClassName('input-form');
+	for (let input of inputs) {
+		input.addEventListener("blur", function() {
+			if(input.value.trim() != ""){
+				input.classList.add("has-val");
+			} else {
+				input.classList.remove("has-val");
+			}
+		});
+	}
+
+	let form = document.getElementById('login-form');
+	form.addEventListener("submit", function(){
+		let inputs = document.getElementsByClassName('input-form');
+		for (let input of inputs) {
+			if(input.value.trim() == ""){
+				input.parentElement.classList.add("wrap-input-invalid");
+			}
+
+		}
+	});
+</script>
+</body>
+</html>

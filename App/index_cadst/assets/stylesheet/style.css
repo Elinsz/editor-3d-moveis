@@ -1,0 +1,156 @@
+/* --------------------------- Font --------------------------- */
+
+@font-face {
+    font-family: "Ubuntu";
+    src: url("../font/Ubuntu-M.ttf") format("truetype");
+}
+
+/* --------------------------- Header --------------------------- */
+
+#nav {
+    width: 100%;
+    height: 14vh;
+    background-color: #721818;
+    color: white;
+    font-size: 2em;
+    font-family: Ubuntu;
+    text-align: center;
+    line-height: 14vh;
+
+}
+
+/* --------------------------- Form --------------------------- */
+
+    /* Estilo para #input-data */
+    #input-data {
+        width: 90%;
+        font-family: Ubuntu;
+        margin-left: 60px;
+        margin-top: 5vh;
+        /* margin-bottom: 5vh; */
+        display: flexbox;
+        flex-wrap: wrap; /* Permite a quebra de linha */
+        justify-content: space-between; /* Adiciona espaçamento uniforme */
+    }
+
+    /* Ajuste os inputs para telas menores */
+    .input-text, .input-btn {
+        flex: 1 1 100%; /* Os inputs ocupam 100% da linha inicialmente */
+        min-width: 150px; /* Define um tamanho mínimo */
+        max-width: calc(50% - 10px); /* Ocupam até 50% para layouts maiores */
+        margin: 5px;
+    }
+
+    /* Media Queries para ajustar o layout em telas menores */
+    @media (max-width: 768px) {
+        .input-text, .input-btn {
+            flex: 1 1 100%; /* Em telas menores, cada input ocupa toda a linha */
+        }
+
+        #input-data {
+            justify-content: center; /* Centraliza os inputs */
+        }
+    }
+
+
+
+
+.input-data {
+    flex: wrap; */
+    /*width: 90vw;*/
+    font-family: Ubuntu;
+    margin: 0 auto;
+    margin-top: 5vh;
+    /* display: flex; */
+}
+
+.input-text {
+    flex: 1;
+    min-width: 264px;
+    margin: 5px;
+    height: 25px;
+    padding-left: 5px;
+    border-radius: 8px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #262626;
+    transition: 0.25s;
+    outline: none;
+}
+
+.input-text:focus{
+    border-color: blueviolet;
+}
+
+.input-btn {
+    /* display: block;
+    align-content: center; */
+    font-size: 20px;
+    height: 30px;
+    margin: 5px;
+    padding-left: 5px;
+    padding-bottom: 5px;
+    min-width: 270px;
+    border-radius: 8px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #262626;
+    cursor: pointer;
+    transition: 0.3s all ease;
+    background: radial-gradient(610px at 5.2% 51.6%, rgb(88, 77, 190) 0%, rgb(31, 19, 201) 97.5%);
+}
+
+.input-btn:hover {
+    background: radial-gradient(610px at 5.2% 51.6%, rgb(93, 93, 102) 0%, rgb(43, 43, 66) 97.5%);
+    border-color: #383838;
+    color: white;
+}
+
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+/* --------------------------- Table --------------------------- */
+
+#myTable {
+    font-family: Ubuntu;
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 5vh;
+    border-collapse: collapse;
+}
+
+#myTable th {
+    background-color: #721818;
+    padding: 10px;
+    color: white;
+    font-weight: 100;
+}
+
+#myTable td, th{
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#myTable td{
+    padding: 5px;
+}
+
+#myTable tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#myTable tr:hover {
+    background-color: #ddd;
+}
+
+.remove-btn{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    border-width: 0px;
+    background-color: transparent;
+    cursor: pointer;
+}

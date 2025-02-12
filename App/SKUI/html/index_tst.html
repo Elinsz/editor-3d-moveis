@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="UTF-8" ></script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="../css/style_tst.css">
+  <!--<link rel="stylesheet" type="text/css" media="screen" href="/App/css/style.css"/>-->
+  <!--<script type="text/javascript" src="App/js/script.js"></script> -->
+
+
+  <title>Elinsz 3D</title>
+</head>
+<body>
+
+
+    <header>
+
+      <main>
+        <nav>
+          <div class="menu-btn">
+            <i class="bi bi-house-door"></i>
+          </div>
+
+          <div class="side-bar active">
+            <div class="close-btn">
+              <i class="bi bi-arrow-left-right"></i>
+              <!-- <a class="img"> <img src="img/elinsz.png" alt="profileImg"></a> -->
+            </div>
+            <div class="menu">
+              <div class="item">
+                <a class="sub-btn"><i class="bi bi-house-door"></i>PROJETOS<i class="fas fa-angle-right dropdown"></i></a>
+                <div class="sub-menu">
+                  <a href="#" class="sub-item" target="conteudo">ORÇAMENTO</a>
+                  <a href="#" class="sub-item" target="conteudo">PROJETOS</a>
+                  <a href="#" class="sub-item" target="conteudo">PRODUÇÃO</a>
+                </div>
+              </div>
+              <div class="item">
+                <a class="sub-btn"><i class="bi bi-menu-button-wide"></i>BIBLIOTECA<i class="fas fa-angle-right dropdown"></i></a>
+                <div class="sub-menu">
+                  <a href="html/sala.html" class="sub-item" target="conteudo">COMPONENTES</a>
+                  <a href="html/games.html" class="sub-item" target="conteudo">ACABAMENTOS</a>
+                  <a href="html/sala.html" class="sub-item" target="conteudo">ACESSORIOS</a>
+                </div>
+              </div>
+              <div class="item"><a href="html/sala.html"><i class="bi bi-filetype-doc" target="conteudo"></i>RELATORIO</a></div>
+              <div class="item"><a href="html/games.html"><i class="bi bi-columns" target="conteudo"></i>CUT-LIST</a></div>
+              <div class="item"><a href="html/sala.html"><i class="bi bi-tools" target="conteudo"></i>USINAGENS</a></div>
+              <div class="item">
+                <a class="sub-btn"><i class="fas fa-cogs"></i>Login<i class="fas fa-angle-right dropdown"></i></a>
+                <div class="sub-menu">
+                  <a href="#" class="sub-item">Cadastre-se</a>
+                  <a href="#" class="sub-item">Logar</a>
+                </div>
+              </div>
+
+          </div>
+
+        </nav>
+
+        <section>
+
+          <main  class="side-bar active">
+            <iframe src="" name="conteudo"></iframe>
+          </main>
+
+        </section>
+
+      </main>
+
+
+    </header>
+
+
+    <!-- <script src="App/js/script.js"></script> -->
+
+    <!-- <script type="text/javascript" src="App/js/index.js"></script> -->
+
+    <script type="text/javascript">
+      $(document).ready(function(){
+
+        $('.sub-btn').click(function(){
+          $(this).next('.sub-menu').slideToggle();
+          $(this).find('.dropdown').toggleClass('rotate');
+        });
+
+        $('.menu-btn').click(function(){
+          $('.side-bar').addClass('active');
+          $('.menu-btn').css("visibility", "hidden");
+        });
+
+        $('.close-btn').click(function(){
+          $('.side-bar').removeClass('active');
+          $('.menu-btn').css("visibility", "visible");
+        });
+
+      });
+  </script>
+
+</body>
+</html>
