@@ -1,74 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Editor 3D de Móveis</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <link rel="stylesheet" href="../css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor 3D - Móveis</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-  <div class="container">
-    <div class="sidebar">
-      <button onclick="addBox()">Adicionar Caixa</button>
-      <button onclick="removeBox()">Remover Caixa</button>
-      <button onclick="resetScene()">Resetar Cena</button>
-      <div class="dropdown">
-        <button class="dropbtn">Configuração de Espessuras</button>
-        <div class="dropdown-content">
-          <label for="espessura-lateral">Lateral:</label>
-          <select id="espessura-lateral">
-            <option value="15">15mm</option>
-            <option value="18" selected>18mm</option>
-            <option value="25">25mm</option>
-          </select>
-          <label for="espessura-base">Base:</label>
-          <select id="espessura-base">
-            <option value="15">15mm</option>
-            <option value="18" selected>18mm</option>
-            <option value="25">25mm</option>
-          </select>
-          <label for="espessura-fundo">Fundo:</label>
-          <select id="espessura-fundo">
-            <option value="6">6mm</option>
-            <option value="9">9mm</option>
-            <option value="12">12mm</option>
-            <option value="15">15mm</option>
-            <option value="18">18mm</option>
-            <option value="25">25mm</option>
-          </select>
-          <label for="espessura-frente">Frente:</label>
-          <select id="espessura-frente">
-            <option value="15">15mm</option>
-            <option value="18" selected>18mm</option>
-            <option value="25">25mm</option>
-          </select>
-          <label for="espessura-travessa">Travessa Frontal Superior:</label>
-          <select id="espessura-travessa">
-            <option value="15">15mm</option>
-            <option value="18" selected>18mm</option>
-            <option value="25">25mm</option>
-          </select>
+    <div id="canvas-container"></div>
+    <div id="control-panel">
+        <div class="menu">
+            <button class="dropdown-btn">Ações ▾</button>
+            <div class="dropdown-content">
+                <button onclick="addModule()">Adicionar Módulo</button>
+                <button onclick="saveModules()">Salvar</button>
+                <button onclick="loadModules()">Carregar</button>
+            </div>
         </div>
-      </div>
-      <div class="dropdown">
-        <button class="dropbtn">Configuração de Materiais</button>
-        <div class="dropdown-content">
-          <label for="material-lateral">Lateral:</label>
-          <input type="text" id="material-lateral" placeholder="Ex: MDF Branco">
-          <label for="material-base">Base:</label>
-          <input type="text" id="material-base" placeholder="Ex: MDF Branco">
-          <label for="material-fundo">Fundo:</label>
-          <input type="text" id="material-fundo" placeholder="Ex: MDF Branco">
-          <label for="material-frente">Frente:</label>
-          <input type="text" id="material-frente" placeholder="Ex: MDF Branco">
-          <label for="material-travessa">Travessa Frontal Superior:</label>
-          <input type="text" id="material-travessa" placeholder="Ex: MDF Branco">
+        <div class="menu">
+            <button class="dropdown-btn">Dimensões ▾</button>
+            <div class="dropdown-content">
+                <div class="input-group">
+                    <label>Largura:</label>
+                    <input type="number" id="width" value="50">
+                </div>
+                <div class="input-group">
+                    <label>Altura:</label>
+                    <input type="number" id="height" value="80">
+                </div>
+                <div class="input-group">
+                    <label>Profundidade:</label>
+                    <input type="number" id="depth" value="50">
+                </div>
+            </div>
         </div>
-      </div>
+        <div class="menu">
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(this)">Configuração de Espessuras</button>
+                <div class="dropdown-content">
+                  <label for="espessura-lateral">Lateral:</label>
+                  <select id="espessura-lateral">
+                    <option value="15">15mm</option>
+                    <option value="18" selected>18mm</option>
+                    <option value="25">25mm</option>
+                  </select>
+                  <label for="espessura-base">Base:</label>
+                  <select id="espessura-base">
+                    <option value="15">15mm</option>
+                    <option value="18" selected>18mm</option>
+                    <option value="25">25mm</option>
+                  </select>
+                  <label for="espessura-fundo">Fundo:</label>
+                  <select id="espessura-fundo">
+                    <option value="6">6mm</option>
+                    <option value="9">9mm</option>
+                    <option value="12">12mm</option>
+                    <option value="15">15mm</option>
+                    <option value="18">18mm</option>
+                    <option value="25">25mm</option>
+                  </select>
+                </div>
+            </div>
+        </div>
     </div>
-    <div id="scene-container"></div>
-  </div>
-  <script src="../js/script.js"></script>
+    <script src="../js/script.js"></script>
 </body>
 </html>
