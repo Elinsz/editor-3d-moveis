@@ -62,7 +62,8 @@ body {
 .dropdown-btn {
     width: 100%;
     padding: 10px;
-    margin-top: 5px;
+    margin-top: 3px;
+    margin-bottom: 3px;
     background-color: #4CAF50;
     color: white;
     border: none;
@@ -80,6 +81,7 @@ body {
 .dropdown-content {
     display: none;
     padding-left: 14px;
+    margin-top: 5px;
 }
 
 .menu.active .dropdown-content {
