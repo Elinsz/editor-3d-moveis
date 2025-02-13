@@ -81,7 +81,7 @@ body {
 .dropdown-content {
     display: none;
     padding-left: 14px;
-    margin-top: 5px;
+    /* margin-top: 5px; */
     margin-bottom: 3px;
 }
 
