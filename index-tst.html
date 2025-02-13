@@ -10,7 +10,40 @@
   </style>
 </head>
 <body>
-  
+  <div class="container">
+    <div class="sidebar">
+      <button onclick="addBox()">Adicionar Caixa</button>
+      <button onclick="removeBox()">Remover Caixa</button>
+      <button onclick="resetScene()">Resetar Cena</button>
+      <div class="dropdown">
+        <button class="dropbtn" onclick="toggleDropdown(this)">Configuração de Espessuras</button>
+        <div class="dropdown-content">
+          <label for="espessura-lateral">Lateral:</label>
+          <select id="espessura-lateral">
+            <option value="15">15mm</option>
+            <option value="18" selected>18mm</option>
+            <option value="25">25mm</option>
+          </select>
+          <label for="espessura-base">Base:</label>
+          <select id="espessura-base">
+            <option value="15">15mm</option>
+            <option value="18" selected>18mm</option>
+            <option value="25">25mm</option>
+          </select>
+          <label for="espessura-fundo">Fundo:</label>
+          <select id="espessura-fundo">
+            <option value="6">6mm</option>
+            <option value="9">9mm</option>
+            <option value="12">12mm</option>
+            <option value="15">15mm</option>
+            <option value="18">18mm</option>
+            <option value="25">25mm</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div id="scene-container"></div>
+  </div>
 
 
   <script>
