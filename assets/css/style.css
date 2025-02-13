@@ -88,8 +88,8 @@ body {
 .dropdown-content button {
     width: 100%;
     padding: 10px;
-    background-color: #f8f9fa;
-    border: 1px solid #ccc;
+    background-color: #17a2b8;
+    border: 1px solid #b3b3b3;
     margin-top: 8px;
     text-align: left;
     cursor: pointer;
@@ -97,7 +97,7 @@ body {
 }
 
 .dropdown-content button:hover {
-    background-color: #e2e6ea;
+    background-color: #117a8b;
 }
 
 input[type="number"],
