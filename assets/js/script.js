@@ -5,6 +5,7 @@ camera.position.set(0, 300, 500);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setClearColor(0xf0f0f0);
 document.getElementById('canvas-container').appendChild(renderer.domElement);
 
 // CONTROLES DE CÂMERA
