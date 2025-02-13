@@ -10,6 +10,22 @@
 </head>
 <body>
     <div id="canvas-container"></div>
+    <div id="library-panel">
+        <div class="menu">
+            <button class="dropdown-btn">Biblioteca de Componentes ▾</button>
+            <div class="dropdown-content">
+                <button onclick="loadComponent('Componente 1')">Componente 1</button>
+                <button onclick="loadComponent('Componente 2')">Componente 2</button>
+                <button onclick="loadComponent('Componente 3')">Componente 3</button>
+            </div>
+        </div>
+        <div class="menu">
+            <button class="dropdown-btn">Componentes de Testes Salvos ▾</button>
+            <div class="dropdown-content" id="saved-components">
+                <p>Nenhum componente salvo.</p>
+            </div>
+        </div>
+    </div>
     <div id="control-panel">
         <div class="menu">
             <button class="dropdown-btn">Ações ▾</button>
