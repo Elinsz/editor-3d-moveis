@@ -5,7 +5,6 @@ camera.position.set(0, 300, 500);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setClearColor(0xf0f0f0);
 document.getElementById('canvas-container').appendChild(renderer.domElement);
 
 // CONTROLES DE CÂMERA
@@ -15,65 +14,22 @@ controls.dampingFactor = 0.1;
 controls.screenSpacePanning = false;
 controls.maxPolarAngle = Math.PI / 2;
 
-// Raycaster para seleção
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-let selectedModule = null;
-
-// Ambiente 3D (paredes, piso e teto) com tons claros
+// Ambiente 3D (paredes, piso e teto) - Ajustado com cor clara
 function addEnvironment() {
-    const wallMaterial = new THREE.MeshBasicMaterial({ color: 0xe0e0e0, side: THREE.DoubleSide });
-    const floorMaterial = new THREE.MeshBasicMaterial({ color: 0xd6d6d6 });
-    const ceilingMaterial = new THREE.MeshBasicMaterial({ color: 0xeaeaea });
-
-    const floor = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000), floorMaterial);
-    floor.rotation.x = -Math.PI / 2;
-    floor.position.y = 0;
-    scene.add(floor);
-
-    const ceiling = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000), ceilingMaterial);
-    ceiling.rotation.x = Math.PI / 2;
-    ceiling.position.y = 500;
-    scene.add(ceiling);
-
-    const wallBack = new THREE.Mesh(new THREE.PlaneGeometry(1000, 500), wallMaterial);
-    wallBack.position.z = -500;
-    wallBack.position.y = 250;
-    scene.add(wallBack);
-
-    const wallFront = new THREE.Mesh(new THREE.PlaneGeometry(1000, 500), wallMaterial);
-    wallFront.position.z = 500;
-    wallFront.position.y = 250;
-    wallFront.rotation.y = Math.PI;
-    scene.add(wallFront);
-
-    const wallLeft = new THREE.Mesh(new THREE.PlaneGeometry(1000, 500), wallMaterial);
-    wallLeft.position.x = -500;
-    wallLeft.position.y = 250;
-    wallLeft.rotation.y = Math.PI / 2;
-    scene.add(wallLeft);
-
-    const wallRight = new THREE.Mesh(new THREE.PlaneGeometry(1000, 500), wallMaterial);
-    wallRight.position.x = 500;
-    wallRight.position.y = 250;
-    wallRight.rotation.y = -Math.PI / 2;
-    scene.add(wallRight);
+    const roomMaterial = new THREE.MeshBasicMaterial({ color: 0xf5f5f5, side: THREE.BackSide });
+    const roomGeometry = new THREE.BoxGeometry(1000, 500, 1000);
+    const roomMesh = new THREE.Mesh(roomGeometry, roomMaterial);
+    roomMesh.position.y = 250;
+    scene.add(roomMesh);
 }
 
 function applyDimensions() {
+    const width = parseFloat(document.getElementById('width').value);
+    const height = parseFloat(document.getElementById('height').value);
+    const depth = parseFloat(document.getElementById('depth').value);
+
     if (selectedModule) {
-        const width = parseFloat(document.getElementById('width').value);
-        const height = parseFloat(document.getElementById('height').value);
-        const depth = parseFloat(document.getElementById('depth').value);
-
         selectedModule.scale.set(width / 200, height / 400, depth / 300);
-        selectedModule.geometry.computeBoundingBox();
-        const boundingBox = selectedModule.geometry.boundingBox;
-        selectedModule.position.y = (boundingBox.max.y - boundingBox.min.y) / 2;
-
-        alert(`Dimensões Aplicadas: Largura ${width}mm, Altura ${height}mm, Profundidade ${depth}mm`);
-    } else {
-        alert('Nenhum módulo selecionado para aplicar dimensões.');
     }
 }
 
@@ -86,58 +42,63 @@ function applyMaterials() {
 
 addEnvironment();
 
-function createModule() {
-    const geometry = new THREE.BoxGeometry(200, 400, 300);
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+let selectedModule = null;
+
+// EXEMPLO DE MÓDULO (caixa)
+function createModule(width = 200, height = 400, depth = 300, color = 0x00ff00) {
+    const geometry = new THREE.BoxGeometry(width, height, depth);
+    const material = new THREE.MeshBasicMaterial({ color });
     const module = new THREE.Mesh(geometry, material);
-    module.position.y = 200;
-    module.name = 'module';
+    module.position.y = height / 2;
+    module.userData.draggable = true;
+
+    module.addEventListener('click', () => {
+        selectedModule = module;
+    });
+
     scene.add(module);
 }
 
 createModule();
 
-function onMouseDown(event) {
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+// Painel lateral com lista de componentes salvos
+const savedComponentsPanel = document.createElement('div');
+savedComponentsPanel.id = 'saved-components-panel';
+savedComponentsPanel.style.position = 'absolute';
+savedComponentsPanel.style.top = '0';
+savedComponentsPanel.style.right = '0';
+savedComponentsPanel.style.width = '250px';
+savedComponentsPanel.style.height = '100vh';
+savedComponentsPanel.style.backgroundColor = '#f0f0f0';
+savedComponentsPanel.style.overflowY = 'auto';
+savedComponentsPanel.style.padding = '10px';
+document.body.appendChild(savedComponentsPanel);
 
-    raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(scene.children);
+function loadSavedComponents() {
+    const componentsData = [
+        { id: 1, name: 'Caixa Alta', width: 300, height: 600, depth: 400, color: 0xff0000 },
+        { id: 2, name: 'Caixa Baixa', width: 500, height: 300, depth: 500, color: 0x00ff00 }
+    ];
 
-    if (intersects.length > 0) {
-        const object = intersects[0].object;
-        if (object.name === 'module') {
-            selectedModule = object;
-        } else {
-            selectedModule = null;
-        }
-    }
+    savedComponentsPanel.innerHTML = '<h3>Componentes Salvos</h3>';
+
+    componentsData.forEach(component => {
+        const componentItem = document.createElement('div');
+        componentItem.style.border = '1px solid #ccc';
+        componentItem.style.margin = '5px 0';
+        componentItem.style.padding = '10px';
+        componentItem.style.cursor = 'pointer';
+        componentItem.textContent = component.name;
+        componentItem.addEventListener('click', () => {
+            createModule(component.width, component.height, component.depth, component.color);
+        });
+        savedComponentsPanel.appendChild(componentItem);
+    });
 }
 
-window.addEventListener('mousedown', onMouseDown);
+loadSavedComponents();
 
-window.addEventListener('keydown', (event) => {
-    if (selectedModule) {
-        switch (event.key) {
-            case 'ArrowUp':
-                selectedModule.position.z -= 10;
-                break;
-            case 'ArrowDown':
-                selectedModule.position.z += 10;
-                break;
-            case 'ArrowLeft':
-                selectedModule.position.x -= 10;
-                break;
-            case 'ArrowRight':
-                selectedModule.position.x += 10;
-                break;
-            case 'r':
-                selectedModule.rotation.y += Math.PI / 8;
-                break;
-        }
-    }
-});
-
+// ANIMAÇÃO DA CENA
 function animate() {
     requestAnimationFrame(animate);
     controls.update();
@@ -146,6 +107,7 @@ function animate() {
 
 animate();
 
+// FUNÇÕES DE BOTÕES
 function addModule() {
     createModule();
 }
@@ -158,6 +120,7 @@ function loadModules() {
     alert('Módulos carregados (simulado)');
 }
 
+// CONTROLE DOS DROPDOWNS
 document.querySelectorAll('.dropdown-btn').forEach(button => {
     button.addEventListener('click', function () {
         const menu = this.parentElement;
@@ -165,6 +128,7 @@ document.querySelectorAll('.dropdown-btn').forEach(button => {
     });
 });
 
+// Ajusta a tela em caso de redimensionamento
 window.addEventListener('resize', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
