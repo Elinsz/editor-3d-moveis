@@ -1,63 +1,94 @@
-let scene, camera, renderer, controls;
-function init() {
-  const container = document.getElementById('scene-container');
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xf0f0f0);
+// Inicialização da cena
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-  camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-  camera.position.set(200, 200, 200);
+// Controle de movimento, zoom e rotação
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-  renderer = new THREE.WebGLRenderer();
-  renderer.setSize(container.clientWidth, container.clientHeight);
-  container.appendChild(renderer.domElement);
+// Adicionar o fundo 3D com paredes, piso e teto
+function addEnvironment() {
+    // Piso
+    const floorGeometry = new THREE.PlaneGeometry(1000, 1000);
+    const floorMaterial = new THREE.MeshBasicMaterial({ color: 0xcccccc, side: THREE.DoubleSide });
+    const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+    floor.rotation.x = Math.PI / 2;
+    scene.add(floor);
 
-  const light = new THREE.AmbientLight(0xffffff);
-  scene.add(light);
+    // Paredes (4)
+    const wallGeometry = new THREE.PlaneGeometry(1000, 1000);
+    const wallMaterial = new THREE.MeshBasicMaterial({ color: 0xdddddd, side: THREE.DoubleSide });
 
-  const roomMaterial = new THREE.MeshBasicMaterial({ color: 0xd3d3d3, side: THREE.BackSide });
-  const roomGeometry = new THREE.BoxGeometry(500, 500, 500);
-  const room = new THREE.Mesh(roomGeometry, roomMaterial);
-  scene.add(room);
+    const wall1 = new THREE.Mesh(wallGeometry, wallMaterial);
+    wall1.position.z = -500;
+    scene.add(wall1);
 
-  controls = new THREE.OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.1;
-  controls.screenSpacePanning = true;
+    const wall2 = new THREE.Mesh(wallGeometry, wallMaterial);
+    wall2.rotation.y = Math.PI;
+    wall2.position.z = 500;
+    scene.add(wall2);
 
-  animate();
+    const wall3 = new THREE.Mesh(wallGeometry, wallMaterial);
+    wall3.rotation.y = Math.PI / 2;
+    wall3.position.x = 500;
+    scene.add(wall3);
+
+    const wall4 = new THREE.Mesh(wallGeometry, wallMaterial);
+    wall4.rotation.y = -Math.PI / 2;
+    wall4.position.x = -500;
+    scene.add(wall4);
+
+    // Teto
+    const ceilingGeometry = new THREE.PlaneGeometry(1000, 1000);
+    const ceilingMaterial = new THREE.MeshBasicMaterial({ color: 0xdddddd, side: THREE.DoubleSide });
+    const ceiling = new THREE.Mesh(ceilingGeometry, ceilingMaterial);
+    ceiling.rotation.x = -Math.PI / 2;
+    ceiling.position.y = 500;
+    scene.add(ceiling);
 }
 
+// Adiciona o ambiente
+addEnvironment();
+
+// Função para criar o modelo 3D
+function createModule() {
+    const geometry = new THREE.BoxGeometry(200, 400, 300); // módulo de exemplo
+    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    const module = new THREE.Mesh(geometry, material);
+    scene.add(module);
+}
+
+// Adiciona um módulo inicial
+createModule();
+
+// Posiciona a câmera
+camera.position.z = 1000;
+
+// Função de animação
 function animate() {
-  requestAnimationFrame(animate);
-  controls.update();
-  renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+
+    // Atualiza o controle
+    controls.update();
+
+    // Renderiza a cena
+    renderer.render(scene, camera);
 }
 
-function addBox() {
-  const boxGeometry = new THREE.BoxGeometry(50, 50, 50);
-  const boxMaterial = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
-  const box = new THREE.Mesh(boxGeometry, boxMaterial);
-  box.position.set(0, 25, 0);
-  scene.add(box);
+// Inicia a animação
+animate();
+
+// Funções de controle para interação
+function addModule() {
+    createModule();
 }
 
-function removeBox() {
-  if (scene.children.length > 1) scene.remove(scene.children[scene.children.length - 1]);
+function saveModules() {
+    console.log('Salvar módulos...');
 }
 
-function resetScene() {
-  while (scene.children.length > 1) scene.remove(scene.children[scene.children.length - 1]);
+function loadModules() {
+    console.log('Carregar módulos...');
 }
-
-function toggleDropdown(button) {
-  const dropdown = button.parentElement;
-  dropdown.classList.toggle('active');
-}
-
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-});
-
-init();
