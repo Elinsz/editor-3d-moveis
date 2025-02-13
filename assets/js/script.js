@@ -24,6 +24,9 @@ function addEnvironment() {
     scene.add(roomMesh);
 }
 
+addEnvironment();
+
+// Função para aplicar as dimensões ao módulo
 function applyDimensions() {
     const width = parseFloat(document.getElementById('width').value);
     const height = parseFloat(document.getElementById('height').value);
@@ -34,6 +37,7 @@ function applyDimensions() {
     }
 }
 
+// Função para aplicar os materiais
 function applyMaterials() {
     const lateral = document.getElementById('material-lateral').value;
     const base = document.getElementById('material-base').value;
@@ -41,8 +45,7 @@ function applyMaterials() {
     alert(`Materiais Aplicados:\nLateral: ${lateral}\nBase: ${base}\nFundo: ${fundo}`);
 }
 
-addEnvironment();
-
+// Variáveis de controle dos módulos
 let selectedModule = null;
 
 // EXEMPLO DE MÓDULO (caixa)
@@ -60,31 +63,35 @@ function createModule(width = 200, height = 400, depth = 300, color = 0x00ff00) 
     scene.add(module);
 }
 
-createModule();
+// Função para adicionar um componente salvo
+function addSavedComponent(componentName, width, height, depth, color) {
+    const savedComponentsPanel = document.getElementById('saved-components');
 
+    const componentButton = document.createElement('button');
+    componentButton.textContent = componentName;
+    componentButton.onclick = function() {
+        createModule(width, height, depth, color);  // Cria o módulo com as dimensões e cor definidas
+    };
+
+    savedComponentsPanel.appendChild(componentButton);
+}
+
+// Função para carregar os componentes salvos
 function loadSavedComponents() {
     const componentsData = [
         { id: 1, name: 'Caixa Alta', width: 300, height: 600, depth: 400, color: 0xff0000 },
         { id: 2, name: 'Caixa Baixa', width: 500, height: 300, depth: 500, color: 0x00ff00 }
     ];
 
-    const libraryPanel = document.getElementById('library-panel');
-    libraryPanel.innerHTML = ''; // Limpa o conteúdo anterior
+    const savedComponentsPanel = document.getElementById('saved-components');
+    savedComponentsPanel.innerHTML = ''; // Limpa o conteúdo anterior
 
     componentsData.forEach(component => {
-        const componentItem = document.createElement('div');
-        componentItem.style.border = '1px solid #ccc';
-        componentItem.style.margin = '5px 0';
-        componentItem.style.padding = '10px';
-        componentItem.style.cursor = 'pointer';
-        componentItem.textContent = component.name;
-        componentItem.addEventListener('click', () => {
-            createModule(component.width, component.height, component.depth, component.color);
-        });
-        libraryPanel.appendChild(componentItem);
+        addSavedComponent(component.name, component.width, component.height, component.depth, component.color);
     });
 }
 
+// Carrega os componentes salvos
 loadSavedComponents();
 
 // ANIMAÇÃO DA CENA
