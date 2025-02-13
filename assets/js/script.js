@@ -24,6 +24,20 @@ function addEnvironment() {
     scene.add(roomMesh);
 }
 
+function applyDimensions() {
+    const width = document.getElementById('width').value;
+    const height = document.getElementById('height').value;
+    const depth = document.getElementById('depth').value;
+    alert(`Dimensões Aplicadas: Largura ${width}mm, Altura ${height}mm, Profundidade ${depth}mm`);
+}
+
+function applyMaterials() {
+    const lateral = document.getElementById('material-lateral').value;
+    const base = document.getElementById('material-base').value;
+    const fundo = document.getElementById('material-fundo').value;
+    alert(`Materiais Aplicados:\nLateral: ${lateral}\nBase: ${base}\nFundo: ${fundo}`);
+}
+
 
 addEnvironment();
 
