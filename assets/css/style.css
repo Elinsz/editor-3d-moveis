@@ -109,10 +109,10 @@ input[type="text"],
 select {
     width: 100%;
     padding: 8px;
-    margin-top: 8px;
+    margin-top: 10px;
     border: 1px solid #ccc;
     border-radius: 3px;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 button {
