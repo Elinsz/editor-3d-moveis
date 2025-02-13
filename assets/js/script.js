@@ -14,38 +14,42 @@ function addEnvironment() {
     const floorGeometry = new THREE.PlaneGeometry(1000, 1000);
     const floorMaterial = new THREE.MeshBasicMaterial({ color: 0xcccccc, side: THREE.DoubleSide });
     const floor = new THREE.Mesh(floorGeometry, floorMaterial);
-    floor.rotation.x = Math.PI / 2;
+    floor.rotation.x = -Math.PI / 2; // Piso virado para cima
     scene.add(floor);
 
     // Paredes (4)
     const wallGeometry = new THREE.PlaneGeometry(1000, 1000);
     const wallMaterial = new THREE.MeshBasicMaterial({ color: 0xdddddd, side: THREE.DoubleSide });
 
+    // Parede frontal
     const wall1 = new THREE.Mesh(wallGeometry, wallMaterial);
-    wall1.position.z = -500;
+    wall1.position.z = -500; // Coloca a parede na frente
     scene.add(wall1);
 
+    // Parede de trás
     const wall2 = new THREE.Mesh(wallGeometry, wallMaterial);
-    wall2.rotation.y = Math.PI;
-    wall2.position.z = 500;
+    wall2.rotation.y = Math.PI; // Rotaciona para ficar atrás
+    wall2.position.z = 500; // Coloca a parede atrás
     scene.add(wall2);
 
+    // Parede da esquerda
     const wall3 = new THREE.Mesh(wallGeometry, wallMaterial);
-    wall3.rotation.y = Math.PI / 2;
-    wall3.position.x = 500;
+    wall3.rotation.y = Math.PI / 2; // Rotaciona para a lateral
+    wall3.position.x = 500; // Coloca a parede na lateral direita
     scene.add(wall3);
 
+    // Parede da direita
     const wall4 = new THREE.Mesh(wallGeometry, wallMaterial);
-    wall4.rotation.y = -Math.PI / 2;
-    wall4.position.x = -500;
+    wall4.rotation.y = -Math.PI / 2; // Rotaciona para a lateral
+    wall4.position.x = -500; // Coloca a parede na lateral esquerda
     scene.add(wall4);
 
     // Teto
     const ceilingGeometry = new THREE.PlaneGeometry(1000, 1000);
     const ceilingMaterial = new THREE.MeshBasicMaterial({ color: 0xdddddd, side: THREE.DoubleSide });
     const ceiling = new THREE.Mesh(ceilingGeometry, ceilingMaterial);
-    ceiling.rotation.x = -Math.PI / 2;
-    ceiling.position.y = 500;
+    ceiling.rotation.x = Math.PI / 2; // Teto virado para cima
+    ceiling.position.y = 500; // Coloca o teto acima
     scene.add(ceiling);
 }
 

@@ -61,10 +61,12 @@ button.dropdown-btn:hover {
     border-radius: 5px;
 }
 
+/* Para manter os dropdowns abertos ao clicar */
 button.dropdown-btn:focus + .dropdown-content {
     display: block;
 }
 
+/* Estilos dos inputs e selects */
 input, select {
     width: 100%;
     padding: 5px;
