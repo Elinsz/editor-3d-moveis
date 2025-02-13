@@ -4,9 +4,10 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerH
 camera.position.set(0, 300, 500);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setSize(window.innerWidth - 250, window.innerHeight);
 renderer.setClearColor(0xf0f0f0);
 document.getElementById('canvas-container').appendChild(renderer.domElement);
+document.getElementById('canvas-container').style.marginLeft = '250px';
 
 // CONTROLES DE CÂMERA
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -131,7 +132,7 @@ document.querySelectorAll('.dropdown-btn').forEach(button => {
 
 // Ajusta a tela em caso de redimensionamento
 window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.aspect = (window.innerWidth - 250) / window.innerHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(window.innerWidth - 250, window.innerHeight);
 });
