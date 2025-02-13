@@ -115,7 +115,7 @@ select {
     font-size: 14px;
 }
 
-.dropdown-content label {
+label {
     margin-top: 5px;
     margin-bottom: 5px;
 }
