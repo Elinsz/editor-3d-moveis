@@ -114,6 +114,43 @@ function onMouseDown(event) {
     }
 }
 
+// Painel lateral com lista de componentes salvos
+const savedComponentsPanel = document.createElement('div');
+savedComponentsPanel.id = 'saved-components-panel';
+savedComponentsPanel.style.position = 'absolute';
+savedComponentsPanel.style.top = '0';
+savedComponentsPanel.style.left = '0';
+savedComponentsPanel.style.width = '250px';
+savedComponentsPanel.style.height = '100vh';
+savedComponentsPanel.style.backgroundColor = '#f0f0f0';
+savedComponentsPanel.style.overflowY = 'auto';
+savedComponentsPanel.style.padding = '10px';
+document.body.appendChild(savedComponentsPanel);
+
+function loadSavedComponents() {
+    const componentsData = [
+        { id: 1, name: 'Caixa Alta', width: 300, height: 600, depth: 400, color: 0xff0000 },
+        { id: 2, name: 'Caixa Baixa', width: 500, height: 300, depth: 500, color: 0x00ff00 }
+    ];
+
+    savedComponentsPanel.innerHTML = '<h3>Componentes Salvos</h3>';
+
+    componentsData.forEach(component => {
+        const componentItem = document.createElement('div');
+        componentItem.style.border = '1px solid #ccc';
+        componentItem.style.margin = '5px 0';
+        componentItem.style.padding = '10px';
+        componentItem.style.cursor = 'pointer';
+        componentItem.textContent = component.name;
+        componentItem.addEventListener('click', () => {
+            createModule(component.width, component.height, component.depth, component.color);
+        });
+        savedComponentsPanel.appendChild(componentItem);
+    });
+}
+
+loadSavedComponents();
+
 window.addEventListener('mousedown', onMouseDown);
 
 window.addEventListener('keydown', (event) => {
