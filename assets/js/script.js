@@ -7,7 +7,6 @@ const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth - 250, window.innerHeight);
 renderer.setClearColor(0xf0f0f0);
 document.getElementById('canvas-container').appendChild(renderer.domElement);
-document.getElementById('canvas-container').style.marginLeft = '250px';
 
 // CONTROLES DE CÂMERA
 const controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -63,26 +62,14 @@ function createModule(width = 200, height = 400, depth = 300, color = 0x00ff00) 
 
 createModule();
 
-// Painel lateral com lista de componentes salvos
-const savedComponentsPanel = document.createElement('div');
-savedComponentsPanel.id = 'saved-components-panel';
-savedComponentsPanel.style.position = 'absolute';
-savedComponentsPanel.style.top = '0';
-savedComponentsPanel.style.left = '0';
-savedComponentsPanel.style.width = '250px';
-savedComponentsPanel.style.height = '100vh';
-savedComponentsPanel.style.backgroundColor = '#f0f0f0';
-savedComponentsPanel.style.overflowY = 'auto';
-savedComponentsPanel.style.padding = '10px';
-document.body.appendChild(savedComponentsPanel);
-
 function loadSavedComponents() {
     const componentsData = [
         { id: 1, name: 'Caixa Alta', width: 300, height: 600, depth: 400, color: 0xff0000 },
         { id: 2, name: 'Caixa Baixa', width: 500, height: 300, depth: 500, color: 0x00ff00 }
     ];
 
-    savedComponentsPanel.innerHTML = '<h3>Componentes Salvos</h3>';
+    const libraryPanel = document.getElementById('library-panel');
+    libraryPanel.innerHTML = ''; // Limpa o conteúdo anterior
 
     componentsData.forEach(component => {
         const componentItem = document.createElement('div');
@@ -94,7 +81,7 @@ function loadSavedComponents() {
         componentItem.addEventListener('click', () => {
             createModule(component.width, component.height, component.depth, component.color);
         });
-        savedComponentsPanel.appendChild(componentItem);
+        libraryPanel.appendChild(componentItem);
     });
 }
 
