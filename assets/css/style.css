@@ -23,7 +23,7 @@ body {
 
 #library-panel{
     width: 200px;
-    padding: 20px;
+    padding: 15px;
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
@@ -31,8 +31,8 @@ body {
 
 
 #control-panel {
-    width: 250px;
-    padding: 20px;
+    width: 255px;
+    padding: 15px;
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow-y: auto;
