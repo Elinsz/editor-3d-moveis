@@ -62,12 +62,13 @@ body {
 .dropdown-btn {
     width: 100%;
     padding: 10px;
+    margin-top: 5px;
     background-color: #4CAF50;
     color: white;
     border: none;
     cursor: pointer;
     text-align: left;
-    font-size: 13px;
+    font-size: 14px;
     border-radius: 5px;
     transition: background-color 0.3s;
 }
