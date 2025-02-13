@@ -14,16 +14,16 @@ controls.dampingFactor = 0.1;
 controls.screenSpacePanning = false;
 controls.maxPolarAngle = Math.PI / 2;
 
-// AMBIENTE 3D (paredes, piso e teto)
+// Ambiente 3D (paredes, piso e teto) - Ajustado com cor clara
 function addEnvironment() {
-    const materialWall = new THREE.MeshBasicMaterial({ color: 0xe0e0e0, side: THREE.BackSide });
+    const roomMaterial = new THREE.MeshBasicMaterial({ color: 0xf5f5f5, side: THREE.BackSide });
 
-    // Paredes
     const roomGeometry = new THREE.BoxGeometry(1000, 500, 1000);
-    const roomMesh = new THREE.Mesh(roomGeometry, materialWall);
+    const roomMesh = new THREE.Mesh(roomGeometry, roomMaterial);
     roomMesh.position.y = 250;
     scene.add(roomMesh);
 }
+
 
 addEnvironment();
 
