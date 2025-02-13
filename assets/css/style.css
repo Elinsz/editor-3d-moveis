@@ -5,66 +5,10 @@
     font-family: Arial, Helvetica, sans-serif;
   }
 
-  body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    display: flex;
-    font-family: Arial, sans-serif;
-}
-
-#canvas-container {
-    flex-grow: 1;
-    background-color: #f0f0f0;
-}
-
-#control-panel {
-    width: 250px;
-    background-color: #ffffff;
-    border-left: 1px solid #ccc;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.menu {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-    overflow: hidden;
-}
-
-.dropdown-btn {
-    background-color: #ddd;
-    border: none;
-    padding: 10px;
-    width: 100%;
-    text-align: left;
-    cursor: pointer;
-}
-
-.dropdown-content {
-    display: none;
-    padding: 10px;
-    background-color: #f1f1f1;
-}
-
-.menu.active .dropdown-content {
-    display: block;
-}
-
-.input-group label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-.input-group input {
-    width: 100%;
-    padding: 5px;
-    box-sizing: border-box;
-}
-
-button {
-    cursor: pointer;
-}
+  body { margin: 0; font-family: Arial, sans-serif; }
+  .container { display: flex; height: 100vh; }
+  .sidebar { width: 250px; background-color: #f4f4f4; padding: 10px; display: flex; flex-direction: column; }
+  .sidebar button, .sidebar select, .sidebar input { margin-bottom: 10px; }
+  #scene-container { flex-grow: 1; background-color: #e0e0e0; position: relative; }
+  .dropdown-content { display: none; flex-direction: column; }
+  .dropdown.active .dropdown-content { display: flex; }
