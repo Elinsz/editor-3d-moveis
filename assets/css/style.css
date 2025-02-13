@@ -82,7 +82,7 @@ body {
     display: none;
     padding-left: 14px;
     margin-top: 6px;
-    /* margin-bottom: 3px;  */
+    margin-bottom: 6px;
 }
 
 .menu.active .dropdown-content {
