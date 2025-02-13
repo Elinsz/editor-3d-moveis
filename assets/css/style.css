@@ -16,18 +16,22 @@
     position: relative;
 }
 
-/* Controla os painéis e menus de configuração */
+/* Painel de controle na lateral direita */
 #control-panel {
-    position: absolute;
+    position: fixed;
+    right: 20px;
     top: 20px;
-    left: 20px;
     z-index: 10;
     background-color: rgba(255, 255, 255, 0.8);
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    height: 90vh;
+    overflow-y: auto;
 }
 
+/* Menu */
 .menu {
     margin-bottom: 10px;
 }
@@ -40,6 +44,7 @@ button.dropdown-btn {
     border: none;
     text-align: left;
     cursor: pointer;
+    border-radius: 5px;
 }
 
 button.dropdown-btn:hover {
@@ -53,8 +58,17 @@ button.dropdown-btn:hover {
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
     padding: 10px;
+    border-radius: 5px;
 }
 
 button.dropdown-btn:focus + .dropdown-content {
     display: block;
+}
+
+input, select {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
 }
