@@ -12,10 +12,12 @@ body {
 }
 
 #canvas-container {
-    width: 100vw;
+    width: 100%;
     height: 100vh;
-    background-color: #e0e0e0;
+    background-color: #f0f0f0; /* Cor clara para evitar qualquer fundo preto */
+    position: relative;
 }
+
 
 #control-panel {
     position: fixed;
