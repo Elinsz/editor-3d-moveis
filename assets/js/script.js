@@ -48,15 +48,15 @@ function addEnvironment() {
     const ceilingGeometry = new THREE.PlaneGeometry(1000, 1000);
     const ceilingMaterial = new THREE.MeshBasicMaterial({ color: 0xdddddd, side: THREE.DoubleSide });
     const ceiling = new THREE.Mesh(ceilingGeometry, ceilingMaterial);
-    ceiling.rotation.x = Math.PI / 2; // Teto virado para cima
+    ceiling.rotation.x = Math.PI / 2; // Teto virado para baixo
     ceiling.position.y = 500; // Coloca o teto acima
     scene.add(ceiling);
 }
 
-// Adiciona o ambiente
+// Adiciona o ambiente 3D
 addEnvironment();
 
-// Função para criar o modelo 3D
+// Função para criar o módulo 3D
 function createModule() {
     const geometry = new THREE.BoxGeometry(200, 400, 300); // módulo de exemplo
     const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
@@ -96,3 +96,22 @@ function saveModules() {
 function loadModules() {
     console.log('Carregar módulos...');
 }
+
+// Função para gerenciar o comportamento dos menus dropdown
+const dropdownBtns = document.querySelectorAll('.dropdown-btn');
+dropdownBtns.forEach(button => {
+    button.addEventListener('click', function (event) {
+        const menu = this.parentElement;
+        menu.classList.toggle('active'); // Adiciona ou remove a classe "active"
+        event.stopPropagation(); // Impede que o clique se propague e feche outros menus
+    });
+});
+
+// Fecha o menu quando clicar fora
+document.addEventListener('click', function (event) {
+    if (!event.target.closest('.menu')) {
+        document.querySelectorAll('.menu.active').forEach(menu => {
+            menu.classList.remove('active');
+        });
+    }
+});
