@@ -48,7 +48,7 @@
     <!-- <script src="script.js"></script> -->
 
     <script>
-// script.js
+        // script.js
 
 let scene, camera, renderer, controls;
 let driverBlock;
@@ -78,6 +78,7 @@ function init() {
     scene.add(axesHelper);
 
     createRoom();
+    createCoordinateSystem();
 
     animate();
 }
@@ -110,6 +111,22 @@ function createRoom() {
     rightWall.position.y = 125;
     rightWall.rotation.y = -Math.PI / 2;
     scene.add(rightWall);
+}
+
+function createCoordinateSystem() {
+    const lineMaterial = new THREE.LineBasicMaterial({ color: 0x0000ff });
+
+    const points = [];
+    for (let i = -250; i <= 250; i += 50) {
+        points.push(new THREE.Vector3(i, 0, -250));
+        points.push(new THREE.Vector3(i, 0, 250));
+        points.push(new THREE.Vector3(-250, 0, i));
+        points.push(new THREE.Vector3(250, 0, i));
+    }
+
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+    const lines = new THREE.LineSegments(geometry, lineMaterial);
+    scene.add(lines);
 }
 
 function addModule() {
