@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -7,7 +8,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OrbitControls/2.110.3/OrbitControls.min.js"></script>
     <script src="https://threejs.org/examples/js/exporters/STLExporter.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+
+    <style>
+        body { display: flex; font-family: Arial, sans-serif; }
+        #canvas-container { width: 70%; height: 100vh; background-color: #f0f0f0; }
+        #config-panel { width: 30%; padding: 10px; background: #fff; box-shadow: -2px 0 5px rgba(0,0,0,0.1); }
+        label { display: block; margin-top: 10px; }
+        input { width: 100%; padding: 5px; }
+        button { margin-top: 10px; padding: 10px; width: 100%; cursor: pointer; }
+    </style>
 </head>
 <body>
     <div id="canvas-container"></div>
@@ -36,6 +46,69 @@
             <button onclick="exportToSTL()">Exportar para STL</button>
         </div>
     </div>
-    <script src="script.js"></script>
+    <!-- <script src="script.js"></script> -->
+
+
+    <script>
+        let scene, camera, renderer, modulo;
+
+        function init() {
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xf0f0f0);
+
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth * 0.7 / window.innerHeight, 0.1, 1000);
+            camera.position.set(500, 500, 500);
+            camera.lookAt(0, 0, 0);
+
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth * 0.7, window.innerHeight);
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            const light = new THREE.DirectionalLight(0xffffff, 1);
+            light.position.set(1, 1, 1).normalize();
+            scene.add(light);
+
+            atualizarModulo();
+
+            animate();
+        }
+
+        function atualizarModulo() {
+            if (modulo) scene.remove(modulo);
+
+            const largura = parseFloat(document.getElementById('width').value);
+            const altura = parseFloat(document.getElementById('height').value);
+            const profundidade = parseFloat(document.getElementById('depth').value);
+
+            const espessuraLateral = parseFloat(document.getElementById('espessura-lateral').value);
+            const espessuraBase = parseFloat(document.getElementById('espessura-base').value);
+            const espessuraFundo = parseFloat(document.getElementById('espessura-fundo').value);
+            const espessuraFrente = parseFloat(document.getElementById('espessura-frente').value);
+
+            const geometria = new THREE.BoxGeometry(largura, altura, profundidade);
+            const material = new THREE.MeshBasicMaterial({ color: 0x8c8c8c, wireframe: true });
+
+            modulo = new THREE.Mesh(geometria, material);
+            scene.add(modulo);
+        }
+
+        function exportarGLTF() {
+            const exporter = new THREE.GLTFExporter();
+            exporter.parse(scene, function (result) {
+                const blob = new Blob([JSON.stringify(result)], { type: 'application/json' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'modulo.gltf';
+                link.click();
+            });
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+
+        window.onload = init;
+    </script>
 </body>
 </html>
