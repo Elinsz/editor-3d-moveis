@@ -15,10 +15,13 @@
         #control-panel { position: absolute; top: 0; right: 0; bottom: 0; z-index: 2; }
         .menu { margin-bottom: 3px; }
         .dropdown-btn { width: 100%; padding: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer; text-align: left; font-size: 14px; border-radius: 5px; }
-        .dropdown-content { display: none; padding-left: 14px; margin-top: 6px; }
+        .dropdown-btn:hover { background-color: #45a049; }
+        .dropdown-content { display: none; padding-left: 14px; margin-top: 6px; margin-bottom: 6px; }
         .menu.active .dropdown-content { display: block; }
-        .dropdown-content button { width: 100%; padding: 10px; background-color: #17a2b8; border: 1px solid #b3b3b3; margin-top: 6px; text-align: center; cursor: pointer; border-radius: 3px; color: white; }
+        .dropdown-content button { width: 100%; padding: 10px; background-color: #17a2b8; border: 1px solid #b3b3b3; margin-top: 5px; text-align: center; cursor: pointer; border-radius: 3px; color: white; }
+        .dropdown-content button:hover { background-color: #117a8b; }
         button { padding: 10px; background-color: #28a745; color: white; border: none; cursor: pointer; font-size: 14px; border-radius: 5px; width: 100%; margin-top: 10px; }
+        button:hover { background-color: #218838; }
     </style>
 </head>
 <body>
@@ -43,11 +46,11 @@
         <div class="menu">
             <button class="dropdown-btn">Dimensões ▾</button>
             <div class="dropdown-content">
-                <label>Largura:</label>
+                <label>Largura (mm):</label>
                 <input type="number" id="width" value="500">
-                <label>Altura:</label>
+                <label>Altura (mm):</label>
                 <input type="number" id="height" value="800">
-                <label>Profundidade:</label>
+                <label>Profundidade (mm):</label>
                 <input type="number" id="depth" value="500">
             </div>
         </div>
@@ -64,15 +67,11 @@
 
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
+        controls.dampingFactor = 0.1;
         controls.maxPolarAngle = Math.PI / 2;
 
-        function addAxis() {
-            const axisHelper = new THREE.AxesHelper(200);
-            scene.add(axisHelper);
-        }
-        addAxis();
-
-        let selectedModule = null;
+        const axisHelper = new THREE.AxesHelper(100);
+        scene.add(axisHelper);
 
         function addModule() {
             const width = parseFloat(document.getElementById('width').value);
@@ -80,14 +79,19 @@
             const depth = parseFloat(document.getElementById('depth').value);
 
             const geometry = new THREE.BoxGeometry(width, height, depth);
-            const material = new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.5 });
+            const material = new THREE.MeshPhongMaterial({
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.5
+            });
             const module = new THREE.Mesh(geometry, material);
-
             module.position.set(0, height / 2, 0);
 
             scene.add(module);
-            selectedModule = module;
         }
+
+        const light = new THREE.AmbientLight(0xffffff, 1);
+        scene.add(light);
 
         function animate() {
             requestAnimationFrame(animate);
@@ -104,8 +108,7 @@
 
         document.querySelectorAll('.dropdown-btn').forEach(button => {
             button.addEventListener('click', function () {
-                const menu = this.parentElement;
-                menu.classList.toggle('active');
+                this.parentElement.classList.toggle('active');
             });
         });
     </script>
