@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editor 3D - Módulo Transparente</title>
+    <title>Editor 3D - Móveis v2</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <style>
@@ -13,61 +13,111 @@
         #library-panel, #control-panel { width: 220px; padding: 20px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); overflow-y: auto; }
         #library-panel { position: absolute; top: 0; left: 0; bottom: 0; z-index: 2; }
         #control-panel { position: absolute; top: 0; right: 0; bottom: 0; z-index: 2; }
+        .menu { margin-bottom: 3px; }
+        .dropdown-btn { width: 100%; padding: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer; text-align: left; font-size: 14px; border-radius: 5px; }
+        .dropdown-btn:hover { background-color: #4CAF50; }
+        .dropdown-content { display: none; padding-left: 14px; margin-top: 6px; margin-bottom: 6px; }
+        .menu.active .dropdown-content { display: block; }
+        .dropdown-content button { width: 100%; padding: 10px; background-color: #17a2b8; border: 1px solid #b3b3b3; margin-top: 14px; text-align: center; cursor: pointer; border-radius: 3px; }
+        .dropdown-content button:hover { background-color: #117a8b; }
+        button { padding: 10px; background-color: #28a745; color: white; border: none; cursor: pointer; font-size: 14px; border-radius: 5px; width: 100%; margin-top: 10px; }
+        button:hover { background-color: #218838; }
     </style>
 </head>
 <body>
     <div id="canvas-container"></div>
-    <div id="control-panel">
-        <label>Largura (mm):</label>
-        <input type="number" id="width" value="500">
-        <label>Altura (mm):</label>
-        <input type="number" id="height" value="800">
-        <label>Profundidade (mm):</label>
-        <input type="number" id="depth" value="500">
-        <button onclick="addModule()">Adicionar Módulo Transparente</button>
-        <button onclick="applyDimensions()">Aplicar Dimensões</button>
+    <div id="library-panel">
+        <div class="menu">
+            <button class="dropdown-btn">Biblioteca de Componentes ▾</button>
+            <div class="dropdown-content">
+                <button onclick="loadComponent('Componente 1')">Componente 1</button>
+                <button onclick="loadComponent('Componente 2')">Componente 2</button>
+                <button onclick="loadComponent('Componente 3')">Componente 3</button>
+            </div>
+        </div>
+        <div class="menu">
+            <button class="dropdown-btn">Componentes de Testes Salvos ▾</button>
+            <div class="dropdown-content" id="saved-components">
+                <p>Nenhum componente salvo.</p>
+            </div>
+        </div>
     </div>
+    <div id="control-panel">
+        <div class="menu">
+            <button class="dropdown-btn">Ações ▾</button>
+            <div class="dropdown-content">
+                <button onclick="addModule()">Adicionar Módulo</button>
+                <button onclick="saveModules()">Salvar</button>
+                <button onclick="loadModules()">Carregar</button>
+            </div>
+        </div>
+
+        <div class="menu">
+            <button class="dropdown-btn">Dimensões ▾</button>
+            <div class="dropdown-content">
+                <label>Largura (mm):</label>
+                <input type="number" id="width" value="500">
+                <label>Altura (mm):</label>
+                <input type="number" id="height" value="800">
+                <label>Profundidade (mm):</label>
+                <input type="number" id="depth" value="500">
+                <button onclick="applyDimensions()">Aplicar</button>
+            </div>
+        </div>
+
+        <div class="menu">
+            <button class="dropdown-btn">Configuração de Espessuras ▾</button>
+            <div class="dropdown-content">
+                <label>Lateral:</label>
+                <select id="espessura-lateral">
+                    <option value="15">15mm</option>
+                    <option value="18" selected>18mm</option>
+                    <option value="25">25mm</option>
+                </select>
+
+                <label>Base:</label>
+                <select id="espessura-base">
+                    <option value="15">15mm</option>
+                    <option value="18" selected>18mm</option>
+                    <option value="25">25mm</option>
+                </select>
+
+                <label>Fundo:</label>
+                <select id="espessura-fundo">
+                    <option value="6">6mm</option>
+                    <option value="9">9mm</option>
+                    <option value="12">12mm</option>
+                    <option value="15">15mm</option>
+                    <option value="18">18mm</option>
+                    <option value="25">25mm</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="menu">
+            <button class="dropdown-btn">Configuração de Materiais ▾</button>
+            <div class="dropdown-content">
+                <label>Material Lateral:</label>
+                <input type="text" id="material-lateral" value="MDF Branco">
+                <label>Material Base:</label>
+                <input type="text" id="material-base" value="MDF Branco">
+                <label>Material Fundo:</label>
+                <input type="text" id="material-fundo" value="HDF Branco">
+                <button onclick="applyMaterials()">Aplicar</button>
+
+            </div>
+        </div>
+    </div>
+
     <script>
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
-        camera.position.set(0, 300, 500);
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth - 250, window.innerHeight);
-        renderer.setClearColor(0x1e1e1e);
-        document.getElementById('canvas-container').appendChild(renderer.domElement);
-        const controls = new THREE.OrbitControls(camera, renderer.domElement);
-        let selectedModule = null;
-        function addModule() {
-            const width = parseFloat(document.getElementById('width').value);
-            const height = parseFloat(document.getElementById('height').value);
-            const depth = parseFloat(document.getElementById('depth').value);
+        // Dentro da função createModule
+        function createModule(width = 200, height = 400, depth = 300) {
             const geometry = new THREE.BoxGeometry(width, height, depth);
-            const material = new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.3 });
+            const material = new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.5 });
             const module = new THREE.Mesh(geometry, material);
             module.position.set(0, height / 2, 0);
             scene.add(module);
-            selectedModule = module;
         }
-        function applyDimensions() {
-            if (selectedModule) {
-                const width = parseFloat(document.getElementById('width').value);
-                const height = parseFloat(document.getElementById('height').value);
-                const depth = parseFloat(document.getElementById('depth').value);
-                selectedModule.scale.set(width / selectedModule.geometry.parameters.width, height / selectedModule.geometry.parameters.height, depth / selectedModule.geometry.parameters.depth);
-                selectedModule.position.y = height / 2;
-            }
-        }
-        const light = new THREE.AmbientLight(0xffffff, 0.7);
-        scene.add(light);
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-        directionalLight.position.set(1, 1, 1).normalize();
-        scene.add(directionalLight);
-        function animate() {
-            requestAnimationFrame(animate);
-            controls.update();
-            renderer.render(scene, camera);
-        }
-        animate();
     </script>
 </body>
 </html>
