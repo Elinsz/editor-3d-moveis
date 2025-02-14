@@ -7,106 +7,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <style>
-        /* Estilos básicos para o layout */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            height: 100vh;
-            background-color: #f0f0f0;
-        }
-
-        #canvas-container {
-            flex-grow: 1;
-            background-color: #fff;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #library-panel, #control-panel {
-            width: 220px;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow-y: auto;
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            z-index: 2;
-        }
-
-        #library-panel {
-            left: 0;
-        }
-
-        #control-panel {
-            right: 0;
-        }
-
-        .menu {
-            margin-bottom: 3px;
-        }
-
-        .dropdown-btn {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            text-align: left;
-            font-size: 14px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        .dropdown-btn:hover {
-            background-color: #4CAF50;
-        }
-
-        .dropdown-content {
-            display: none;
-            padding-left: 14px;
-            margin-top: 6px;
-            margin-bottom: 6px;
-        }
-
-        .menu.active .dropdown-content {
-            display: block;
-        }
-
-        .dropdown-content button {
-            width: 100%;
-            padding: 10px;
-            background-color: #17a2b8;
-            border: 1px solid #b3b3b3;
-            margin-top: 14px;
-            text-align: center;
-            cursor: pointer;
-            border-radius: 3px;
-        }
-
-        .dropdown-content button:hover {
-            background-color: #117a8b;
-        }
-
-        /* Estilos para a área de visualização */
-        #coordinates {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-family: Arial, sans-serif;
-            color: #000;
-            font-size: 16px;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; display: flex; height: 100vh; background-color: #f0f0f0; }
+        #canvas-container { flex-grow: 1; background-color: #fff; height: 100%; display: flex; justify-content: center; align-items: center; }
+        #library-panel, #control-panel { width: 220px; padding: 20px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); overflow-y: auto; }
+        #library-panel { position: absolute; top: 0; left: 0; bottom: 0; z-index: 2; }
+        #control-panel { position: absolute; top: 0; right: 0; bottom: 0; z-index: 2; }
+        .menu { margin-bottom: 3px; }
+        .dropdown-btn { width: 100%; padding: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer; text-align: left; font-size: 14px; border-radius: 5px; }
+        .dropdown-btn:hover { background-color: #4CAF50; }
+        .dropdown-content { display: none; padding-left: 14px; margin-top: 6px; margin-bottom: 6px; }
+        .menu.active .dropdown-content { display: block; }
+        .dropdown-content button { width: 100%; padding: 10px; background-color: #17a2b8; border: 1px solid #b3b3b3; margin-top: 14px; text-align: center; cursor: pointer; border-radius: 3px; }
+        .dropdown-content button:hover { background-color: #117a8b; }
+        button { padding: 10px; background-color: #28a745; color: white; border: none; cursor: pointer; font-size: 14px; border-radius: 5px; width: 100%; margin-top: 10px; }
+        button:hover { background-color: #218838; }
     </style>
 </head>
 <body>
@@ -130,8 +45,20 @@
                 <button onclick="loadModules()">Carregar</button>
             </div>
         </div>
+        <div class="menu">
+            <button class="dropdown-btn">Eixos de Coordenadas ▾</button>
+            <div class="dropdown-content">
+                <label>X:</label>
+                <input type="number" id="coord-x" value="0">
+                <label>Y:</label>
+                <input type="number" id="coord-y" value="0">
+                <label>Z:</label>
+                <input type="number" id="coord-z" value="0">
+                <button onclick="applyCoordinates()">Aplicar</button>
+            </div>
+        </div>
     </div>
-    <div id="coordinates"></div>
+
     <script>
         // CENA E CÂMERA
         const scene = new THREE.Scene();
@@ -150,73 +77,70 @@
         controls.screenSpacePanning = false;
         controls.maxPolarAngle = Math.PI / 2;
 
-        // EIXOS DE COORDENADAS
-        const axesHelper = new THREE.AxesHelper(200);
-        scene.add(axesHelper);
+        // Criar Eixos de Coordenadas
+        function addAxis() {
+            const axisLength = 100;
+            const axisHelper = new THREE.AxesHelper(axisLength);
+            scene.add(axisHelper);
+        }
+        addAxis();
 
-        // Função para aplicar as dimensões ao módulo
-        function applyDimensions() {
-            const width = parseFloat(document.getElementById('width').value);
-            const height = parseFloat(document.getElementById('height').value);
-            const depth = parseFloat(document.getElementById('depth').value);
+        // Função para aplicar as coordenadas
+        function applyCoordinates() {
+            const x = parseFloat(document.getElementById('coord-x').value);
+            const y = parseFloat(document.getElementById('coord-y').value);
+            const z = parseFloat(document.getElementById('coord-z').value);
 
             if (selectedModule) {
-                selectedModule.scale.set(width / 200, height / 400, depth / 300);
+                selectedModule.position.set(x, y, z);
             }
         }
 
-        // Variáveis de controle dos módulos
+        // Função para criar o módulo
         let selectedModule = null;
-
-        // EXEMPLO DE MÓDULO (caixa)
         function createModule(width = 200, height = 400, depth = 300, color = 0x00ff00) {
             const geometry = new THREE.BoxGeometry(width, height, depth);
             const material = new THREE.MeshBasicMaterial({ color });
             const module = new THREE.Mesh(geometry, material);
-            module.position.y = height / 2;
+            module.position.set(0, height / 2, 0); // Inicializa na posição (0, height/2, 0)
             module.userData.draggable = true;
 
             module.addEventListener('click', () => {
                 selectedModule = module;
-                updateCoordinates(module.position); // Atualiza as coordenadas ao selecionar
+                document.getElementById('coord-x').value = module.position.x;
+                document.getElementById('coord-y').value = module.position.y;
+                document.getElementById('coord-z').value = module.position.z;
             });
 
             scene.add(module);
         }
 
-        // Atualiza as coordenadas na tela
-        function updateCoordinates(position) {
-            const coordinatesElement = document.getElementById('coordinates');
-            coordinatesElement.textContent = `X: ${position.x.toFixed(2)} | Y: ${position.y.toFixed(2)} | Z: ${position.z.toFixed(2)}`;
-        }
+        // Funções de Botões
+        function addModule() { createModule(); }
+        function saveModules() { alert('Módulos salvos (simulado)'); }
+        function loadModules() { alert('Módulos carregados (simulado)'); }
 
-        // Função de animação
+        // Animação da Cena
         function animate() {
             requestAnimationFrame(animate);
             controls.update();
             renderer.render(scene, camera);
         }
-
         animate();
 
-        // Funções de Botões
-        function addModule() {
-            createModule();
-        }
-
-        function saveModules() {
-            alert('Módulos salvos (simulado)');
-        }
-
-        function loadModules() {
-            alert('Módulos carregados (simulado)');
-        }
-
-        // Redimensiona o renderizado
+        // Ajusta a tela em caso de redimensionamento
         window.addEventListener('resize', () => {
             camera.aspect = (window.innerWidth - 250) / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth - 250, window.innerHeight);
+        });
+
+        // Controle dos dropdowns
+        document.querySelectorAll('.dropdown-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const menu = this.parentElement;
+                menu.classList.toggle('active');
+            });
         });
     </script>
 </body>
