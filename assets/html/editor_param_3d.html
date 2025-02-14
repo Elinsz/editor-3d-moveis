@@ -41,16 +41,30 @@
       <label for="thickness">Espessura:</label>
       <input type="number" id="thickness" value="5">
       <br>
+      <h3>Controle de Coordenadas</h3>
+      <label for="posX">Posição X:</label>
+      <input type="number" id="posX" value="0">
+      <br>
+      <label for="posY">Posição Y:</label>
+      <input type="number" id="posY" value="0">
+      <br>
+      <label for="posZ">Posição Z:</label>
+      <input type="number" id="posZ" value="0">
+      <br>
       <button id="export-stl">Exportar STL</button>
+      <button id="export-dxf">Exportar DXF</button>
+      <button id="export-skp">Exportar SKP</button>
     </div>
     <canvas id="3d-canvas"></canvas>
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/stl-file-export@0.1.2/build/stl-file-export.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three-dxf@1.0.2/build/three-dxf.min.js"></script>
   <script>
     // Setup da cena 3D
-    let scene, camera, renderer, geometry, material, mesh;
+    let scene, camera, renderer, geometry, material, mesh, controls;
+    let componentList = [];
 
     function init3D() {
       scene = new THREE.Scene();
@@ -58,6 +72,8 @@
       renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('3d-canvas') });
       renderer.setSize(window.innerWidth - 300, window.innerHeight);
       document.body.appendChild(renderer.domElement);
+
+      controls = new THREE.OrbitControls(camera, renderer.domElement);
 
       // Criar geometria básica (um retângulo paramétrico)
       geometry = new THREE.BoxGeometry(100, 200, 20);
@@ -75,7 +91,6 @@
       renderer.render(scene, camera);
     }
 
-    // Atualizar dimensões com base nos inputs
     function updateDimensions() {
       const width = parseFloat(document.getElementById('width').value);
       const height = parseFloat(document.getElementById('height').value);
@@ -87,7 +102,14 @@
       mesh.geometry = geometry;
     }
 
-    // Função de exportação STL
+    function updatePosition() {
+      const posX = parseFloat(document.getElementById('posX').value);
+      const posY = parseFloat(document.getElementById('posY').value);
+      const posZ = parseFloat(document.getElementById('posZ').value);
+
+      mesh.position.set(posX, posY, posZ);
+    }
+
     function exportSTL() {
       const exporter = new STLExporter();
       const stlData = exporter.parse(mesh);
@@ -98,6 +120,22 @@
       link.click();
     }
 
+    function exportDXF() {
+      const exporter = new THREE.DXFExporter();
+      const dxfData = exporter.parse(mesh);
+      const blob = new Blob([dxfData], { type: 'text/plain' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'model.dxf';
+      link.click();
+    }
+
+    function exportSKP() {
+      // Para exportação de SKP (SketchUp), um script mais avançado seria necessário,
+      // o que poderia envolver uma API como a de "SketchUp Viewer" ou uma solução personalizada.
+      alert("Exportação SKP ainda não implementada.");
+    }
+
     // Inicializar
     window.onload = function() {
       init3D();
@@ -105,7 +143,12 @@
       document.getElementById('height').addEventListener('input', updateDimensions);
       document.getElementById('depth').addEventListener('input', updateDimensions);
       document.getElementById('thickness').addEventListener('input', updateDimensions);
+      document.getElementById('posX').addEventListener('input', updatePosition);
+      document.getElementById('posY').addEventListener('input', updatePosition);
+      document.getElementById('posZ').addEventListener('input', updatePosition);
       document.getElementById('export-stl').addEventListener('click', exportSTL);
+      document.getElementById('export-dxf').addEventListener('click', exportDXF);
+      document.getElementById('export-skp').addEventListener('click', exportSKP);
     };
   </script>
 </body>
