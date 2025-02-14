@@ -1,155 +1,422 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Editor 3D Paramétrico</title>
-  <style>
-    body {
-      margin: 0;
-      display: flex;
-      height: 100vh;
-      flex-direction: column;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor 3D - Móveis v2</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <!-- <link rel="stylesheet" href="../css/style.css"> -->
+<style>
+
+/* Estilos básicos para o layout */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+#canvas-container {
+    flex-grow: 1;
+    background-color: #fff;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#library-panel{
+    width: 220px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+
+#control-panel {
+    width: 265px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+#library-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 2;
+}
+
+#control-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+}
+
+/* Estilos para os menus de navegação */
+.menu {
+    margin-bottom: 3px;
+}
+
+.dropdown-btn {
+    width: 100%;
+    padding: 10px;
+    /* margin-top: 3px;
+    margin-bottom: 3px; */
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-size: 14px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.dropdown-btn:hover {
+    background-color: #4CAF50;
+}
+
+.dropdown-content {
+    display: none;
+    padding-left: 14px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.menu.active .dropdown-content {
+    display: block;
+}
+
+.dropdown-content button {
+    width: 100%;
+    padding: 10px;
+    background-color: #17a2b8;
+    border: 1px solid #b3b3b3;
+    margin-top: 14px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.dropdown-content button:hover {
+    background-color: #117a8b;
+}
+
+input[type="number"],
+input[type="text"],
+select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+label {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+button {
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+/* Estilos para o painel de componentes salvos */
+#saved-components {
+    margin-top: 20px;
+}
+
+#saved-components button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+    margin-top: 8px;
+}
+
+#saved-components button:hover {
+    background-color: #117a8b;
+}
+
+#saved-components p {
+    font-size: 14px;
+    color: #6c757d;
+    text-align: center;
+}
+
+/* Estilos gerais de responsividade */
+@media (max-width: 1200px) {
+    #library-panel, #control-panel {
+        width: 200px;
     }
-    #editor-container {
-      display: flex;
-      flex-grow: 1;
+}
+
+@media (max-width: 768px) {
+    #library-panel, #control-panel {
+        width: 150px;
     }
-    #controls {
-      width: 300px;
-      padding: 10px;
-      background-color: #f0f0f0;
+
+    #canvas-container {
+        flex-direction: column;
     }
-    canvas {
-      flex-grow: 1;
-    }
-  </style>
+}
+
+</style>
+
 </head>
 <body>
-  <div id="editor-container">
-    <div id="controls">
-      <h3>Controle de Dimensões</h3>
-      <label for="width">Largura:</label>
-      <input type="number" id="width" value="100">
-      <br>
-      <label for="height">Altura:</label>
-      <input type="number" id="height" value="200">
-      <br>
-      <label for="depth">Profundidade:</label>
-      <input type="number" id="depth" value="20">
-      <br>
-      <label for="thickness">Espessura:</label>
-      <input type="number" id="thickness" value="5">
-      <br>
-      <h3>Controle de Coordenadas</h3>
-      <label for="posX">Posição X:</label>
-      <input type="number" id="posX" value="0">
-      <br>
-      <label for="posY">Posição Y:</label>
-      <input type="number" id="posY" value="0">
-      <br>
-      <label for="posZ">Posição Z:</label>
-      <input type="number" id="posZ" value="0">
-      <br>
-      <button id="export-stl">Exportar STL</button>
-      <button id="export-dxf">Exportar DXF</button>
-      <button id="export-skp">Exportar SKP</button>
+    <div id="canvas-container"></div>
+    <div id="library-panel">
+        <div class="menu">
+            <button class="dropdown-btn">Biblioteca de Componentes ▾</button>
+            <div class="dropdown-content">
+                <button onclick="loadComponent('Componente 1')">Componente 1</button>
+                <button onclick="loadComponent('Componente 2')">Componente 2</button>
+                <button onclick="loadComponent('Componente 3')">Componente 3</button>
+            </div>
+        </div>
+        <div class="menu">
+            <button class="dropdown-btn">Componentes de Testes Salvos ▾</button>
+            <div class="dropdown-content" id="saved-components">
+                <p>Nenhum componente salvo.</p>
+            </div>
+        </div>
     </div>
-    <canvas id="3d-canvas"></canvas>
-  </div>
+    <div id="control-panel">
+        <div class="menu">
+            <button class="dropdown-btn">Ações ▾</button>
+            <div class="dropdown-content">
+                <button onclick="addModule()">Adicionar Módulo</button>
+                <button onclick="saveModules()">Salvar</button>
+                <button onclick="loadModules()">Carregar</button>
+            </div>
+        </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/stl-file-export@0.1.2/build/stl-file-export.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three-dxf@1.0.2/build/three-dxf.min.js"></script>
-  <script>
-    // Setup da cena 3D
-    let scene, camera, renderer, geometry, material, mesh, controls;
-    let componentList = [];
+        <div class="menu">
+            <button class="dropdown-btn">Dimensões ▾</button>
+            <div class="dropdown-content">
+                <label>Largura (mm):</label>
+                <input type="number" id="width" value="500">
+                <label>Altura (mm):</label>
+                <input type="number" id="height" value="800">
+                <label>Profundidade (mm):</label>
+                <input type="number" id="depth" value="500">
+                <button onclick="applyDimensions()">Aplicar</button>
+            </div>
+        </div>
 
-    function init3D() {
-      scene = new THREE.Scene();
-      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-      renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('3d-canvas') });
-      renderer.setSize(window.innerWidth - 300, window.innerHeight);
-      document.body.appendChild(renderer.domElement);
+        <div class="menu">
+            <button class="dropdown-btn">Configuração de Espessuras ▾</button>
+            <div class="dropdown-content">
+                <label>Lateral:</label>
+                <select id="espessura-lateral">
+                    <option value="15">15mm</option>
+                    <option value="18" selected>18mm</option>
+                    <option value="25">25mm</option>
+                </select>
 
-      controls = new THREE.OrbitControls(camera, renderer.domElement);
+                <label>Base:</label>
+                <select id="espessura-base">
+                    <option value="15">15mm</option>
+                    <option value="18" selected>18mm</option>
+                    <option value="25">25mm</option>
+                </select>
 
-      // Criar geometria básica (um retângulo paramétrico)
-      geometry = new THREE.BoxGeometry(100, 200, 20);
-      material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
-      mesh = new THREE.Mesh(geometry, material);
-      scene.add(mesh);
+                <label>Fundo:</label>
+                <select id="espessura-fundo">
+                    <option value="6">6mm</option>
+                    <option value="9">9mm</option>
+                    <option value="12">12mm</option>
+                    <option value="15">15mm</option>
+                    <option value="18">18mm</option>
+                    <option value="25">25mm</option>
+                </select>
+            </div>
+        </div>
 
-      camera.position.z = 500;
+        <div class="menu">
+            <button class="dropdown-btn">Configuração de Materiais ▾</button>
+            <div class="dropdown-content">
+                <label>Material Lateral:</label>
+                <input type="text" id="material-lateral" value="MDF Branco">
+                <label>Material Base:</label>
+                <input type="text" id="material-base" value="MDF Branco">
+                <label>Material Fundo:</label>
+                <input type="text" id="material-fundo" value="HDF Branco">
+                <button onclick="applyMaterials()">Aplicar</button>
 
-      animate();
+            </div>
+        </div>
+    </div>
+
+    <!-- <script src="../js/script.js"></script> -->
+     <script>
+
+// CENA E CÂMERA
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
+camera.position.set(0, 300, 500);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth - 250, window.innerHeight);
+renderer.setClearColor(0xf0f0f0);
+document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+// CONTROLES DE CÂMERA
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.1;
+controls.screenSpacePanning = false;
+controls.maxPolarAngle = Math.PI / 2;
+
+// Ambiente 3D (paredes, piso e teto) - Ajustado com cor clara
+function addEnvironment() {
+    const roomMaterial = new THREE.MeshBasicMaterial({ color: 0xf5f5f5, side: THREE.BackSide });
+    const roomGeometry = new THREE.BoxGeometry(1000, 500, 1000);
+    const roomMesh = new THREE.Mesh(roomGeometry, roomMaterial);
+    roomMesh.position.y = 250;
+    scene.add(roomMesh);
+}
+
+addEnvironment();
+
+// Função para aplicar as dimensões ao módulo
+function applyDimensions() {
+    const width = parseFloat(document.getElementById('width').value);
+    const height = parseFloat(document.getElementById('height').value);
+    const depth = parseFloat(document.getElementById('depth').value);
+
+    if (selectedModule) {
+        selectedModule.scale.set(width / 200, height / 400, depth / 300);
     }
+}
 
-    function animate() {
-      requestAnimationFrame(animate);
-      renderer.render(scene, camera);
-    }
+// Função para aplicar os materiais
+function applyMaterials() {
+    const lateral = document.getElementById('material-lateral').value;
+    const base = document.getElementById('material-base').value;
+    const fundo = document.getElementById('material-fundo').value;
+    alert(`Materiais Aplicados:\nLateral: ${lateral}\nBase: ${base}\nFundo: ${fundo}`);
+}
 
-    function updateDimensions() {
-      const width = parseFloat(document.getElementById('width').value);
-      const height = parseFloat(document.getElementById('height').value);
-      const depth = parseFloat(document.getElementById('depth').value);
-      const thickness = parseFloat(document.getElementById('thickness').value);
+// Variáveis de controle dos módulos
+let selectedModule = null;
 
-      geometry = new THREE.BoxGeometry(width, height, depth);
-      mesh.geometry.dispose();
-      mesh.geometry = geometry;
-    }
+// EXEMPLO DE MÓDULO (caixa)
+function createModule(width = 200, height = 400, depth = 300, color = 0x00ff00) {
+    const geometry = new THREE.BoxGeometry(width, height, depth);
+    const material = new THREE.MeshBasicMaterial({ color });
+    const module = new THREE.Mesh(geometry, material);
+    module.position.y = height / 2;
+    module.userData.draggable = true;
 
-    function updatePosition() {
-      const posX = parseFloat(document.getElementById('posX').value);
-      const posY = parseFloat(document.getElementById('posY').value);
-      const posZ = parseFloat(document.getElementById('posZ').value);
+    module.addEventListener('click', () => {
+        selectedModule = module;
+    });
 
-      mesh.position.set(posX, posY, posZ);
-    }
+    scene.add(module);
+}
 
-    function exportSTL() {
-      const exporter = new STLExporter();
-      const stlData = exporter.parse(mesh);
-      const blob = new Blob([stlData], { type: 'application/sla' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'model.stl';
-      link.click();
-    }
+// Função para adicionar um componente salvo
+function addSavedComponent(componentName, width, height, depth, color) {
+    const savedComponentsPanel = document.getElementById('saved-components');
 
-    function exportDXF() {
-      const exporter = new THREE.DXFExporter();
-      const dxfData = exporter.parse(mesh);
-      const blob = new Blob([dxfData], { type: 'text/plain' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'model.dxf';
-      link.click();
-    }
-
-    function exportSKP() {
-      // Para exportação de SKP (SketchUp), um script mais avançado seria necessário,
-      // o que poderia envolver uma API como a de "SketchUp Viewer" ou uma solução personalizada.
-      alert("Exportação SKP ainda não implementada.");
-    }
-
-    // Inicializar
-    window.onload = function() {
-      init3D();
-      document.getElementById('width').addEventListener('input', updateDimensions);
-      document.getElementById('height').addEventListener('input', updateDimensions);
-      document.getElementById('depth').addEventListener('input', updateDimensions);
-      document.getElementById('thickness').addEventListener('input', updateDimensions);
-      document.getElementById('posX').addEventListener('input', updatePosition);
-      document.getElementById('posY').addEventListener('input', updatePosition);
-      document.getElementById('posZ').addEventListener('input', updatePosition);
-      document.getElementById('export-stl').addEventListener('click', exportSTL);
-      document.getElementById('export-dxf').addEventListener('click', exportDXF);
-      document.getElementById('export-skp').addEventListener('click', exportSKP);
+    const componentButton = document.createElement('button');
+    componentButton.textContent = componentName;
+    componentButton.onclick = function() {
+        createModule(width, height, depth, color);  // Cria o módulo com as dimensões e cor definidas
     };
-  </script>
+
+    savedComponentsPanel.appendChild(componentButton);
+}
+
+// Função para carregar os componentes salvos
+function loadSavedComponents() {
+    const componentsData = [
+        { id: 1, name: 'Caixa Alta', width: 300, height: 600, depth: 400, color: 0xff0000 },
+        { id: 2, name: 'Caixa Baixa', width: 500, height: 300, depth: 500, color: 0x00ff00 }
+    ];
+
+    const savedComponentsPanel = document.getElementById('saved-components');
+    savedComponentsPanel.innerHTML = ''; // Limpa o conteúdo anterior
+
+    componentsData.forEach(component => {
+        addSavedComponent(component.name, component.width, component.height, component.depth, component.color);
+    });
+}
+
+// Carrega os componentes salvos
+loadSavedComponents();
+
+// ANIMAÇÃO DA CENA
+function animate() {
+    requestAnimationFrame(animate);
+    controls.update();
+    renderer.render(scene, camera);
+}
+
+animate();
+
+// FUNÇÕES DE BOTÕES
+function addModule() {
+    createModule();
+}
+
+function saveModules() {
+    alert('Módulos salvos (simulado)');
+}
+
+function loadModules() {
+    alert('Módulos carregados (simulado)');
+}
+
+// CONTROLE DOS DROPDOWNS
+document.querySelectorAll('.dropdown-btn').forEach(button => {
+    button.addEventListener('click', function () {
+        const menu = this.parentElement;
+        menu.classList.toggle('active');
+    });
+});
+
+// Ajusta a tela em caso de redimensionamento
+window.addEventListener('resize', () => {
+    camera.aspect = (window.innerWidth - 250) / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth - 250, window.innerHeight);
+});
+
+
+     </script>
 </body>
 </html>
