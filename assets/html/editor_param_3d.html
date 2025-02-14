@@ -1,114 +1,112 @@
-
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editor 3D Paramétrico - Móveis</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/OrbitControls/2.110.3/OrbitControls.min.js"></script>
-    <script src="https://threejs.org/examples/js/exporters/STLExporter.js"></script>
-    <!-- <link rel="stylesheet" href="style.css"> -->
-
-    <style>
-        body { display: flex; font-family: Arial, sans-serif; }
-        #canvas-container { width: 70%; height: 100vh; background-color: #f0f0f0; }
-        #config-panel { width: 30%; padding: 10px; background: #fff; box-shadow: -2px 0 5px rgba(0,0,0,0.1); }
-        label { display: block; margin-top: 10px; }
-        input { width: 100%; padding: 5px; }
-        button { margin-top: 10px; padding: 10px; width: 100%; cursor: pointer; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editor 3D Paramétrico</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      height: 100vh;
+      flex-direction: column;
+    }
+    #editor-container {
+      display: flex;
+      flex-grow: 1;
+    }
+    #controls {
+      width: 300px;
+      padding: 10px;
+      background-color: #f0f0f0;
+    }
+    canvas {
+      flex-grow: 1;
+    }
+  </style>
 </head>
 <body>
-    <div id="canvas-container"></div>
-    <div id="control-panel">
-        <div class="menu">
-            <button onclick="addDriverBlock()">Criar Novo Bloco</button>
-        </div>
-        <div class="menu">
-            <button onclick="togglePieceMenu()">Criar Peças</button>
-            <div id="piece-menu" style="display:none;">
-                <select id="piece-type">
-                    <option value="Lateral Direita">Lateral Direita</option>
-                    <option value="Lateral Esquerda">Lateral Esquerda</option>
-                    <option value="Base Inf">Base Inf</option>
-                    <option value="Base Sup">Base Sup</option>
-                    <option value="Frente Gaveta">Frente Gaveta</option>
-                    <option value="Porta Dir">Porta Direita</option>
-                    <option value="Porta Esq">Porta Esquerda</option>
-                </select>
-                <button onclick="startPlacingPiece()">Posicionar Peça</button>
-            </div>
-        </div>
-        <div class="menu">
-            <button onclick="exportToDXF()">Exportar para DXF</button>
-            <button onclick="exportToSKP()">Exportar para SKP</button>
-            <button onclick="exportToSTL()">Exportar para STL</button>
-        </div>
+  <div id="editor-container">
+    <div id="controls">
+      <h3>Controle de Dimensões</h3>
+      <label for="width">Largura:</label>
+      <input type="number" id="width" value="100">
+      <br>
+      <label for="height">Altura:</label>
+      <input type="number" id="height" value="200">
+      <br>
+      <label for="depth">Profundidade:</label>
+      <input type="number" id="depth" value="20">
+      <br>
+      <label for="thickness">Espessura:</label>
+      <input type="number" id="thickness" value="5">
+      <br>
+      <button id="export-stl">Exportar STL</button>
     </div>
-    <!-- <script src="script.js"></script> -->
+    <canvas id="3d-canvas"></canvas>
+  </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/stl-file-export@0.1.2/build/stl-file-export.min.js"></script>
+  <script>
+    // Setup da cena 3D
+    let scene, camera, renderer, geometry, material, mesh;
 
-    <script>
-        let scene, camera, renderer, modulo;
+    function init3D() {
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('3d-canvas') });
+      renderer.setSize(window.innerWidth - 300, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
 
-        function init() {
-            scene = new THREE.Scene();
-            scene.background = new THREE.Color(0xf0f0f0);
+      // Criar geometria básica (um retângulo paramétrico)
+      geometry = new THREE.BoxGeometry(100, 200, 20);
+      material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
+      mesh = new THREE.Mesh(geometry, material);
+      scene.add(mesh);
 
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth * 0.7 / window.innerHeight, 0.1, 1000);
-            camera.position.set(500, 500, 500);
-            camera.lookAt(0, 0, 0);
+      camera.position.z = 500;
 
-            renderer = new THREE.WebGLRenderer();
-            renderer.setSize(window.innerWidth * 0.7, window.innerHeight);
-            document.getElementById('canvas-container').appendChild(renderer.domElement);
+      animate();
+    }
 
-            const light = new THREE.DirectionalLight(0xffffff, 1);
-            light.position.set(1, 1, 1).normalize();
-            scene.add(light);
+    function animate() {
+      requestAnimationFrame(animate);
+      renderer.render(scene, camera);
+    }
 
-            atualizarModulo();
+    // Atualizar dimensões com base nos inputs
+    function updateDimensions() {
+      const width = parseFloat(document.getElementById('width').value);
+      const height = parseFloat(document.getElementById('height').value);
+      const depth = parseFloat(document.getElementById('depth').value);
+      const thickness = parseFloat(document.getElementById('thickness').value);
 
-            animate();
-        }
+      geometry = new THREE.BoxGeometry(width, height, depth);
+      mesh.geometry.dispose();
+      mesh.geometry = geometry;
+    }
 
-        function atualizarModulo() {
-            if (modulo) scene.remove(modulo);
+    // Função de exportação STL
+    function exportSTL() {
+      const exporter = new STLExporter();
+      const stlData = exporter.parse(mesh);
+      const blob = new Blob([stlData], { type: 'application/sla' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'model.stl';
+      link.click();
+    }
 
-            const largura = parseFloat(document.getElementById('width').value);
-            const altura = parseFloat(document.getElementById('height').value);
-            const profundidade = parseFloat(document.getElementById('depth').value);
-
-            const espessuraLateral = parseFloat(document.getElementById('espessura-lateral').value);
-            const espessuraBase = parseFloat(document.getElementById('espessura-base').value);
-            const espessuraFundo = parseFloat(document.getElementById('espessura-fundo').value);
-            const espessuraFrente = parseFloat(document.getElementById('espessura-frente').value);
-
-            const geometria = new THREE.BoxGeometry(largura, altura, profundidade);
-            const material = new THREE.MeshBasicMaterial({ color: 0x8c8c8c, wireframe: true });
-
-            modulo = new THREE.Mesh(geometria, material);
-            scene.add(modulo);
-        }
-
-        function exportarGLTF() {
-            const exporter = new THREE.GLTFExporter();
-            exporter.parse(scene, function (result) {
-                const blob = new Blob([JSON.stringify(result)], { type: 'application/json' });
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = 'modulo.gltf';
-                link.click();
-            });
-        }
-
-        function animate() {
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera);
-        }
-
-        window.onload = init;
-    </script>
+    // Inicializar
+    window.onload = function() {
+      init3D();
+      document.getElementById('width').addEventListener('input', updateDimensions);
+      document.getElementById('height').addEventListener('input', updateDimensions);
+      document.getElementById('depth').addEventListener('input', updateDimensions);
+      document.getElementById('thickness').addEventListener('input', updateDimensions);
+      document.getElementById('export-stl').addEventListener('click', exportSTL);
+    };
+  </script>
 </body>
 </html>
