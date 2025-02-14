@@ -6,141 +6,194 @@
     <title>Editor 3D - Móveis v2</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-    <style>
-        /* Estilos básicos para o layout */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <!-- <link rel="stylesheet" href="../css/style.css"> -->
+<style>
 
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            height: 100vh;
-            background-color: #f0f0f0;
-        }
+/* Estilos básicos para o layout */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        #canvas-container {
-            flex-grow: 1;
-            background-color: #fff;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
 
-        #library-panel {
-            width: 220px;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow-y: auto;
-        }
+#canvas-container {
+    flex-grow: 1;
+    background-color: #fff;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-        #control-panel {
-            width: 265px;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow-y: auto;
-        }
+#library-panel{
+    width: 220px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
 
-        /* Estilos para os menus de navegação */
-        .menu {
-            margin-bottom: 3px;
-        }
 
-        .dropdown-btn {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            text-align: left;
-            font-size: 14px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
+#control-panel {
+    width: 265px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
 
-        .dropdown-btn:hover {
-            background-color: #4CAF50;
-        }
+#library-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 2;
+}
 
-        .dropdown-content {
-            display: none;
-            padding-left: 14px;
-            margin-top: 6px;
-            margin-bottom: 6px;
-        }
+#control-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+}
 
-        .menu.active .dropdown-content {
-            display: block;
-        }
+/* Estilos para os menus de navegação */
+.menu {
+    margin-bottom: 3px;
+}
 
-        .dropdown-content button {
-            width: 100%;
-            padding: 10px;
-            background-color: #17a2b8;
-            border: 1px solid #b3b3b3;
-            margin-top: 14px;
-            text-align: center;
-            cursor: pointer;
-            border-radius: 3px;
-        }
+.dropdown-btn {
+    width: 100%;
+    padding: 10px;
+    /* margin-top: 3px;
+    margin-bottom: 3px; */
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-size: 14px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
 
-        .dropdown-content button:hover {
-            background-color: #117a8b;
-        }
+.dropdown-btn:hover {
+    background-color: #4CAF50;
+}
 
-        input[type="number"], input[type="text"], select {
-            width: 100%;
-            padding: 8px;
-            margin-top: 8px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            font-size: 14px;
-        }
+.dropdown-content {
+    display: none;
+    padding-left: 14px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
 
-        label {
-            margin-top: 5px;
-            margin-bottom: 5px;
-        }
+.menu.active .dropdown-content {
+    display: block;
+}
 
-        button {
-            padding: 10px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            border-radius: 5px;
-            width: 100%;
-            margin-top: 10px;
-        }
+.dropdown-content button {
+    width: 100%;
+    padding: 10px;
+    background-color: #17a2b8;
+    border: 1px solid #b3b3b3;
+    margin-top: 14px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 3px;
+}
 
-        button:hover {
-            background-color: #218838;
-        }
+.dropdown-content button:hover {
+    background-color: #117a8b;
+}
 
-        /* Estilos gerais de responsividade */
-        @media (max-width: 1200px) {
-            #library-panel, #control-panel {
-                width: 200px;
-            }
-        }
+input[type="number"],
+input[type="text"],
+select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 14px;
+}
 
-        @media (max-width: 768px) {
-            #library-panel, #control-panel {
-                width: 150px;
-            }
+label {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
 
-            #canvas-container {
-                flex-direction: column;
-            }
-        }
-    </style>
+button {
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+/* Estilos para o painel de componentes salvos */
+#saved-components {
+    margin-top: 20px;
+}
+
+#saved-components button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+    margin-top: 8px;
+}
+
+#saved-components button:hover {
+    background-color: #117a8b;
+}
+
+#saved-components p {
+    font-size: 14px;
+    color: #6c757d;
+    text-align: center;
+}
+
+/* Estilos gerais de responsividade */
+@media (max-width: 1200px) {
+    #library-panel, #control-panel {
+        width: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    #library-panel, #control-panel {
+        width: 150px;
+    }
+
+    #canvas-container {
+        flex-direction: column;
+    }
+}
+
+</style>
+
 </head>
 <body>
     <div id="canvas-container"></div>
@@ -227,7 +280,9 @@
         </div>
     </div>
 
-    <script>
+    <!-- <script src="../js/script.js"></script> -->
+     <script>
+
 // CENA E CÂMERA
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
@@ -245,7 +300,7 @@ controls.dampingFactor = 0.1;
 controls.screenSpacePanning = false;
 controls.maxPolarAngle = Math.PI / 2;
 
-// Ambiente 3D (paredes, piso e teto)
+// Ambiente 3D (paredes, piso e teto) - Ajustado com cor clara
 function addEnvironment() {
     const roomMaterial = new THREE.MeshBasicMaterial({ color: 0xf5f5f5, side: THREE.BackSide });
     const roomGeometry = new THREE.BoxGeometry(1000, 500, 1000);
@@ -360,6 +415,8 @@ window.addEventListener('resize', () => {
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth - 250, window.innerHeight);
 });
-    </script>
+
+
+     </script>
 </body>
 </html>
