@@ -24,8 +24,6 @@
 //     scene.add(roomMesh);
 // }
 
-
-
     let scene, camera, renderer, controls;
 
     function init() {
@@ -111,9 +109,30 @@
 
     init();
 
+    document.addEventListener('DOMContentLoaded', () => {
+        const dropdownButtons = document.querySelectorAll('.dropdown-btn');
+
+        dropdownButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const menu = button.parentElement;
+                menu.classList.toggle('active');
+            });
+        });
+    });
+
+    // Dentro da função createModule
+    function createModule(width = 200, height = 400, depth = 300) {
+        const geometry = new THREE.BoxGeometry(width, height, depth);
+        const material = new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.5 });
+        const module = new THREE.Mesh(geometry, material);
+        module.position.set(0, height / 2, 0);
+        scene.add(module);
+    }
+
+
 addEnvironment();
 
-// Função para aplicar as dimensões ao módulo
+        // Função para aplicar as dimensões ao módulo
 function applyDimensions() {
     const width = parseFloat(document.getElementById('width').value);
     const height = parseFloat(document.getElementById('height').value);
@@ -124,7 +143,7 @@ function applyDimensions() {
     }
 }
 
-// Função para aplicar os materiais
+        // Função para aplicar os materiais
 function applyMaterials() {
     const lateral = document.getElementById('material-lateral').value;
     const base = document.getElementById('material-base').value;
@@ -132,10 +151,10 @@ function applyMaterials() {
     alert(`Materiais Aplicados:\nLateral: ${lateral}\nBase: ${base}\nFundo: ${fundo}`);
 }
 
-// Variáveis de controle dos módulos
+        // Variáveis de controle dos módulos
 let selectedModule = null;
 
-// EXEMPLO DE MÓDULO (caixa)
+        // EXEMPLO DE MÓDULO (caixa)
 function createModule(width = 200, height = 400, depth = 300, color = 0x00ff00) {
     const geometry = new THREE.BoxGeometry(width, height, depth);
     const material = new THREE.MeshBasicMaterial({ color });
@@ -181,16 +200,16 @@ function loadSavedComponents() {
 // Carrega os componentes salvos
 loadSavedComponents();
 
-// ANIMAÇÃO DA CENA
-function animate() {
-    requestAnimationFrame(animate);
-    controls.update();
-    renderer.render(scene, camera);
-}
+    // ANIMAÇÃO DA CENA
+// function animate() {
+//     requestAnimationFrame(animate);
+//     controls.update();
+//     renderer.render(scene, camera);
+// }
 
-animate();
+// animate();
 
-// FUNÇÕES DE BOTÕES
+    // FUNÇÕES DE BOTÕES
 function addModule() {
     createModule();
 }
