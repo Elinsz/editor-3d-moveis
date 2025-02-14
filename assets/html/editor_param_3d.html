@@ -48,98 +48,143 @@
     <!-- <script src="script.js"></script> -->
 
     <script>
-        let scene, camera, renderer, controls, gridHelper;
+// script.js
 
-        function init() {
-            const container = document.getElementById('canvas-container');
-            scene = new THREE.Scene();
+let scene, camera, renderer, controls;
+let driverBlock;
+const components = [];
 
-            camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 1, 10000);
-            camera.position.set(500, 500, 1000);
+function init() {
+    const container = document.getElementById('canvas-container');
 
-            renderer = new THREE.WebGLRenderer({ antialias: true });
-            renderer.setSize(container.clientWidth, container.clientHeight);
-            container.appendChild(renderer.domElement);
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+    camera.position.set(200, 200, 200);
 
-            controls = new THREE.OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true;
-            controls.dampingFactor = 0.25;
-            controls.screenSpacePanning = false;
-            controls.maxPolarAngle = Math.PI / 2;
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
 
-            gridHelper = new THREE.GridHelper(2000, 50);
-            scene.add(gridHelper);
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.25;
+    controls.screenSpacePanning = false;
+    controls.maxPolarAngle = Math.PI / 2;
 
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
-            scene.add(ambientLight);
+    const gridHelper = new THREE.GridHelper(500, 50);
+    scene.add(gridHelper);
 
-            const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-            directionalLight.position.set(100, 200, 300);
-            scene.add(directionalLight);
+    const axesHelper = new THREE.AxesHelper(100);
+    scene.add(axesHelper);
 
-            animate();
-        }
+    createRoom();
 
-        function animate() {
-            requestAnimationFrame(animate);
-            controls.update();
-            renderer.render(scene, camera);
-        }
+    animate();
+}
 
-        function addModule() {
-            const width = parseFloat(document.getElementById('width').value);
-            const height = parseFloat(document.getElementById('height').value);
-            const depth = parseFloat(document.getElementById('depth').value);
-            const espessuraLateral = parseFloat(document.getElementById('espessuraLateral').value);
-            const espessuraBase = parseFloat(document.getElementById('espessuraBase').value);
-            const espessuraFrente = parseFloat(document.getElementById('espessuraFrente').value);
+function createRoom() {
+    const roomMaterial = new THREE.MeshBasicMaterial({ color: 0xdddddd, side: THREE.BackSide });
 
-            const group = new THREE.Group();
+    const floor = new THREE.Mesh(new THREE.PlaneGeometry(500, 500), roomMaterial);
+    floor.rotation.x = -Math.PI / 2;
+    scene.add(floor);
 
-            const material = new THREE.MeshStandardMaterial({ color: 0xcfcfcf });
+    const ceiling = new THREE.Mesh(new THREE.PlaneGeometry(500, 500), roomMaterial);
+    ceiling.position.y = 250;
+    ceiling.rotation.x = Math.PI / 2;
+    scene.add(ceiling);
 
-            const lateralEsq = new THREE.Mesh(new THREE.BoxGeometry(espessuraLateral, height, depth), material);
-            lateralEsq.position.set(-width / 2 + espessuraLateral / 2, height / 2, 0);
-            group.add(lateralEsq);
+    const backWall = new THREE.Mesh(new THREE.PlaneGeometry(500, 250), roomMaterial);
+    backWall.position.z = -250;
+    backWall.position.y = 125;
+    scene.add(backWall);
 
-            const lateralDir = new THREE.Mesh(new THREE.BoxGeometry(espessuraLateral, height, depth), material);
-            lateralDir.position.set(width / 2 - espessuraLateral / 2, height / 2, 0);
-            group.add(lateralDir);
+    const leftWall = new THREE.Mesh(new THREE.PlaneGeometry(500, 250), roomMaterial);
+    leftWall.position.x = -250;
+    leftWall.position.y = 125;
+    leftWall.rotation.y = Math.PI / 2;
+    scene.add(leftWall);
 
-            const base = new THREE.Mesh(new THREE.BoxGeometry(width, espessuraBase, depth), material);
-            base.position.set(0, espessuraBase / 2, 0);
-            group.add(base);
+    const rightWall = new THREE.Mesh(new THREE.PlaneGeometry(500, 250), roomMaterial);
+    rightWall.position.x = 250;
+    rightWall.position.y = 125;
+    rightWall.rotation.y = -Math.PI / 2;
+    scene.add(rightWall);
+}
 
-            const frente = new THREE.Mesh(new THREE.BoxGeometry(width, height, espessuraFrente), material);
-            frente.position.set(0, height / 2, depth / 2 - espessuraFrente / 2);
-            group.add(frente);
+function addModule() {
+    const width = parseFloat(document.getElementById('width').value);
+    const height = parseFloat(document.getElementById('height').value);
+    const depth = parseFloat(document.getElementById('depth').value);
 
-            group.position.set(0, 0, 0);
-            scene.add(group);
-        }
+    const geometry = new THREE.BoxGeometry(width, height, depth);
+    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
+    driverBlock = new THREE.Mesh(geometry, material);
+    driverBlock.position.set(0, height / 2, 0);
 
-        function exportGLTF() {
-            const exporter = new THREE.GLTFExporter();
-            exporter.parse(scene, function (result) {
-                const blob = new Blob([JSON.stringify(result)], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = url;
-                a.download = 'module.gltf';
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-            }, { binary: false });
-        }
+    scene.add(driverBlock);
+    components.push(driverBlock);
+}
 
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        });
+function createPiece(type) {
+    let pieceGeometry;
+    let pieceMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
 
-        init();
+    switch (type) {
+        case 'Lateral Direita':
+        case 'Lateral Esquerda':
+            pieceGeometry = new THREE.BoxGeometry(18, driverBlock.geometry.parameters.height, driverBlock.geometry.parameters.depth);
+            break;
+        case 'Base Inf':
+        case 'Base Sup':
+            pieceGeometry = new THREE.BoxGeometry(driverBlock.geometry.parameters.width, 18, driverBlock.geometry.parameters.depth);
+            break;
+        case 'Frente Gaveta':
+        case 'Porta Dir':
+        case 'Porta Esq':
+            pieceGeometry = new THREE.BoxGeometry(driverBlock.geometry.parameters.width, driverBlock.geometry.parameters.height / 2, 18);
+            break;
+        default:
+            console.error('Peça desconhecida:', type);
+            return;
+    }
+
+    const piece = new THREE.Mesh(pieceGeometry, pieceMaterial);
+    piece.position.set(0, pieceGeometry.parameters.height / 2, 0);
+
+    scene.add(piece);
+    components.push(piece);
+}
+
+function exportToDXF() {
+    alert('Exportar para DXF ainda não implementado');
+}
+
+function exportToSKP() {
+    alert('Exportar para SKP ainda não implementado');
+}
+
+function exportToSTL() {
+    const exporter = new THREE.STLExporter();
+    const result = exporter.parse(scene);
+
+    const blob = new Blob([result], { type: 'application/octet-stream' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'model.stl';
+    link.click();
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+    controls.update();
+    renderer.render(scene, camera);
+}
+
+init();
+
     </script>
 </body>
 </html>
