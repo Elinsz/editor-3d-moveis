@@ -1,12 +1,15 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editor Paramétrico 3D - Móveis</title>
+    <title>Editor 3D Paramétrico</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/exporters/GLTFExporter.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/OrbitControls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/STLExporter.js"></script>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+
     <style>
         body { margin: 0; display: flex; height: 100vh; }
         #canvas-container { flex-grow: 1; position: relative; background-color: #f0f0f0; }
@@ -16,29 +19,33 @@
     </style>
 </head>
 <body>
-    <div id="canvas-container"></div>
-    <div id="control-panel">
-        <div class="menu">
-            <button onclick="addModule()">Adicionar Módulo</button>
-            <button onclick="exportGLTF()">Exportar GLTF</button>
+    <div id="canvas-container" style="width: 70vw; height: 80vh; float: left;"></div>
+    <div id="control-panel" style="width: 25vw; float: right;">
+        <div>
+            <h3>Adicionar Módulo</h3>
+            <button onclick="addModule()">Criar Novo</button>
         </div>
-        <div class="menu">
-            <label>Largura:</label>
-            <input type="number" id="width" value="500">
-            <label>Altura:</label>
-            <input type="number" id="height" value="800">
-            <label>Profundidade:</label>
-            <input type="number" id="depth" value="500">
+        <div>
+            <h3>Criar Peças</h3>
+            <select id="piece-type">
+                <option value="Lateral Direita">Lateral Direita</option>
+                <option value="Lateral Esquerda">Lateral Esquerda</option>
+                <option value="Base Inf">Base Inferior</option>
+                <option value="Base Sup">Base Superior</option>
+                <option value="Frente Gaveta">Frente Gaveta</option>
+                <option value="Porta Dir">Porta Direita</option>
+                <option value="Porta Esq">Porta Esquerda</option>
+            </select>
+            <button onclick="createPiece(document.getElementById('piece-type').value)">Criar Peça</button>
         </div>
-        <div class="menu">
-            <label>Espessura Lateral:</label>
-            <input type="number" id="espessuraLateral" value="18">
-            <label>Espessura Base:</label>
-            <input type="number" id="espessuraBase" value="18">
-            <label>Espessura Frente:</label>
-            <input type="number" id="espessuraFrente" value="18">
+        <div>
+            <h3>Exportar</h3>
+            <button onclick="exportToDXF()">Exportar DXF</button>
+            <button onclick="exportToSKP()">Exportar SKP</button>
+            <button onclick="exportToSTL()">Exportar STL</button>
         </div>
     </div>
+    <!-- <script src="script.js"></script> -->
 
     <script>
         let scene, camera, renderer, controls, gridHelper;
@@ -136,3 +143,5 @@
     </script>
 </body>
 </html>
+
+
