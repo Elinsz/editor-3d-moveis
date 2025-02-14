@@ -110,63 +110,6 @@
     </div>
 
     <script>
-    let scene, camera, renderer, controls;
-
-    function init() {
-        const container = document.getElementById('canvas-container');
-
-        scene = new THREE.Scene();
-
-        camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 2000);
-        camera.position.set(500, 500, 500);
-        camera.lookAt(0, 0, 0);
-
-        renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(container.clientWidth, container.clientHeight);
-        container.appendChild(renderer.domElement);
-
-        // Luz ambiente e direcional
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
-        scene.add(ambientLight);
-
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-        directionalLight.position.set(100, 100, 100);
-        scene.add(directionalLight);
-
-        // Controles da câmera
-        controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.1;
-        controls.screenSpacePanning = false;
-        controls.maxPolarAngle = Math.PI / 2;
-
-        // Grade (semelhante ao SketchUp)
-        const gridHelper = new THREE.GridHelper(1000, 20, 0x888888, 0x444444);
-        gridHelper.rotation.x = Math.PI / 2;
-        scene.add(gridHelper);
-
-        // Eixos X, Y e Z
-        const axesHelper = new THREE.AxesHelper(500);
-        scene.add(axesHelper);
-
-        animate();
-    }
-
-    function animate() {
-        requestAnimationFrame(animate);
-        controls.update();
-        renderer.render(scene, camera);
-    }
-
-    window.addEventListener('resize', () => {
-        camera.aspect = canvasContainer.clientWidth / canvasContainer.clientHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
-    });
-
-    // Chamando a inicialização da área CAD
-    init();
-
         document.addEventListener('DOMContentLoaded', () => {
             const dropdownButtons = document.querySelectorAll('.dropdown-btn');
 
