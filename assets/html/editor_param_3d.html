@@ -35,12 +35,20 @@
                 <button onclick="loadComponent('Componente 3')">Componente 3</button>
             </div>
         </div>
+        <div class="menu">
+            <button class="dropdown-btn">Componentes de Testes Salvos ▾</button>
+            <div class="dropdown-content" id="saved-components">
+                <p>Nenhum componente salvo.</p>
+            </div>
+        </div>
     </div>
     <div id="control-panel">
         <div class="menu">
             <button class="dropdown-btn">Ações ▾</button>
             <div class="dropdown-content">
                 <button onclick="addModule()">Adicionar Módulo</button>
+                <button onclick="saveModules()">Salvar</button>
+                <button onclick="loadModules()">Carregar</button>
             </div>
         </div>
 
@@ -56,83 +64,71 @@
                 <button onclick="applyDimensions()">Aplicar</button>
             </div>
         </div>
+
+        <div class="menu">
+            <button class="dropdown-btn">Configuração de Espessuras ▾</button>
+            <div class="dropdown-content">
+                <label>Lateral:</label>
+                <select id="espessura-lateral">
+                    <option value="15">15mm</option>
+                    <option value="18" selected>18mm</option>
+                    <option value="25">25mm</option>
+                </select>
+
+                <label>Base:</label>
+                <select id="espessura-base">
+                    <option value="15">15mm</option>
+                    <option value="18" selected>18mm</option>
+                    <option value="25">25mm</option>
+                </select>
+
+                <label>Fundo:</label>
+                <select id="espessura-fundo">
+                    <option value="6">6mm</option>
+                    <option value="9">9mm</option>
+                    <option value="12">12mm</option>
+                    <option value="15">15mm</option>
+                    <option value="18">18mm</option>
+                    <option value="25">25mm</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="menu">
+            <button class="dropdown-btn">Configuração de Materiais ▾</button>
+            <div class="dropdown-content">
+                <label>Material Lateral:</label>
+                <input type="text" id="material-lateral" value="MDF Branco">
+                <label>Material Base:</label>
+                <input type="text" id="material-base" value="MDF Branco">
+                <label>Material Fundo:</label>
+                <input type="text" id="material-fundo" value="HDF Branco">
+                <button onclick="applyMaterials()">Aplicar</button>
+
+            </div>
+        </div>
     </div>
 
     <script>
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
-        camera.position.set(0, 300, 500);
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropdownButtons = document.querySelectorAll('.dropdown-btn');
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth - 250, window.innerHeight);
-        renderer.setClearColor(0x1e1e1e);
-        document.getElementById('canvas-container').appendChild(renderer.domElement);
+            dropdownButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const menu = button.parentElement;
+                    menu.classList.toggle('active');
+                });
+            });
+        });
 
-        const controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.1;
-        controls.maxPolarAngle = Math.PI / 2;
-
-        const light = new THREE.AmbientLight(0xffffff, 1);
-        scene.add(light);
-
-        let selectedModule = null;
-
-        function createModule(width = 500, height = 800, depth = 500) {
+        // Dentro da função createModule
+        function createModule(width = 200, height = 400, depth = 300) {
             const geometry = new THREE.BoxGeometry(width, height, depth);
-            const material = new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.3 });
+            const material = new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.5 });
             const module = new THREE.Mesh(geometry, material);
             module.position.set(0, height / 2, 0);
-            module.userData.dimensions = { width, height, depth };
-
-            module.addEventListener('click', () => {
-                selectedModule = module;
-            });
-
             scene.add(module);
-            selectedModule = module;
         }
-
-        function addModule() {
-            createModule();
-        }
-
-        function applyDimensions() {
-            if (!selectedModule) {
-                alert('Selecione um módulo para aplicar dimensões.');
-                return;
-            }
-
-            const width = parseFloat(document.getElementById('width').value);
-            const height = parseFloat(document.getElementById('height').value);
-            const depth = parseFloat(document.getElementById('depth').value);
-
-            const newGeometry = new THREE.BoxGeometry(width, height, depth);
-            selectedModule.geometry.dispose();
-            selectedModule.geometry = newGeometry;
-            selectedModule.position.y = height / 2;
-            selectedModule.userData.dimensions = { width, height, depth };
-        }
-
-        function animate() {
-            requestAnimationFrame(animate);
-            controls.update();
-            renderer.render(scene, camera);
-        }
-        animate();
-
-        window.addEventListener('resize', () => {
-            camera.aspect = (window.innerWidth - 250) / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth - 250, window.innerHeight);
-        });
-
-        document.querySelectorAll('.dropdown-btn').forEach(button => {
-            button.addEventListener('click', function () {
-                const menu = this.parentElement;
-                menu.classList.toggle('active');
-            });
-        });
     </script>
 </body>
 </html>
