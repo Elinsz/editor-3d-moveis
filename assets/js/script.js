@@ -1,28 +1,115 @@
-// CENA E CÂMERA
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
-camera.position.set(0, 300, 500);
+    // CENA E CÂMERA
+// const scene = new THREE.Scene();
+// const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
+// camera.position.set(0, 300, 500);
 
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize(window.innerWidth - 250, window.innerHeight);
-renderer.setClearColor(0xf0f0f0);
-document.getElementById('canvas-container').appendChild(renderer.domElement);
+// const renderer = new THREE.WebGLRenderer({ antialias: true });
+// renderer.setSize(window.innerWidth - 250, window.innerHeight);
+// renderer.setClearColor(0xf0f0f0);
+// document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-// CONTROLES DE CÂMERA
-const controls = new THREE.OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true;
-controls.dampingFactor = 0.1;
-controls.screenSpacePanning = false;
-controls.maxPolarAngle = Math.PI / 2;
+    // CONTROLES DE CÂMERA
+// const controls = new THREE.OrbitControls(camera, renderer.domElement);
+// controls.enableDamping = true;
+// controls.dampingFactor = 0.1;
+// controls.screenSpacePanning = false;
+// controls.maxPolarAngle = Math.PI / 2;
 
-// Ambiente 3D (paredes, piso e teto) - Ajustado com cor clara
-function addEnvironment() {
-    const roomMaterial = new THREE.MeshBasicMaterial({ color: 0xf5f5f5, side: THREE.BackSide });
-    const roomGeometry = new THREE.BoxGeometry(1000, 500, 1000);
-    const roomMesh = new THREE.Mesh(roomGeometry, roomMaterial);
-    roomMesh.position.y = 250;
-    scene.add(roomMesh);
-}
+    // Ambiente 3D (paredes, piso e teto) - Ajustado com cor clara
+// function addEnvironment() {
+//     const roomMaterial = new THREE.MeshBasicMaterial({ color: 0xf5f5f5, side: THREE.BackSide });
+//     const roomGeometry = new THREE.BoxGeometry(1000, 500, 1000);
+//     const roomMesh = new THREE.Mesh(roomGeometry, roomMaterial);
+//     roomMesh.position.y = 250;
+//     scene.add(roomMesh);
+// }
+
+
+
+    let scene, camera, renderer, controls;
+
+    function init() {
+    const container = document.getElementById('canvas-container');
+
+    scene = new THREE.Scene();
+
+    camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 5000);
+    camera.position.set(500, 500, 500);
+    camera.lookAt(0, 0, 0);
+
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    directionalLight.position.set(300, 300, 300);
+    scene.add(directionalLight);
+
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.1;
+    controls.screenSpacePanning = false;
+    controls.maxPolarAngle = Math.PI;
+
+    // Grade plana (opcional)
+    const gridHelper = new THREE.GridHelper(1000, 20, 0x888888, 0x444444);
+    gridHelper.position.y = 0;
+    scene.add(gridHelper);
+
+    // Eixos Absolutos em 3D Personalizados
+    drawAxis3D();
+
+    animate();
+    }
+
+    function drawAxis3D() {
+        const axisLength = 500;
+
+        // Eixo X (Vermelho)
+        const xMaterial = new THREE.LineBasicMaterial({ color: 0xff0000 });
+        const xPoints = [new THREE.Vector3(-axisLength, 0, 0), new THREE.Vector3(axisLength, 0, 0)];
+        const xGeometry = new THREE.BufferGeometry().setFromPoints(xPoints);
+        const xLine = new THREE.Line(xGeometry, xMaterial);
+        scene.add(xLine);
+
+        // Eixo Y (Verde)
+        const yMaterial = new THREE.LineBasicMaterial({ color: 0x00ff00 });
+        const yPoints = [new THREE.Vector3(0, -axisLength, 0), new THREE.Vector3(0, axisLength, 0)];
+        const yGeometry = new THREE.BufferGeometry().setFromPoints(yPoints);
+        const yLine = new THREE.Line(yGeometry, yMaterial);
+        scene.add(yLine);
+
+        // Eixo Z (Azul)
+        const zMaterial = new THREE.LineBasicMaterial({ color: 0x0000ff });
+        const zPoints = [new THREE.Vector3(0, 0, -axisLength), new THREE.Vector3(0, 0, axisLength)];
+        const zGeometry = new THREE.BufferGeometry().setFromPoints(zPoints);
+        const zLine = new THREE.Line(zGeometry, zMaterial);
+        scene.add(zLine);
+
+        // Esfera na Origem (0, 0, 0)
+        const originGeometry = new THREE.SphereGeometry(10, 16, 16);
+        const originMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+        const originSphere = new THREE.Mesh(originGeometry, originMaterial);
+        originSphere.position.set(0, 0, 0);
+        scene.add(originSphere);
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+    }
+
+    window.addEventListener('resize', () => {
+        camera.aspect = canvasContainer.clientWidth / canvasContainer.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
+    });
+
+    init();
 
 addEnvironment();
 
