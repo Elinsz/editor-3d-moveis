@@ -18,10 +18,6 @@
         .dropdown-btn:hover { background-color: #45a049; }
         .dropdown-content { display: none; padding-left: 14px; margin-top: 6px; margin-bottom: 6px; }
         .menu.active .dropdown-content { display: block; }
-        .dropdown-content button { width: 100%; padding: 10px; background-color: #17a2b8; border: 1px solid #b3b3b3; margin-top: 5px; text-align: center; cursor: pointer; border-radius: 3px; color: white; }
-        .dropdown-content button:hover { background-color: #117a8b; }
-        button { padding: 10px; background-color: #28a745; color: white; border: none; cursor: pointer; font-size: 14px; border-radius: 5px; width: 100%; margin-top: 10px; }
-        button:hover { background-color: #218838; }
     </style>
 </head>
 <body>
@@ -30,9 +26,9 @@
         <div class="menu">
             <button class="dropdown-btn">Biblioteca de Componentes ▾</button>
             <div class="dropdown-content">
-                <button>Componente 1</button>
-                <button>Componente 2</button>
-                <button>Componente 3</button>
+                <button onclick="loadComponent('Componente 1')">Componente 1</button>
+                <button onclick="loadComponent('Componente 2')">Componente 2</button>
+                <button onclick="loadComponent('Componente 3')">Componente 3</button>
             </div>
         </div>
     </div>
@@ -52,10 +48,10 @@
                 <input type="number" id="height" value="800">
                 <label>Profundidade (mm):</label>
                 <input type="number" id="depth" value="500">
+                <button onclick="applyDimensions()">Aplicar</button>
             </div>
         </div>
     </div>
-
     <script>
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
@@ -63,6 +59,7 @@
 
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth - 250, window.innerHeight);
+        renderer.setClearColor(0x1e1e1e);
         document.getElementById('canvas-container').appendChild(renderer.domElement);
 
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -70,27 +67,37 @@
         controls.dampingFactor = 0.1;
         controls.maxPolarAngle = Math.PI / 2;
 
-        const axisHelper = new THREE.AxesHelper(100);
-        scene.add(axisHelper);
+        let selectedModule = null;
+
+        function createModule(width = 500, height = 800, depth = 500) {
+            const geometry = new THREE.BoxGeometry(width, height, depth);
+            const material = new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.5 });
+            const module = new THREE.Mesh(geometry, material);
+            module.position.set(0, height / 2, 0);
+            selectedModule = module;
+            scene.add(module);
+        }
 
         function addModule() {
             const width = parseFloat(document.getElementById('width').value);
             const height = parseFloat(document.getElementById('height').value);
             const depth = parseFloat(document.getElementById('depth').value);
-
-            const geometry = new THREE.BoxGeometry(width, height, depth);
-            const material = new THREE.MeshPhongMaterial({
-                color: 0xffffff,
-                transparent: true,
-                opacity: 0.5
-            });
-            const module = new THREE.Mesh(geometry, material);
-            module.position.set(0, height / 2, 0);
-
-            scene.add(module);
+            createModule(width, height, depth);
         }
 
-        const light = new THREE.AmbientLight(0xffffff, 1);
+        function applyDimensions() {
+            if (selectedModule) {
+                const width = parseFloat(document.getElementById('width').value);
+                const height = parseFloat(document.getElementById('height').value);
+                const depth = parseFloat(document.getElementById('depth').value);
+                selectedModule.geometry.dispose();
+                selectedModule.geometry = new THREE.BoxGeometry(width, height, depth);
+                selectedModule.position.set(0, height / 2, 0);
+            }
+        }
+
+        const light = new THREE.DirectionalLight(0xffffff, 1);
+        light.position.set(1, 1, 1).normalize();
         scene.add(light);
 
         function animate() {
