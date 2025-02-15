@@ -160,8 +160,8 @@ function applyDimensions() {
         let piece = null;
 
         // Pegando as dimensões das configurações do Driver-Block
-        const largura = parseFloat(document.getElementById('width').value) || 500;
-        const altura = parseFloat(document.getElementById('height').value) || 800;
+        const altura = parseFloat(document.getElementById('width').value) || 500;
+        const largura = parseFloat(document.getElementById('height').value) || 800;
         const profundidade = parseFloat(document.getElementById('depth').value) || 500;
         const espessuraPadrao = 18;
 
