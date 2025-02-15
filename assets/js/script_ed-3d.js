@@ -79,3 +79,12 @@ function applyDimensions() {
 }
 
 window.onload = addEnvironment;
+
+
+    // CONTROLE DOS DROPDOWNS
+    document.querySelectorAll('.dropdown-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const menu = this.parentElement;
+            menu.classList.toggle('active');
+        });
+    });
