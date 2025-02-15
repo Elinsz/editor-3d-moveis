@@ -129,6 +129,26 @@
         controls.dampingFactor = 0.25;
         controls.enableZoom = true;
 
+        // Teste
+
+        scene.background = new THREE.Color(0x121212); // Fundo cinza escuro elegante
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Acompanhar a câmera na posição X e Z (trava a grade e eixos)
+            const cameraPositionXZ = new THREE.Vector3(camera.position.x, 0, camera.position.z);
+            gridHelper.position.x = cameraPositionXZ.x;
+            gridHelper.position.z = cameraPositionXZ.z;
+
+            xArrow.position.copy(cameraPositionXZ);
+            yArrow.position.copy(cameraPositionXZ);
+            zArrow.position.copy(cameraPositionXZ);
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
         // Luz
         const light = new THREE.DirectionalLight(0xffffff, 1);
         light.position.set(100, 100, 100).normalize();
@@ -159,25 +179,6 @@
         gridHelper.material.transparent = true;
         scene.add(gridHelper);
 
-        scene.background = new THREE.Color(0x121212); // Fundo cinza escuro elegante
-
-        // Teste 
-
-        function animate() {
-            requestAnimationFrame(animate);
-
-            // Acompanhar a câmera na posição X e Z (trava a grade e eixos)
-            const cameraPositionXZ = new THREE.Vector3(camera.position.x, 0, camera.position.z);
-            gridHelper.position.x = cameraPositionXZ.x;
-            gridHelper.position.z = cameraPositionXZ.z;
-
-            xArrow.position.copy(cameraPositionXZ);
-            yArrow.position.copy(cameraPositionXZ);
-            zArrow.position.copy(cameraPositionXZ);
-
-            controls.update();
-            renderer.render(scene, camera);
-        }
 
 
         // Eixos X, Y, Z com setas nas pontas
