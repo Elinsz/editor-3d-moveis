@@ -1,28 +1,3 @@
-    // CENA E CÂMERA
-// const scene = new THREE.Scene();
-// const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
-// camera.position.set(0, 300, 500);
-
-// const renderer = new THREE.WebGLRenderer({ antialias: true });
-// renderer.setSize(window.innerWidth - 250, window.innerHeight);
-// renderer.setClearColor(0xf0f0f0);
-// document.getElementById('canvas-container').appendChild(renderer.domElement);
-
-    // CONTROLES DE CÂMERA
-// const controls = new THREE.OrbitControls(camera, renderer.domElement);
-// controls.enableDamping = true;
-// controls.dampingFactor = 0.1;
-// controls.screenSpacePanning = false;
-// controls.maxPolarAngle = Math.PI / 2;
-
-    // Ambiente 3D (paredes, piso e teto) - Ajustado com cor clara
-// function addEnvironment() {
-//     const roomMaterial = new THREE.MeshBasicMaterial({ color: 0xf5f5f5, side: THREE.BackSide });
-//     const roomGeometry = new THREE.BoxGeometry(1000, 500, 1000);
-//     const roomMesh = new THREE.Mesh(roomGeometry, roomMaterial);
-//     roomMesh.position.y = 250;
-//     scene.add(roomMesh);
-// }
 
     let scene, camera, renderer, controls;
 

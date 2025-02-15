@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Dentro da função createModule
-    function createModule(width = 200, height = 400, depth = 300) {
+        function createModule(width = 200, height = 400, depth = 300) {
         const geometry = new THREE.BoxGeometry(width, height, depth);
         const material = new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.5 });
         const module = new THREE.Mesh(geometry, material);
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     addEnvironment();
 
-        // Função para aplicar as dimensões ao módulo
+    // Função para aplicar as dimensões ao módulo
     function applyDimensions() {
     const width = parseFloat(document.getElementById('width').value);
     const height = parseFloat(document.getElementById('height').value);
