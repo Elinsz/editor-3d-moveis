@@ -1,0 +1,103 @@
+* { margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+    body {
+        font-family: Arial, sans-serif;
+        display: flex; height: 100vh;
+        background-color: #f0f0f0;
+    }
+
+    #canvas-container {
+        flex-grow: 1;
+        background-color: #1e1e1e;
+        height: 100%; display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #library-panel, #control-panel {
+        width: 220px;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+    }
+
+    #library-panel {
+        position: absolute;
+        top: 0; left: 0;
+        bottom: 0;
+        z-index: 2;
+        border: 1px solid #b3b3b3;
+    }
+    
+    #control-panel {
+        position: absolute;
+        top: 0; right: 0;
+        bottom: 0;
+        z-index: 2;
+        border: 1px solid #b3b3b3;
+    }
+
+    .menu {
+        margin-bottom: 3px;
+    }
+
+    .dropdown-btn {
+        width: 100%;
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+        font-size: 14px;
+        border-radius: 5px;
+    }
+
+    .dropdown-btn:hover {
+        background-color: #4CAF50;
+    }
+
+    .dropdown-content {
+        display: none;
+        padding-left: 14px;
+        margin-top: 6px;
+        margin-bottom: 6px;
+    }
+
+    .menu.active .dropdown-content {
+        display: block;
+    }
+    .dropdown-content button {
+        width: 100%;
+        padding: 10px;
+        background-color: #17a2b8;
+        border: 1px solid #b3b3b3;
+        margin-top: 14px;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 3px;
+    }
+
+    .dropdown-content button:hover {
+        background-color: #117a8b;
+    }
+
+    button {
+        padding: 10px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        border-radius: 5px;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    button:hover {
+        background-color: #218838;
+    }
