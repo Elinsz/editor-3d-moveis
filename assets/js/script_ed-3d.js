@@ -19,9 +19,9 @@ function addEnvironment() {
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    directionalLight.position.set(1, 1, 1);
-    scene.add(directionalLight);
+    // const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    // directionalLight.position.set(1, 1, 1);
+    // scene.add(directionalLight);
 
     const axesHelper = new THREE.AxesHelper(500);
     scene.add(axesHelper);
