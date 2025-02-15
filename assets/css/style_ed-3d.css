@@ -77,8 +77,8 @@
     }
 
     .dropdown-content {
-        display: none;
-        padding-left: 10px;
+        display: inline-block;
+        padding-left: 15px;
         margin-top: 4px;
         margin-bottom: 4px;
     }
