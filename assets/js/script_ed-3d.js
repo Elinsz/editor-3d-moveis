@@ -23,6 +23,12 @@ function addEnvironment() {
     renderer.domElement.addEventListener("click", onPieceClick);
     window.addEventListener("keydown", moveSelectedPiece);
 
+    renderer.domElement.addEventListener('mousedown', onPieceClick);
+    renderer.domElement.addEventListener('mousemove', onPieceMouseMove);
+    renderer.domElement.addEventListener('mouseup', onPieceMouseUp);
+    window.addEventListener('keydown', moveSelectedPiece);
+
+
 
         // Grade infinita
         const gridHelper = new THREE.GridHelper(10000, 500, 0x888888, 0x444444);
@@ -190,15 +196,20 @@ function applyDimensions() {
         }
     });
 
+    //=============== Testando Funcionalidades de Pocicionamento da Peça  ========================
+
 
     let selectedPiece = null;
+    let isDragging = false;
 
-// Detectar clique na peça
-function onPieceClick(event) {
-    const mouse = new THREE.Vector2();
     const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    const planeNormal = new THREE.Vector3(0, 1, 0); // Plano XZ
+    const plane = new THREE.Plane(planeNormal, 0);
+    const intersectionPoint = new THREE.Vector3();
 
-    // Normaliza as coordenadas do mouse para o Three.js (-1 a +1)
+    // Detectar clique para selecionar a peça
+    function onPieceClick(event) {
     mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
     mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
 
@@ -209,16 +220,41 @@ function onPieceClick(event) {
     if (intersects.length > 0) {
         selectedPiece = intersects[0].object;
         console.log("Peça Selecionada:", selectedPiece);
+        isDragging = true; // Começa a arrastar após selecionar
+        controls.enabled = false; // Desabilita OrbitControls enquanto arrasta
     } else {
         selectedPiece = null;
     }
 }
 
-// Função para movimentar a peça manualmente com as teclas
-function moveSelectedPiece(event) {
+    // Mover a peça com o mouse (plano XZ)
+    function onPieceMouseMove(event) {
+    if (!isDragging || !selectedPiece) return;
+
+    mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+    mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera);
+    raycaster.ray.intersectPlane(plane, intersectionPoint);
+
+    // Atualizar posição apenas no XZ (mantém Y fixo)
+    selectedPiece.position.x = intersectionPoint.x;
+    selectedPiece.position.z = intersectionPoint.z;
+}
+
+    // Soltar a peça ao soltar o mouse
+    function onPieceMouseUp() {
+    if (isDragging) {
+        isDragging = false;
+        controls.enabled = true; // Reabilita OrbitControls após soltar
+    }
+}
+
+    // Mover a peça manualmente com as teclas
+    function moveSelectedPiece(event) {
     if (!selectedPiece) return;
 
-    const step = 10; // Define o quanto a peça se move em mm a cada tecla pressionada
+    const step = 10;
 
     switch (event.key) {
         case "ArrowUp":
@@ -241,10 +277,5 @@ function moveSelectedPiece(event) {
             break;
     }
 
-    console.log("Posição Atual da Peça:", selectedPiece.position);
+    console.log("Posição Atual da Peça (Teclado):", selectedPiece.position);
 }
-
-
-
-
-
