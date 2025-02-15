@@ -81,54 +81,6 @@ document.addEventListener("DOMContentLoaded", () => {
 //==================   Criar Componentes  =======================
 
 
-const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
-
-    camera.position.z = 5;
-
-    function animate() {
-      requestAnimationFrame(animate);
-      renderer.render(scene, camera);
-    }
-    animate();
-
-    const tableGeometry = new THREE.BoxGeometry(2, 0.1, 1);
-    const tableMaterial = new THREE.MeshBasicMaterial({ color: 0x8B4513 });
-    const table = new THREE.Mesh(tableGeometry, tableMaterial);
-    table.position.y = -0.5;
-    scene.add(table);
-
-    const legGeometry = new THREE.BoxGeometry(0.1, 0.5, 0.1);
-    const legMaterial = new THREE.MeshBasicMaterial({ color: 0x8B4513 });
-    for (let i = 0; i < 4; i++) {
-    const leg = new THREE.Mesh(legGeometry, legMaterial);
-    leg.position.set((i % 2) * 1.9 - 0.95, -0.75, Math.floor(i / 2) * 0.9 - 0.45);
-    scene.add(leg);
-}
-
-
-const components = {
-    table: { geometry: tableGeometry, material: tableMaterial },
-    chair: { geometry: chairGeometry, material: chairMaterial },
-  };
-
-
-  function addComponent(name, position) {
-    const componentData = components[name];
-    if (!componentData) return;
-    const component = new THREE.Mesh(componentData.geometry, componentData.material);
-    component.position.copy(position);
-    scene.add(component);
-  }
-
-  addComponent('table', new THREE.Vector3(0, 0, 0));
-
-  const controls = new THREE.OrbitControls(camera, renderer.domElement);
-  controls.update();
-
 
 
 
