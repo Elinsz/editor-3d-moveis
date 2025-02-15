@@ -85,9 +85,9 @@
 
     .dropdown-content {
         display: none;
-        padding-left: 14px;
-        margin-top: 6px;
-        margin-bottom: 6px;
+        padding-left: 10px;
+        margin-top: 4px;
+        margin-bottom: 4px;
     }
 
     .menu.active .dropdown-content {
