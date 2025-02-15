@@ -23,8 +23,8 @@ function addEnvironment() {
     // directionalLight.position.set(1, 1, 1);
     // scene.add(directionalLight);
 
-    const axesHelper = new THREE.AxesHelper(500);
-    scene.add(axesHelper);
+    // const axesHelper = new THREE.AxesHelper(500);
+    // scene.add(axesHelper);
 
     // const gridHelper = new THREE.GridHelper(1000, 50, 0x888888, 0x444444);
     // gridHelper.position.set(0, 0, 0);
