@@ -123,7 +123,6 @@ function applyDimensions() {
 
         const lateral = new THREE.Mesh(geometry, material);
         lateral.position.set(0, 0, 0);
-        piece.position.set(20, 0, 0); // Exemplo de movimentação manual
         return lateral;
     }
 
@@ -183,7 +182,8 @@ function applyDimensions() {
 
         if (piece) {
             driverBlock.add(piece);
-            piece.position.set(0, 0, 0); // Posição inicial dentro do Driver-Block
+            // piece.position.set(0, 0, 0); // Posição inicial dentro do Driver-Block
+            piece.position.set(20, 0, 0); // Exemplo de movimentação manual
 
 
             // Aqui você pode ajustar a posição da peça manualmente depois
