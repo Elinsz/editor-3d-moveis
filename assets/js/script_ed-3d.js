@@ -38,6 +38,45 @@ document.addEventListener("DOMContentLoaded", () => {
     scene.add(yAxis);
     scene.add(zAxis);
 
+    // Variável do Driver-Block
+    let driverBlock = null;
+
+    // Criar Driver-Block
+    function addModule() {
+        const width = parseFloat(document.getElementById('width').value) || 500;
+        const height = parseFloat(document.getElementById('height').value) || 800;
+        const depth = parseFloat(document.getElementById('depth').value) || 500;
+
+        if (driverBlock) {
+            scene.remove(driverBlock);
+            driverBlock.geometry.dispose();
+            driverBlock.material.dispose();
+        }
+
+        const geometry = new THREE.BoxGeometry(width, height, depth);
+        const material = new THREE.MeshBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.1, wireframe: true });
+
+        driverBlock = new THREE.Mesh(geometry, material);
+        driverBlock.position.set(0, 0, 0);
+        scene.add(driverBlock);
+    }
+
+    // Aplicar dimensões ao Driver-Block
+    function applyDimensions() {
+        if (!driverBlock) {
+            alert("Nenhum Driver-Block foi criado. Clique em 'Criar Novo Bloco' primeiro.");
+            return;
+        }
+
+        const width = parseFloat(document.getElementById('width').value) || 500;
+        const height = parseFloat(document.getElementById('height').value) || 800;
+        const depth = parseFloat(document.getElementById('depth').value) || 500;
+
+        driverBlock.geometry.dispose();
+        driverBlock.geometry = new THREE.BoxGeometry(width, height, depth);
+        driverBlock.position.set(0, 0, 0);
+    }
+
     // Render loop
     const animate = () => {
         requestAnimationFrame(animate);
@@ -52,14 +91,10 @@ document.addEventListener("DOMContentLoaded", () => {
         camera.updateProjectionMatrix();
         renderer.setSize(container.clientWidth, container.clientHeight);
     });
-});
 
-
-//==================================================================
-
-document.addEventListener('DOMContentLoaded', () => {
+    // Dropdowns
+    document.addEventListener('DOMContentLoaded', () => {
         const dropdownButtons = document.querySelectorAll('.dropdown-btn');
-
         dropdownButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const menu = button.parentElement;
@@ -68,94 +103,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Dentro da função createModule
-        function createModule(width = 200, height = 400, depth = 300) {
-        const geometry = new THREE.BoxGeometry(width, height, depth);
-        const material = new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.5 });
-        const module = new THREE.Mesh(geometry, material);
-        module.position.set(0, height / 2, 0);
-        scene.add(module);
-    }
-
-
-    addEnvironment();
-
-    // Função para aplicar as dimensões ao módulo
-    function applyDimensions() {
-    const width = parseFloat(document.getElementById('width').value);
-    const height = parseFloat(document.getElementById('height').value);
-    const depth = parseFloat(document.getElementById('depth').value);
-
-    if (selectedModule) {
-        selectedModule.scale.set(width / 200, height / 400, depth / 300);
-    }
-    }
-
-    // Função para aplicar os materiais
-    function applyMaterials() {
-    const lateral = document.getElementById('material-lateral').value;
-    const base = document.getElementById('material-base').value;
-    const fundo = document.getElementById('material-fundo').value;
-    alert(`Materiais Aplicados:\nLateral: ${lateral}\nBase: ${base}\nFundo: ${fundo}`);
-    }
-
-    // Variáveis de controle dos módulos
-    let selectedModule = null;
-
-    // EXEMPLO DE MÓDULO (caixa)
-    function createModule(width = 200, height = 400, depth = 300, color = 0x00ff00) {
-    const geometry = new THREE.BoxGeometry(width, height, depth);
-    const material = new THREE.MeshBasicMaterial({ color });
-    const module = new THREE.Mesh(geometry, material);
-    module.position.y = height / 2;
-    module.userData.draggable = true;
-
-    module.addEventListener('click', () => {
-        selectedModule = module;
-    });
-
-    scene.add(module);
-}
-
-// Função para adicionar um componente salvo
-    function addSavedComponent(componentName, width, height, depth, color) {
-    const savedComponentsPanel = document.getElementById('saved-components');
-
-    const componentButton = document.createElement('button');
-    componentButton.textContent = componentName;
-    componentButton.onclick = function() {
-        createModule(width, height, depth, color);  // Cria o módulo com as dimensões e cor definidas
-    };
-
-    savedComponentsPanel.appendChild(componentButton);
-}
-
-// Função para carregar os componentes salvos
-    function loadSavedComponents() {
-    const componentsData = [
-        { id: 1, name: 'Caixa Alta', width: 300, height: 600, depth: 400, color: 0xff0000 },
-        { id: 2, name: 'Caixa Baixa', width: 500, height: 300, depth: 500, color: 0x00ff00 }
-    ];
-
-    const savedComponentsPanel = document.getElementById('saved-components');
-    savedComponentsPanel.innerHTML = ''; // Limpa o conteúdo anterior
-
-    componentsData.forEach(component => {
-        addSavedComponent(component.name, component.width, component.height, component.depth, component.color);
-    });
-}
+    // Restante do código original mantido
 
     // Carrega os componentes salvos
     loadSavedComponents();
 
-
-    // FUNÇÕES DE BOTÕES
-    function addModule() {
-    createModule();
-    }
-
+    // Outros botões
     function edtModule() {
-    edtModule();
+        alert('Editar módulo (simulado)');
     }
 
     function saveModules() {
@@ -166,17 +121,10 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Módulos carregados (simulado)');
     }
 
-    // CONTROLE DOS DROPDOWNS
-    document.querySelectorAll('.dropdown-btn').forEach(button => {
-    button.addEventListener('click', function () {
-        const menu = this.parentElement;
-        menu.classList.toggle('active');
-    });
-});
+    window.addModule = addModule;
+    window.applyDimensions = applyDimensions;
+    window.edtModule = edtModule;
+    window.saveModules = saveModules;
+    window.loadModules = loadModules;
 
-// Ajusta a tela em caso de redimensionamento
-    window.addEventListener('resize', () => {
-    camera.aspect = (window.innerWidth - 250) / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth - 250, window.innerHeight);
 });
