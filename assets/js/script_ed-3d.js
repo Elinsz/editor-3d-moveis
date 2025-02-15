@@ -120,6 +120,9 @@ function applyDimensions() {
             altura // Z → Altura
         );
 
+        // Desloca a geometria para que o canto inferior esquerdo seja (0, 0, 0)
+        geometry.translate(0, 0, altura / 2);
+
         const material = new THREE.MeshBasicMaterial({
             color: cor,
             transparent: true,
@@ -127,9 +130,12 @@ function applyDimensions() {
         });
 
         const lateral = new THREE.Mesh(geometry, material);
-        lateral.position.set(0,  height / 2, 0);
+
+        lateral.position.set(0, 0, 0); // Garantia
+
         return lateral;
     }
+
 
     function createBase(largura, profundidade, espessura, cor = 0x00ff00) {
         const geometry = new THREE.BoxGeometry(
@@ -137,6 +143,9 @@ function applyDimensions() {
             profundidade, // Y → Profundidade
             espessura // Z → Espessura
         );
+
+        // Ajusta a base para que o canto inferior esquerdo (0, 0, 0) seja o canto certo
+        geometry.translate(largura / 2, profundidade / 2, 0);
 
         const material = new THREE.MeshBasicMaterial({
             color: cor,
@@ -149,7 +158,10 @@ function applyDimensions() {
         return base;
     }
 
+    //============================================================================
+
     // Vincular ao botão "Posicionar Peça"
+    
     document.getElementById("adicionarLateral").addEventListener("click", () => {
         if (!driverBlock) {
             alert("Crie um Driver-Block primeiro (Criar Novo Bloco)");
