@@ -77,51 +77,52 @@ document.addEventListener("DOMContentLoaded", () => {
 //==================   Criar Componentes  =======================
 
 
-    let driverBlock; // Variável global para o Driver-Block
+let driverBlock; // Variável global para o Driver-Block
 
-    function addModule() {
-        // Remove o Driver-Block anterior se existir
-        if (driverBlock) {
-            scene.remove(driverBlock);
-        }
-
-        // Captura as dimensões iniciais
-        const width = parseFloat(document.getElementById('width').value);
-        const height = parseFloat(document.getElementById('height').value);
-        const depth = parseFloat(document.getElementById('depth').value);
-
-        // Criação do Driver-Block transparente
-        const geometry = new THREE.BoxGeometry(width, height, depth);
-        const material = new THREE.MeshBasicMaterial({
-            color: 0x00ffff,
-            transparent: true,
-            opacity: 0.1,
-            wireframe: true,
-        });
-
-        driverBlock = new THREE.Mesh(geometry, material);
-        driverBlock.position.set(width / 2, height / 2, depth / 2); // Centraliza na origem
-        scene.add(driverBlock);
-
-        // Atualiza as dimensões dinamicamente
-        function updateDriverBlock() {
-            const newWidth = parseFloat(document.getElementById('width').value);
-            const newHeight = parseFloat(document.getElementById('height').value);
-            const newDepth = parseFloat(document.getElementById('depth').value);
-
-            driverBlock.geometry.dispose(); // Remove a geometria antiga
-            driverBlock.geometry = new THREE.BoxGeometry(newWidth, newHeight, newDepth);
-            driverBlock.position.set(newWidth / 2, newHeight / 2, newDepth / 2); // Centraliza na origem novamente
-        }
-
-        // Atualiza o Driver-Block ao clicar no botão "Aplicar"
-        const applyButton = document.querySelector('#control-panel button[onclick="applyDimensions()"]');
-        if (applyButton) {
-            applyButton.onclick = function () {
-                updateDriverBlock();
-            };
-        }
+function addModule() {
+    // Remove o Driver-Block anterior se já existir
+    if (driverBlock) {
+        scene.remove(driverBlock);
+        driverBlock.geometry.dispose();
+        driverBlock.material.dispose();
     }
+
+    // Captura as dimensões iniciais do formulário
+    const width = parseFloat(document.getElementById('width').value);
+    const height = parseFloat(document.getElementById('height').value);
+    const depth = parseFloat(document.getElementById('depth').value);
+
+    // Criação do Driver-Block transparente
+    const geometry = new THREE.BoxGeometry(width, height, depth);
+    const material = new THREE.MeshBasicMaterial({
+        color: 0x00ffff,
+        transparent: true,
+        opacity: 0.1,
+        wireframe: true, // Mantendo wireframe para visualização leve
+    });
+
+    driverBlock = new THREE.Mesh(geometry, material);
+    driverBlock.position.set(0, 0, 0); // Posição EXATA no (0, 0, 0)
+    scene.add(driverBlock);
+}
+
+function applyDimensions() {
+    if (!driverBlock) {
+        alert('Nenhum Driver-Block foi criado. Clique em "Criar Novo Bloco" primeiro.');
+        return;
+    }
+
+    // Pega as novas dimensões
+    const newWidth = parseFloat(document.getElementById('width').value);
+    const newHeight = parseFloat(document.getElementById('height').value);
+    const newDepth = parseFloat(document.getElementById('depth').value);
+
+    // Substitui a geometria mantendo o Driver-Block no (0, 0, 0)
+    driverBlock.geometry.dispose();
+    driverBlock.geometry = new THREE.BoxGeometry(newWidth, newHeight, newDepth);
+    driverBlock.position.set(0, 0, 0);
+}
+
 
 
 
