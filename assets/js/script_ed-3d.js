@@ -114,19 +114,11 @@ function applyDimensions() {
 
     // CRIAR PEÇAS INDIVIDUIAS
 
-    // const larguraInput = document.getElementById('largura');
-    // const alturaInput = document.getElementById('altura');
-    // const profundidadeInput = document.getElementById('profundidade');
-    // const corInput = document.getElementById('cor');
-    // const criarNovoBlocoBtn = document.getElementById('criarNovoBloco');
+
     const adicionarLateralBtn = document.getElementById('adicionarLateral');
     const exportarBtn = document.getElementById('exportar');
     const canvas = document.getElementById('canvas');
 
-    // const scene = new THREE.Scene();
-    // const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-    // const renderer = new THREE.WebGLRenderer({ canvas });
-    // renderer.setSize(500, 500);
 
     // let driverBlock = null;
     let lateral = null;
@@ -174,7 +166,13 @@ function applyDimensions() {
 
     // Função para criar a Lateral (adicionada ao Driver-Block)
     function createLateral(largura, altura, espessura) {
-        const lateralGeometry = new THREE.BoxGeometry(largura, altura, espessura);
+        const lateralGeometry = new THREE.BoxGeometry(width, height, depth);
+
+        const width = parseFloat(document.getElementById('width').value) || 500;
+        const height = parseFloat(document.getElementById('height').value) || 800;
+        const depth = parseFloat(document.getElementById('depth').value) || 500;
+        const geometry = new THREE.BoxGeometry(width, height, depth);
+
         const lateralMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
         const lateralMesh = new THREE.Mesh(lateralGeometry, lateralMaterial);
         return lateralMesh;
@@ -184,6 +182,7 @@ function applyDimensions() {
     function addLateralToDriverBlock() {
         if (driverBlock) {
             lateral = createLateral(80, 100, 18); // Exemplo de tamanho da lateral
+
             driverBlock.add(lateral); // Adiciona a lateral ao Driver-Block
 
             // Movimenta a lateral dentro do Driver-Block
