@@ -77,38 +77,39 @@ document.addEventListener("DOMContentLoaded", () => {
 //==================   Criar Componentes  =======================
 
 
-let driverBlock;
+let driverBlock = null;
 
 function addModule() {
+    const width = parseFloat(document.getElementById('width').value);
+    const height = parseFloat(document.getElementById('height').value);
+    const depth = parseFloat(document.getElementById('depth').value);
+
+    // Remover o bloco anterior se houver
     if (driverBlock) {
         scene.remove(driverBlock);
     }
-
-    const width = parseFloat(document.getElementById('width').value) || 500;
-    const height = parseFloat(document.getElementById('height').value) || 800;
-    const depth = parseFloat(document.getElementById('depth').value) || 500;
 
     const geometry = new THREE.BoxGeometry(width, height, depth);
     const material = new THREE.MeshBasicMaterial({ color: 0x00ff00, transparent: true, opacity: 0.1, wireframe: true });
     driverBlock = new THREE.Mesh(geometry, material);
     driverBlock.position.set(width / 2, height / 2, depth / 2);
-
     scene.add(driverBlock);
 }
 
 function applyDimensions() {
     if (!driverBlock) return;
 
-    const width = parseFloat(document.getElementById('width').value) || 500;
-    const height = parseFloat(document.getElementById('height').value) || 800;
-    const depth = parseFloat(document.getElementById('depth').value) || 500;
+    const width = parseFloat(document.getElementById('width').value);
+    const height = parseFloat(document.getElementById('height').value);
+    const depth = parseFloat(document.getElementById('depth').value);
 
     driverBlock.geometry.dispose();
     driverBlock.geometry = new THREE.BoxGeometry(width, height, depth);
     driverBlock.position.set(width / 2, height / 2, depth / 2);
 }
 
-// Mantém o restante do código original
+// Restante do código permanece inalterado.
+
 
 
 
