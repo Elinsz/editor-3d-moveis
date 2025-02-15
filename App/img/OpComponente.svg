@@ -1,0 +1,10 @@
+<svg width="90" height="90" viewBox="0 0 92 80" xmlns="http://www.w3.org/2000/svg" stroke-width="8" fill="none">
+
+
+  <!-- Contorno Principal -->
+  <rect x="15" y="8" width="60" height="65" stroke="#ff0000"/>
+  <line x1="25" y1="22" x2="60" y2="22" stroke="#000000"/>
+  <line x1="25" y1="38" x2="55" y2="38" stroke="#000000"/>
+  <line x1="58" y1="63" x2="58" y2="48" stroke="#ff0000"/>
+
+</svg>
