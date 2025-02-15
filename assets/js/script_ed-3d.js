@@ -107,3 +107,33 @@ window.onload = addEnvironment;
             menu.classList.toggle('active');
         });
     });
+
+    // CRIAR PEÇAS INDIVIDUIAS
+
+    function createLateral(altura, profundidade, espessura) {
+        const geometry = new THREE.BoxGeometry(
+            espessura, // X → Espessura
+            profundidade, // Y → Profundidade
+            altura // Z → Altura
+        );
+
+        const material = new THREE.MeshBasicMaterial({
+            color: 0xff0000,
+            transparent: true,
+            opacity: 0.5,
+        });
+
+        const lateral = new THREE.Mesh(geometry, material);
+
+        // Posicionar a peça pelo canto inferior esquerdo (0, 0, 0)
+        lateral.position.set(0, 0, 0);
+
+        return lateral;
+    }
+
+    const lateral = createLateral(800, 500, 18); // Altura, Profundidade, Espessura
+    // lateral.position.set(0, 0, 0); // Caso queira que ela comece na origem global
+    driverBlock.add(lateral);
+
+    scene.add(lateral);
+
