@@ -133,20 +133,20 @@
 
         scene.background = new THREE.Color(0x121212); // Fundo cinza escuro elegante
 
-        function animate() {
-            requestAnimationFrame(animate);
+        // function animate() {
+        //     requestAnimationFrame(animate);
 
             // Acompanhar a câmera na posição X e Z (trava a grade e eixos)
-            const cameraPositionXZ = new THREE.Vector3(camera.position.x, 0, camera.position.z);
-            gridHelper.position.x = cameraPositionXZ.x;
-            gridHelper.position.z = cameraPositionXZ.z;
+            // const cameraPositionXZ = new THREE.Vector3(camera.position.x, 0, camera.position.z);
+            // gridHelper.position.x = cameraPositionXZ.x;
+            // gridHelper.position.z = cameraPositionXZ.z;
 
-            xArrow.position.copy(cameraPositionXZ);
-            yArrow.position.copy(cameraPositionXZ);
-            zArrow.position.copy(cameraPositionXZ);
+            // xArrow.position.copy(cameraPositionXZ);
+            // yArrow.position.copy(cameraPositionXZ);
+            // zArrow.position.copy(cameraPositionXZ);
 
-            controls.update();
-            renderer.render(scene, camera);
+            // controls.update();
+            // renderer.render(scene, camera);
         }
 
         // Luz
@@ -182,15 +182,15 @@
 
 
         // Eixos X, Y, Z com setas nas pontas
-        // const axesLength = 300;
+        const axesLength = 300;
 
-        // const xArrow = new THREE.ArrowHelper(new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 0, 0), axesLength, 0xff0000);
-        // const yArrow = new THREE.ArrowHelper(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, 0), axesLength, 0x00ff00);
-        // const zArrow = new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 0, 0), axesLength, 0x0000ff);
+        const xArrow = new THREE.ArrowHelper(new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 0, 0), axesLength, 0xff0000);
+        const yArrow = new THREE.ArrowHelper(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, 0), axesLength, 0x00ff00);
+        const zArrow = new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 0, 0), axesLength, 0x0000ff);
 
-        // scene.add(xArrow);
-        // scene.add(yArrow);
-        // scene.add(zArrow);
+        scene.add(xArrow);
+        scene.add(yArrow);
+        scene.add(zArrow);
 
         animate();
     }
@@ -199,6 +199,20 @@
         requestAnimationFrame(animate);
         controls.update();
         renderer.render(scene, camera);
+
+
+
+            // Acompanhar a câmera na posição X e Z (trava a grade e eixos)
+            const cameraPositionXZ = new THREE.Vector3(camera.position.x, 0, camera.position.z);
+            gridHelper.position.x = cameraPositionXZ.x;
+            gridHelper.position.z = cameraPositionXZ.z;
+
+            xArrow.position.copy(cameraPositionXZ);
+            yArrow.position.copy(cameraPositionXZ);
+            zArrow.position.copy(cameraPositionXZ);
+
+            controls.update();
+            renderer.render(scene, camera);
     }
 
 
