@@ -1,10 +1,15 @@
 let scene, camera, renderer, controls, driverBlock;
 
 function addEnvironment() {
+
     const container = document.getElementById("canvas-container");
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 20000);
     camera.position.set(500, 500, 500);
+
+    renderer.domElement.addEventListener("click", onPieceClick);
+    window.addEventListener("keydown", moveSelectedPiece);
+
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
@@ -243,6 +248,61 @@ function applyDimensions() {
             console.log(`${pieceType} adicionada dentro do Driver-Block.`);
         }
     });
+
+
+    let selectedPiece = null;
+
+// Detectar clique na peça
+function onPieceClick(event) {
+    const mouse = new THREE.Vector2();
+    const raycaster = new THREE.Raycaster();
+
+    // Normaliza as coordenadas do mouse para o Three.js (-1 a +1)
+    mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+    mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera);
+
+    const intersects = raycaster.intersectObjects(driverBlock.children, true);
+
+    if (intersects.length > 0) {
+        selectedPiece = intersects[0].object;
+        console.log("Peça Selecionada:", selectedPiece);
+    } else {
+        selectedPiece = null;
+    }
+}
+
+// Função para movimentar a peça manualmente com as teclas
+function moveSelectedPiece(event) {
+    if (!selectedPiece) return;
+
+    const step = 10; // Define o quanto a peça se move em mm a cada tecla pressionada
+
+    switch (event.key) {
+        case "ArrowUp":
+            selectedPiece.position.z -= step;
+            break;
+        case "ArrowDown":
+            selectedPiece.position.z += step;
+            break;
+        case "ArrowLeft":
+            selectedPiece.position.x -= step;
+            break;
+        case "ArrowRight":
+            selectedPiece.position.x += step;
+            break;
+        case "PageUp":
+            selectedPiece.position.y += step;
+            break;
+        case "PageDown":
+            selectedPiece.position.y -= step;
+            break;
+    }
+
+    console.log("Posição Atual da Peça:", selectedPiece.position);
+}
+
 
 
 
