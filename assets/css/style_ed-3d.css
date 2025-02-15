@@ -73,7 +73,7 @@
     }
 
     .dropdown-content {
-        display: block;
+        display: flexbox;
         padding-left: 14px;
         margin-top: 6px;
         margin-bottom: 6px;
