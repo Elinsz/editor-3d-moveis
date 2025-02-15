@@ -139,5 +139,5 @@ function applyDimensions() {
     lateral.position.set(0, 0, 0); // Caso queira que ela comece na origem global
     // driverBlock.add(Peca);
 
-    scene.add(Peca);
+    scene.add(lateral);
 
