@@ -114,41 +114,14 @@ function applyDimensions() {
 
     // CRIAR PEÇAS INDIVIDUIAS
 
-    // const larguraInput = document.getElementById('largura');
-    // const alturaInput = document.getElementById('altura');
-    // const profundidadeInput = document.getElementById('profundidade');
-    // const corInput = document.getElementById('cor');
-    // const criarNovoBlocoBtn = document.getElementById('criarNovoBloco');
     const adicionarLateralBtn = document.getElementById('adicionarLateral');
     const exportarBtn = document.getElementById('exportar');
     const canvas = document.getElementById('canvas');
 
-    // const scene = new THREE.Scene();
-    // const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-    // const renderer = new THREE.WebGLRenderer({ canvas });
-    // renderer.setSize(500, 500);
 
     // let driverBlock = null;
     let lateral = null;
 
-    // camera.position.z = 300;
-
-    // Função para aplicar as dimensões e a cor ao Driver-Block
-    // function applyDimensions() {
-    //     if (driverBlock) {
-    //         const largura = parseFloat(larguraInput.value);
-    //         const altura = parseFloat(alturaInput.value);
-    //         const profundidade = parseFloat(profundidadeInput.value);
-    //         const cor = corInput.value;
-
-    //         // Atualiza a geometria do bloco
-    //         driverBlock.geometry = new THREE.BoxGeometry(largura, altura, profundidade);
-    //         driverBlock.material = new THREE.MeshBasicMaterial({ color: cor });
-
-    //         // Ajusta a posição do bloco para que fique "em pé"
-    //         driverBlock.position.set(0, altura / 2, 0);
-    //     }
-    // }
 
     // Função para criar um novo Driver-Block
     function createNewBlock() {
@@ -210,7 +183,7 @@ function applyDimensions() {
     //     renderer.render(scene, camera);
     // }
 
-    animate();
+    // animate();
 
     // exportarBtn.addEventListener('click', () => {
     //     const formato = prompt("Escolha o formato de exportação (STL ou SKP)").toLowerCase();
