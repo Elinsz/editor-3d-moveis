@@ -136,8 +136,8 @@ function applyDimensions() {
     }
 
     const lateral = createPeca(800, 500, 18); // Altura, Profundidade, Espessura
-    // lateral.position.set(0, 0, 0); // Caso queira que ela comece na origem global
-    driverBlock.add(Peca);
+    lateral.position.set(0, 0, 0); // Caso queira que ela comece na origem global
+    // driverBlock.add(Peca);
 
     scene.add(Peca);
 
