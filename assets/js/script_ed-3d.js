@@ -76,7 +76,7 @@ function addModule() {
     });
 
     driverBlock = new THREE.Mesh(geometry, material);
-    driverBlock.position.set(0, height / 2, depth / 2);
+    driverBlock.position.set(0, height / 2, depth);
     scene.add(driverBlock);
 }
 
