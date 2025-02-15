@@ -7,10 +7,6 @@ function addEnvironment() {
     camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 20000);
     camera.position.set(500, 500, 500);
 
-    renderer.domElement.addEventListener("click", onPieceClick);
-    window.addEventListener("keydown", moveSelectedPiece);
-
-
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
     container.appendChild(renderer.domElement);
@@ -23,6 +19,9 @@ function addEnvironment() {
 
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
     scene.add(ambientLight);
+
+    renderer.domElement.addEventListener("click", onPieceClick);
+    window.addEventListener("keydown", moveSelectedPiece);
 
 
         // Grade infinita
