@@ -103,62 +103,145 @@ function applyDimensions() {
 
     // CRIAR PEÇAS INDIVIDUIAS
 
-    const adicionarLateralBtn = document.getElementById('adicionarLateral');
-    const exportarBtn = document.getElementById('exportar');
-    const canvas = document.getElementById('canvas');
+    // const adicionarLateralBtn = document.getElementById('adicionarLateral');
+    // const exportarBtn = document.getElementById('exportar');
+    // const canvas = document.getElementById('canvas');
 
 
-    // let driverBlock = null;
-    let lateral = null;
+    // // let driverBlock = null;
+    // let lateral = null;
 
 
-    // Função para criar um novo Driver-Block
-    function createNewBlock() {
-        // Remove o bloco atual, se existir
-        if (driverBlock) {
-            scene.remove(driverBlock);
-        }
+    // // Função para criar um novo Driver-Block
+    // function createNewBlock() {
+    //     // Remove o bloco atual, se existir
+    //     if (driverBlock) {
+    //         scene.remove(driverBlock);
+    //     }
 
-        // Cria o novo Driver-Block
-        const largura = parseFloat(larguraInput.value);
-        const altura = parseFloat(alturaInput.value);
-        const profundidade = parseFloat(profundidadeInput.value);
-        const cor = corInput.value;
+    //     // Cria o novo Driver-Block
+    //     const largura = parseFloat(larguraInput.value);
+    //     const altura = parseFloat(alturaInput.value);
+    //     const profundidade = parseFloat(profundidadeInput.value);
+    //     const cor = corInput.value;
 
-        const geometry = new THREE.BoxGeometry(largura, altura, profundidade);
-        const material = new THREE.MeshBasicMaterial({ color: cor });
-        driverBlock = new THREE.Mesh(geometry, material);
-        scene.add(driverBlock);
+    //     const geometry = new THREE.BoxGeometry(largura, altura, profundidade);
+    //     const material = new THREE.MeshBasicMaterial({ color: cor });
+    //     driverBlock = new THREE.Mesh(geometry, material);
+    //     scene.add(driverBlock);
 
-        // Atualiza a posição e dimensões do bloco
-        driverBlock.position.set(0, altura / 2, 0);
-    }
+    //     // Atualiza a posição e dimensões do bloco
+    //     driverBlock.position.set(0, altura / 2, 0);
+    // }
 
     // Função para criar a Lateral (adicionada ao Driver-Block)
-    function createLateral(largura, altura, espessura) {
-        const lateralGeometry = new THREE.BoxGeometry(largura, altura, espessura);
-        const lateralMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-        const lateralMesh = new THREE.Mesh(lateralGeometry, lateralMaterial);
-        return lateralMesh;
-    }
+    // function createLateral(largura, altura, espessura) {
+    //     const lateralGeometry = new THREE.BoxGeometry(largura, altura, espessura);
+    //     const lateralMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    //     const lateralMesh = new THREE.Mesh(lateralGeometry, lateralMaterial);
+    //     return lateralMesh;
+    // }
 
     // Função para adicionar a Lateral ao Driver-Block
-    function addLateralToDriverBlock() {
-        if (driverBlock) {
-            lateral = createLateral(80, 100, 18); // Exemplo de tamanho da lateral
-            driverBlock.add(lateral); // Adiciona a lateral ao Driver-Block
+    // function addLateralToDriverBlock() {
+    //     if (driverBlock) {
+    //         lateral = createLateral(80, 100, 18); // Exemplo de tamanho da lateral
+    //         driverBlock.add(lateral); // Adiciona a lateral ao Driver-Block
 
-            // Movimenta a lateral dentro do Driver-Block
-            lateral.position.set(20, 0, 0); // Ajuste manual da posição
-        } else {
-            alert("Crie primeiro o Driver-Block!");
-        }
+// Movimenta a lateral dentro do Driver-Block
+    //         lateral.position.set(20, 0, 0); // Ajuste manual da posição
+    //     } else {
+    //         alert("Crie primeiro o Driver-Block!");
+    //     }
+    // }
+
+
+
+        // Quando o botão "Adicionar Lateral" for clicado
+    // adicionarLateralBtn.addEventListener('click', addLateralToDriverBlock);
+
+    //=================================  teste   =================
+
+    function createLateral(altura, profundidade, espessura, cor = 0xff0000) {
+        const geometry = new THREE.BoxGeometry(
+            espessura, // X → Espessura
+            profundidade, // Y → Profundidade
+            altura // Z → Altura
+        );
+
+        const material = new THREE.MeshBasicMaterial({
+            color: cor,
+            transparent: true,
+            opacity: 0.5,
+        });
+
+        const lateral = new THREE.Mesh(geometry, material);
+        lateral.position.set(0, 0, 0);
+        return lateral;
     }
 
+    function createBase(largura, profundidade, espessura, cor = 0x00ff00) {
+        const geometry = new THREE.BoxGeometry(
+            largura, // X → Largura
+            profundidade, // Y → Profundidade
+            espessura // Z → Espessura
+        );
 
+        const material = new THREE.MeshBasicMaterial({
+            color: cor,
+            transparent: true,
+            opacity: 0.5,
+        });
 
-    // Quando o botão "Adicionar Lateral" for clicado
-    adicionarLateralBtn.addEventListener('click', addLateralToDriverBlock);
+        const base = new THREE.Mesh(geometry, material);
+        base.position.set(0, 0, 0);
+        return base;
+    }
+
+    // Vincular ao botão "Posicionar Peça"
+    document.getElementById("adicionarLateral").addEventListener("click", () => {
+        if (!driverBlock) {
+            alert("Crie um Driver-Block primeiro (Criar Novo Bloco)");
+            return;
+        }
+
+        const pieceType = document.getElementById("piece-type").value;
+        let piece = null;
+
+        // Pegando as dimensões das configurações do Driver-Block
+        const largura = parseFloat(document.getElementById('width').value) || 500;
+        const altura = parseFloat(document.getElementById('height').value) || 800;
+        const profundidade = parseFloat(document.getElementById('depth').value) || 500;
+        const espessuraPadrao = 18;
+
+        switch (pieceType) {
+            case "Lateral Direita":
+            case "Lateral Esquerda":
+                piece = createLateral(altura, profundidade, espessuraPadrao);
+                break;
+            case "Base Inf":
+            case "Base Sup":
+                piece = createBase(largura, profundidade, espessuraPadrao);
+                break;
+            case "Frente Gaveta":
+                alert("Frente Gaveta ainda não implementada");
+                break;
+            case "Porta Dir":
+            case "Porta Esq":
+                alert("Porta ainda não implementada");
+                break;
+            default:
+                alert("Seleção inválida.");
+        }
+
+        if (piece) {
+            driverBlock.add(piece);
+            piece.position.set(0, 0, 0); // Posição inicial dentro do Driver-Block
+            // Aqui você pode ajustar a posição da peça manualmente depois
+            console.log(`${pieceType} adicionada dentro do Driver-Block.`);
+        }
+    });
+
 
 
 
