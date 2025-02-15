@@ -190,14 +190,4 @@ function applyDimensions() {
     });
 
 
-    function enableDrag(piece) {
-        const dragControls = new THREE.DragControls([piece], camera, renderer.domElement);
-
-        dragControls.addEventListener('dragstart', function () {
-            controls.enabled = false; // Desabilita OrbitControls enquanto arrasta
-        });
-
-        dragControls.addEventListener('dragend', function () {
-            controls.enabled = true; // Reabilita OrbitControls após arrastar
-        });
-    }
+    
