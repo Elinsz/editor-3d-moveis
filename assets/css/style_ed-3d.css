@@ -17,13 +17,26 @@
         align-items: center;
     }
 
-    #library-panel, #control-panel {
+    #library-panel{
         width: 220px;
         padding: 20px;
         background-color: #fff;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         overflow-y: auto;
     }
+
+
+    #control-panel {
+        width: 265px;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+    }
+
+
+
+
 
     #library-panel {
         position: absolute;
@@ -32,7 +45,7 @@
         z-index: 2;
         border: 1px solid #b3b3b3;
     }
-    
+
     #control-panel {
         position: absolute;
         top: 0; right: 0;
