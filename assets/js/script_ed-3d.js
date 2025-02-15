@@ -123,24 +123,6 @@ function applyDimensions() {
     // let driverBlock = null;
     let lateral = null;
 
-    // camera.position.z = 300;
-
-    // Função para aplicar as dimensões e a cor ao Driver-Block
-    // function applyDimensions() {
-    //     if (driverBlock) {
-    //         const largura = parseFloat(larguraInput.value);
-    //         const altura = parseFloat(alturaInput.value);
-    //         const profundidade = parseFloat(profundidadeInput.value);
-    //         const cor = corInput.value;
-
-    //         // Atualiza a geometria do bloco
-    //         driverBlock.geometry = new THREE.BoxGeometry(largura, altura, profundidade);
-    //         driverBlock.material = new THREE.MeshBasicMaterial({ color: cor });
-
-    //         // Ajusta a posição do bloco para que fique "em pé"
-    //         driverBlock.position.set(0, altura / 2, 0);
-    //     }
-    // }
 
     // Função para criar um novo Driver-Block
     function createNewBlock() {
@@ -170,7 +152,7 @@ function applyDimensions() {
 
         const width = parseFloat(document.getElementById('width').value) || 500;
         const height = parseFloat(document.getElementById('height').value) || 800;
-        const depth = parseFloat(document.getElementById('depth').value) || 500;
+        const depth = parseFloat(document.getElementById('depth').value) || 15;
         const geometry = new THREE.BoxGeometry(width, height, depth);
 
         const lateralMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
@@ -181,7 +163,15 @@ function applyDimensions() {
     // Função para adicionar a Lateral ao Driver-Block
     function addLateralToDriverBlock() {
         if (driverBlock) {
-            lateral = createLateral(80, 100, 18); // Exemplo de tamanho da lateral
+            // lateral = createLateral(80, 100, 18); // Exemplo de tamanho da lateral
+
+            const width = parseFloat(document.getElementById('width').value) || 500;
+            const height = parseFloat(document.getElementById('height').value) || 800;
+            const depth = parseFloat(document.getElementById('depth').value) || 15;
+
+            driverBlock.geometry.dispose();
+            driverBlock.geometry = new THREE.BoxGeometry(width, height, depth);
+            driverBlock.position.set(0, height / 2, 0);
 
             driverBlock.add(lateral); // Adiciona a lateral ao Driver-Block
 
