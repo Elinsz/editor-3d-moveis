@@ -120,8 +120,8 @@ function applyDimensions() {
             altura // Z → Altura
         );
 
-        // Desloca a geometria para que o canto inferior esquerdo seja (0, 0, 0)
-        geometry.translate(0, 0, altura / 2);
+        // Ajusta a geometria para que o canto inferior esquerdo fique em (0, 0, 0)
+        geometry.translate(espessura / 2, profundidade / 2, altura / 2);
 
         const material = new THREE.MeshBasicMaterial({
             color: cor,
@@ -130,11 +130,11 @@ function applyDimensions() {
         });
 
         const lateral = new THREE.Mesh(geometry, material);
-
-        lateral.position.set(0, 0, 0); // Garantia
+        lateral.userData.pieceType = 'Lateral'; // só pra facilitar se precisar no futuro
 
         return lateral;
     }
+
 
 
     function createBase(largura, profundidade, espessura, cor = 0x00ff00) {
