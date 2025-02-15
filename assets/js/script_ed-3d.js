@@ -180,14 +180,29 @@ function applyDimensions() {
                 alert("Seleção inválida.");
         }
 
+
+
         if (piece) {
             driverBlock.add(piece);
-            enableDrag(piece); // Habilita arrastar com o mouse
+            enableDrag(piece);
+            // piece.position.set(0, 0, 0); // Posição inicial dentro do Driver-Block
+            piece.position.set(20, 0, 0); // Exemplo de movimentação manual
+
+
+            // Aqui você pode ajustar a posição da peça manualmente depois
             console.log(`${pieceType} adicionada dentro do Driver-Block.`);
         }
-
-
     });
 
 
-    
+    function enableDrag(piece) {
+        const dragControls = new THREE.DragControls([piece], camera, renderer.domElement);
+
+        dragControls.addEventListener('dragstart', function () {
+            controls.enabled = false; // Desabilita OrbitControls enquanto arrasta
+        });
+
+        dragControls.addEventListener('dragend', function () {
+            controls.enabled = true; // Reabilita OrbitControls após arrastar
+        });
+    }
