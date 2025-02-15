@@ -97,7 +97,7 @@ function applyDimensions() {
     driverBlock.position.set(0, height / 2, 0);
 }
 
-window.onload = addEnvironment;
+    window.onload = addEnvironment;
 
 
     // CONTROLE DOS DROPDOWNS
@@ -107,6 +107,10 @@ window.onload = addEnvironment;
             menu.classList.toggle('active');
         });
     });
+
+
+
+    //=======================================================================
 
     // CRIAR PEÇAS INDIVIDUIAS
 
