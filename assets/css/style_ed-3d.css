@@ -69,14 +69,15 @@
 
     .dropdown-btn {
         width: 100%;
-        padding: 5px;
+        padding: 6px;
         background-color: #4CAF50;
         color: white;
-        border: none;
+        /* border: none; */
+        border: 1px solid #b3b3b3;
         cursor: pointer;
         text-align: left;
         font-size: 14px;
-        border-radius: 5px;
+        border-radius: 3px;
     }
 
     .dropdown-btn:hover {
