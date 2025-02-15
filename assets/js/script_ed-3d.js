@@ -105,10 +105,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-
-
-
-
 //==================================================================
 
 
@@ -127,9 +123,6 @@ document.addEventListener("DOMContentLoaded", () => {
     renderer.setSize(window.innerWidth - 250, window.innerHeight);
 
 });
-
-
-//==================   Criar Componentes  =======================
 
 
 
