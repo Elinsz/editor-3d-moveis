@@ -122,7 +122,7 @@ function applyDimensions() {
         });
 
         const lateral = new THREE.Mesh(geometry, material);
-        // lateral.position.set(0, 0, 0);
+        lateral.position.set(0, 0, 0);
         piece.position.set(20, 0, 0); // Exemplo de movimentação manual
         return lateral;
     }
