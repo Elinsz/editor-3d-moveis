@@ -92,7 +92,7 @@ function applyDimensions() {
 
     driverBlock.geometry.dispose();
     driverBlock.geometry = new THREE.BoxGeometry(width, height, depth);
-    driverBlock.position.set(0, height / 2, 0);
+    driverBlock.position.set(0, height / 2, width / 2);
 }
 
     window.onload = addEnvironment;
