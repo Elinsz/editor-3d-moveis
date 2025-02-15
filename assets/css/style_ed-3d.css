@@ -22,7 +22,7 @@ body {
 }
 
 #library-panel{
-    width: 220px;
+    width: 180px;
     padding: 15px;
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -31,7 +31,7 @@ body {
 
 
 #control-panel {
-    width: 265px;
+    width: 250px;
     padding: 15px;
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
