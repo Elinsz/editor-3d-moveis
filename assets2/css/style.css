@@ -1,0 +1,182 @@
+/* Estilos básicos para o layout */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+#canvas-container {
+    flex-grow: 1;
+    background-color: #fff;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#library-panel{
+    width: 220px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+
+#control-panel {
+    width: 265px;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+#library-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 2;
+}
+
+#control-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+}
+
+/* Estilos para os menus de navegação */
+.menu {
+    margin-bottom: 3px;
+}
+
+.dropdown-btn {
+    width: 100%;
+    padding: 10px;
+    /* margin-top: 3px;
+    margin-bottom: 3px; */
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-size: 14px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.dropdown-btn:hover {
+    background-color: #4CAF50;
+}
+
+.dropdown-content {
+    display: none;
+    padding-left: 14px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+.menu.active .dropdown-content {
+    display: block;
+}
+
+.dropdown-content button {
+    width: 100%;
+    padding: 10px;
+    background-color: #17a2b8;
+    border: 1px solid #b3b3b3;
+    margin-top: 14px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.dropdown-content button:hover {
+    background-color: #117a8b;
+}
+
+input[type="number"],
+input[type="text"],
+select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+label {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+button {
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+/* Estilos para o painel de componentes salvos */
+#saved-components {
+    margin-top: 20px;
+}
+
+#saved-components button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+    margin-top: 8px;
+}
+
+#saved-components button:hover {
+    background-color: #117a8b;
+}
+
+#saved-components p {
+    font-size: 14px;
+    color: #6c757d;
+    text-align: center;
+}
+
+/* Estilos gerais de responsividade */
+@media (max-width: 1200px) {
+    #library-panel, #control-panel {
+        width: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    #library-panel, #control-panel {
+        width: 150px;
+    }
+
+    #canvas-container {
+        flex-direction: column;
+    }
+}

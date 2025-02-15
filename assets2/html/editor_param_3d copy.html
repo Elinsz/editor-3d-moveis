@@ -6,18 +6,29 @@
     <title>Editor 3D - Móveis v2</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/OrbitControls/2.110.3/OrbitControls.min.js"></script>
-    <script src="https://threejs.org/examples/js/exporters/STLExporter.js"></script>
-
-    <link rel="stylesheet" href="../css/style_ed-3d.css">
-
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; display: flex; height: 100vh; background-color: #f0f0f0; }
+        #canvas-container { flex-grow: 1; background-color: #1e1e1e; height: 100%; display: flex; justify-content: center; align-items: center; }
+        #library-panel, #control-panel { width: 220px; padding: 20px; background-color: #fff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); overflow-y: auto; }
+        #library-panel { position: absolute; top: 0; left: 0; bottom: 0; z-index: 2; }
+        #control-panel { position: absolute; top: 0; right: 0; bottom: 0; z-index: 2; }
+        .menu { margin-bottom: 3px; }
+        .dropdown-btn { width: 100%; padding: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer; text-align: left; font-size: 14px; border-radius: 5px; }
+        .dropdown-btn:hover { background-color: #4CAF50; }
+        .dropdown-content { display: none; padding-left: 14px; margin-top: 6px; margin-bottom: 6px; }
+        .menu.active .dropdown-content { display: block; }
+        .dropdown-content button { width: 100%; padding: 10px; background-color: #17a2b8; border: 1px solid #b3b3b3; margin-top: 14px; text-align: center; cursor: pointer; border-radius: 3px; }
+        .dropdown-content button:hover { background-color: #117a8b; }
+        button { padding: 10px; background-color: #28a745; color: white; border: none; cursor: pointer; font-size: 14px; border-radius: 5px; width: 100%; margin-top: 10px; }
+        button:hover { background-color: #218838; }
+    </style>
 </head>
 <body>
     <div id="canvas-container"></div>
     <div id="library-panel">
         <div class="menu">
-            <button class="dropdown-btn">Biblioteca Geral ▾</button>
+            <button class="dropdown-btn">Biblioteca de Componentes ▾</button>
             <div class="dropdown-content">
                 <button onclick="loadComponent('Componente 1')">Componente 1</button>
                 <button onclick="loadComponent('Componente 2')">Componente 2</button>
@@ -25,7 +36,7 @@
             </div>
         </div>
         <div class="menu">
-            <button class="dropdown-btn">Componentes em Testes ▾</button>
+            <button class="dropdown-btn">Componentes de Testes Salvos ▾</button>
             <div class="dropdown-content" id="saved-components">
                 <p>Nenhum componente salvo.</p>
             </div>
@@ -35,51 +46,21 @@
         <div class="menu">
             <button class="dropdown-btn">Ações ▾</button>
             <div class="dropdown-content">
-                <button onclick="addModule()">Criar Novo Bloco</button>
                 <button onclick="addModule()">Adicionar Módulo</button>
-                <button onclick="edtModule()">Editar Módulo</button>
                 <button onclick="saveModules()">Salvar</button>
                 <button onclick="loadModules()">Carregar</button>
             </div>
         </div>
 
         <div class="menu">
-            <button class="dropdown-btn">Criar Peças ▾</button>
+            <button class="dropdown-btn">Dimensões ▾</button>
             <div class="dropdown-content">
-                <select id="piece-type">
-                    <option value="Lateral Direita">Lateral Direita</option>
-                    <option value="Lateral Esquerda">Lateral Esquerda</option>
-                    <option value="Base Inf">Base Inf</option>
-                    <option value="Base Sup">Base Sup</option>
-                    <option value="Frente Gaveta">Frente Gaveta</option>
-                    <option value="Porta Dir">Porta Direita</option>
-                    <option value="Porta Esq">Porta Esquerda</option>
-                </select>
-                <button onclick="startPlacingPiece()">Posicionar Peça</button>
-            </div>
-        </div>
-
-
-        <div class="menu">
-            <button class="dropdown-btn">Configurações do Componente ▾</button>
-            <div class="dropdown-content">
-                <h1></h1>
                 <label>Largura (mm):</label>
-                <input type="number" id="width" value="500"/>
-                <h1></h1>
+                <input type="number" id="width" value="500">
                 <label>Altura (mm):</label>
-                <input type="number" id="height" value="800"/>
-                <h1></h1>
+                <input type="number" id="height" value="800">
                 <label>Profundidade (mm):</label>
-                <input type="number" id="depth" value="500"/>
-                <h2></h2>
-                <label>Tipo de Fundo:</label>
-                <select id="tp-fundo">
-                    <option value="Sem Fundo">Sem Fundo</option>
-                    <option value="Fundo no canal">Fundo no canal</option>
-                    <option value="Fundo por tras" selected>Fundo por tras</option>
-                </select>
-
+                <input type="number" id="depth" value="500">
                 <button onclick="applyDimensions()">Aplicar</button>
             </div>
         </div>
@@ -127,6 +108,27 @@
             </div>
         </div>
     </div>
-    <script src="../js/script_ed-3d.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropdownButtons = document.querySelectorAll('.dropdown-btn');
+
+            dropdownButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const menu = button.parentElement;
+                    menu.classList.toggle('active');
+                });
+            });
+        });
+
+        // Dentro da função createModule
+        function createModule(width = 200, height = 400, depth = 300) {
+            const geometry = new THREE.BoxGeometry(width, height, depth);
+            const material = new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.5 });
+            const module = new THREE.Mesh(geometry, material);
+            module.position.set(0, height / 2, 0);
+            scene.add(module);
+        }
+    </script>
 </body>
 </html>
