@@ -27,47 +27,72 @@
     let scene, camera, renderer, controls;
 
     function init() {
-        const container = document.getElementById('canvas-container');
+    const container = document.getElementById('canvas-container');
 
-        scene = new THREE.Scene();
+    scene = new THREE.Scene();
 
-        camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-        camera.position.set(300, 300, 300);
+    camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 5000);
+    camera.position.set(500, 500, 500);
+    camera.lookAt(0, 0, 0);
 
-        renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(container.clientWidth, container.clientHeight);
-        container.appendChild(renderer.domElement);
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
 
-        controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.25;
-        controls.enableZoom = true;
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+    scene.add(ambientLight);
 
-        // Luz
-        const light = new THREE.DirectionalLight(0xffffff, 1);
-        light.position.set(100, 100, 100).normalize();
-        scene.add(light);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    directionalLight.position.set(300, 300, 300);
+    scene.add(directionalLight);
 
-        const ambientLight = new THREE.AmbientLight(0x404040);
-        scene.add(ambientLight);
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.1;
+    controls.screenSpacePanning = false;
+    controls.maxPolarAngle = Math.PI;
 
-        // Eixos com setas
-        const axisLength = 200;
-        const arrowSize = 10;
+    // Grade plana (opcional)
+    const gridHelper = new THREE.GridHelper(1000, 20, 0x888888, 0x444444);
+    gridHelper.position.y = 0;
+    scene.add(gridHelper);
 
-        // Eixo X (vermelho)
-        const xAxis = new THREE.ArrowHelper(new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 0, 0), axisLength, 0xff0000, arrowSize, arrowSize);
-        scene.add(xAxis);
+    // Eixos Absolutos em 3D Personalizados
+    drawAxis3D();
 
-        // Eixo Y (verde)
-        const yAxis = new THREE.ArrowHelper(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, 0), axisLength, 0x00ff00, arrowSize, arrowSize);
-        scene.add(yAxis);
+    animate();
+    }
 
-        // Eixo Z (azul)
-        const zAxis = new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 0, 0), axisLength, 0x0000ff, arrowSize, arrowSize);
-        scene.add(zAxis);
+    function drawAxis3D() {
+        const axisLength = 500;
 
-        animate();
+        // Eixo X (Vermelho)
+        const xMaterial = new THREE.LineBasicMaterial({ color: 0xff0000 });
+        const xPoints = [new THREE.Vector3(-axisLength, 0, 0), new THREE.Vector3(axisLength, 0, 0)];
+        const xGeometry = new THREE.BufferGeometry().setFromPoints(xPoints);
+        const xLine = new THREE.Line(xGeometry, xMaterial);
+        scene.add(xLine);
+
+        // Eixo Y (Verde)
+        const yMaterial = new THREE.LineBasicMaterial({ color: 0x00ff00 });
+        const yPoints = [new THREE.Vector3(0, -axisLength, 0), new THREE.Vector3(0, axisLength, 0)];
+        const yGeometry = new THREE.BufferGeometry().setFromPoints(yPoints);
+        const yLine = new THREE.Line(yGeometry, yMaterial);
+        scene.add(yLine);
+
+        // Eixo Z (Azul)
+        const zMaterial = new THREE.LineBasicMaterial({ color: 0x0000ff });
+        const zPoints = [new THREE.Vector3(0, 0, -axisLength), new THREE.Vector3(0, 0, axisLength)];
+        const zGeometry = new THREE.BufferGeometry().setFromPoints(zPoints);
+        const zLine = new THREE.Line(zGeometry, zMaterial);
+        scene.add(zLine);
+
+        // Esfera na Origem (0, 0, 0)
+        const originGeometry = new THREE.SphereGeometry(10, 16, 16);
+        const originMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+        const originSphere = new THREE.Mesh(originGeometry, originMaterial);
+        originSphere.position.set(0, 0, 0);
+        scene.add(originSphere);
     }
 
     function animate() {
@@ -83,7 +108,6 @@
     });
 
     init();
-
 
     document.addEventListener('DOMContentLoaded', () => {
         const dropdownButtons = document.querySelectorAll('.dropdown-btn');
