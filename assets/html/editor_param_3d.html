@@ -47,7 +47,7 @@
             <button class="dropdown-btn">Ações ▾</button>
             <div class="dropdown-content">
                 <button onclick="novModule()">Novo Módulo</button>
-                <button onclick="addModule()">Adicionar Módulo</button>
+                <button onclick="edtModule()">Editar Módulo</button>
                 <button onclick="saveModules()">Salvar</button>
                 <button onclick="loadModules()">Carregar</button>
             </div>
@@ -192,10 +192,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-addEnvironment();
+    addEnvironment();
 
         // Função para aplicar as dimensões ao módulo
-function applyDimensions() {
+    function applyDimensions() {
     const width = parseFloat(document.getElementById('width').value);
     const height = parseFloat(document.getElementById('height').value);
     const depth = parseFloat(document.getElementById('depth').value);
@@ -203,20 +203,20 @@ function applyDimensions() {
     if (selectedModule) {
         selectedModule.scale.set(width / 200, height / 400, depth / 300);
     }
-}
+    }
 
-        // Função para aplicar os materiais
+    // Função para aplicar os materiais
     function applyMaterials() {
     const lateral = document.getElementById('material-lateral').value;
     const base = document.getElementById('material-base').value;
     const fundo = document.getElementById('material-fundo').value;
     alert(`Materiais Aplicados:\nLateral: ${lateral}\nBase: ${base}\nFundo: ${fundo}`);
-}
+    }
 
-        // Variáveis de controle dos módulos
+    // Variáveis de controle dos módulos
     let selectedModule = null;
 
-        // EXEMPLO DE MÓDULO (caixa)
+    // EXEMPLO DE MÓDULO (caixa)
     function createModule(width = 200, height = 400, depth = 300, color = 0x00ff00) {
     const geometry = new THREE.BoxGeometry(width, height, depth);
     const material = new THREE.MeshBasicMaterial({ color });
@@ -272,8 +272,8 @@ function applyDimensions() {
     // animate();
 
     // FUNÇÕES DE BOTÕES
-    function addModule() {
-    createModule();
+    function edtModule() {
+    editModule();
     }
 
     function saveModules() {
