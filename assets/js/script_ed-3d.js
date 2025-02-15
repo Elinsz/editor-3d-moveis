@@ -114,30 +114,130 @@ function applyDimensions() {
 
     // CRIAR PEÇAS INDIVIDUIAS
 
-    function createPeca(altura, profundidade, espessura) {
-        const geometry = new THREE.BoxGeometry(
-            espessura, // X → Espessura
-            profundidade, // Y → Profundidade
-            altura // Z → Altura
-        );
+    // const larguraInput = document.getElementById('largura');
+    // const alturaInput = document.getElementById('altura');
+    // const profundidadeInput = document.getElementById('profundidade');
+    // const corInput = document.getElementById('cor');
+    // const criarNovoBlocoBtn = document.getElementById('criarNovoBloco');
+    const adicionarLateralBtn = document.getElementById('adicionarLateral');
+    const exportarBtn = document.getElementById('exportar');
+    const canvas = document.getElementById('canvas');
 
-        const material = new THREE.MeshBasicMaterial({
-            color: 0xff0000,
-            transparent: true,
-            opacity: 0.5,
-        });
+    // const scene = new THREE.Scene();
+    // const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+    // const renderer = new THREE.WebGLRenderer({ canvas });
+    // renderer.setSize(500, 500);
 
-        const lateral = new THREE.Mesh(geometry, material);
+    // let driverBlock = null;
+    let lateral = null;
 
-        // Posicionar a peça pelo canto inferior esquerdo (0, 0, 0)
-        lateral.position.set(0, 0, 0);
+    camera.position.z = 300;
 
-        return lateral;
+    // Função para aplicar as dimensões e a cor ao Driver-Block
+    // function applyDimensions() {
+    //     if (driverBlock) {
+    //         const largura = parseFloat(larguraInput.value);
+    //         const altura = parseFloat(alturaInput.value);
+    //         const profundidade = parseFloat(profundidadeInput.value);
+    //         const cor = corInput.value;
+
+    //         // Atualiza a geometria do bloco
+    //         driverBlock.geometry = new THREE.BoxGeometry(largura, altura, profundidade);
+    //         driverBlock.material = new THREE.MeshBasicMaterial({ color: cor });
+
+    //         // Ajusta a posição do bloco para que fique "em pé"
+    //         driverBlock.position.set(0, altura / 2, 0);
+    //     }
+    // }
+
+    // Função para criar um novo Driver-Block
+    function createNewBlock() {
+        // Remove o bloco atual, se existir
+        if (driverBlock) {
+            scene.remove(driverBlock);
+        }
+
+        // Cria o novo Driver-Block
+        const largura = parseFloat(larguraInput.value);
+        const altura = parseFloat(alturaInput.value);
+        const profundidade = parseFloat(profundidadeInput.value);
+        const cor = corInput.value;
+
+        const geometry = new THREE.BoxGeometry(largura, altura, profundidade);
+        const material = new THREE.MeshBasicMaterial({ color: cor });
+        driverBlock = new THREE.Mesh(geometry, material);
+        scene.add(driverBlock);
+
+        // Atualiza a posição e dimensões do bloco
+        driverBlock.position.set(0, altura / 2, 0);
     }
 
-    const lateral = createPeca(800, 500, 18); // Altura, Profundidade, Espessura
-    lateral.position.set(0, 0, 0); // Caso queira que ela comece na origem global
-    // driverBlock.add(Peca);
+    // Função para criar a Lateral (adicionada ao Driver-Block)
+    function createLateral(largura, altura, espessura) {
+        const lateralGeometry = new THREE.BoxGeometry(largura, altura, espessura);
+        const lateralMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        const lateralMesh = new THREE.Mesh(lateralGeometry, lateralMaterial);
+        return lateralMesh;
+    }
 
-    scene.add(lateral);
+    // Função para adicionar a Lateral ao Driver-Block
+    function addLateralToDriverBlock() {
+        if (driverBlock) {
+            lateral = createLateral(80, 100, 18); // Exemplo de tamanho da lateral
+            driverBlock.add(lateral); // Adiciona a lateral ao Driver-Block
+
+            // Movimenta a lateral dentro do Driver-Block
+            lateral.position.set(20, 0, 0); // Ajuste manual da posição
+        } else {
+            alert("Crie primeiro o Driver-Block!");
+        }
+    }
+
+    // Quando o botão "Criar Novo Bloco" for clicado
+    // criarNovoBlocoBtn.addEventListener('click', createNewBlock);
+
+    // Quando o botão "Adicionar Lateral" for clicado
+    adicionarLateralBtn.addEventListener('click', addLateralToDriverBlock);
+
+    // Atualiza as dimensões do bloco conforme os inputs
+    // larguraInput.addEventListener('input', applyDimensions);
+    // alturaInput.addEventListener('input', applyDimensions);
+    // profundidadeInput.addEventListener('input', applyDimensions);
+    // corInput.addEventListener('input', applyDimensions);
+
+    // function animate() {
+    //     requestAnimationFrame(animate);
+    //     renderer.render(scene, camera);
+    // }
+
+    animate();
+
+    // exportarBtn.addEventListener('click', () => {
+    //     const formato = prompt("Escolha o formato de exportação (STL ou SKP)").toLowerCase();
+    //     if (formato === 'stl') {
+    //         exportSTL();
+    //     } else if (formato === 'skp') {
+    //         exportSKP();
+    //     } else {
+    //         alert("Formato inválido!");
+    //     }
+    // });
+
+    // function exportSTL() {
+    //     const exporter = new THREE.STLExporter();
+    //     const stlData = exporter.parse(driverBlock);
+    //     downloadFile(stlData, 'componente.stl', 'application/sla');
+    // }
+
+    // function exportSKP() {
+    //     alert("Exportação para SKP ainda não implementada.");
+    // }
+
+    // function downloadFile(data, filename, mimeType) {
+    //     const blob = new Blob([data], { type: mimeType });
+    //     const link = document.createElement('a');
+    //     link.href = URL.createObjectURL(blob);
+    //     link.download = filename;
+    //     link.click();
+    // }
 
