@@ -7,6 +7,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OrbitControls/2.110.3/OrbitControls.min.js"></script>
+    <script src="https://threejs.org/examples/js/exporters/STLExporter.js"></script>
+
     <link rel="stylesheet" href="../css/style_ed-3d.css">
 
 </head>
@@ -31,6 +34,26 @@
     <div id="control-panel">
         <div class="menu">
             <button class="dropdown-btn">Ações ▾</button>
+                <button onclick="addDriverBlock()">Criar Novo Bloco</button>
+                <button onclick="togglePieceMenu()">Criar Peças</button>
+                <div id="piece-menu" style="display:none;">
+                    <select id="piece-type">
+                        <option value="Lateral Direita">Lateral Direita</option>
+                        <option value="Lateral Esquerda">Lateral Esquerda</option>
+                        <option value="Base Inf">Base Inf</option>
+                        <option value="Base Sup">Base Sup</option>
+                        <option value="Frente Gaveta">Frente Gaveta</option>
+                        <option value="Porta Dir">Porta Direita</option>
+                        <option value="Porta Esq">Porta Esquerda</option>
+                    </select>
+                    <button onclick="startPlacingPiece()">Posicionar Peça</button>
+                </div>
+                <div class="menu">
+                    <button onclick="exportToDXF()">Exportar para DXF</button>
+                    <button onclick="exportToSKP()">Exportar para SKP</button>
+                    <button onclick="exportToSTL()">Exportar para STL</button>
+                </div>
+            </div>
             <div class="dropdown-content">
                 <button onclick="addModule()">Adicionar Módulo</button>
                 <button onclick="edtModule()">Editar Módulo</button>
