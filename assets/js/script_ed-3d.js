@@ -148,14 +148,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Carrega os componentes salvos
     loadSavedComponents();
 
-    // ANIMAÇÃO DA CENA
-    // function animate() {
-    //     requestAnimationFrame(animate);
-    //     controls.update();
-    //     renderer.render(scene, camera);
-    // }
-
-    // animate();
 
     // FUNÇÕES DE BOTÕES
     function addModule() {
