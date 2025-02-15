@@ -10,6 +10,15 @@
         background-color: #f0f0f0;
     }
 
+    #editor-container {
+        flex-grow: 1;
+        padding: 20px;
+        background-color: #fff;
+    }
+    .config-input {
+        margin: 10px 0;
+    }
+
     #canvas-container {
         flex-grow: 1;
         background-color: #1e1e1e;
