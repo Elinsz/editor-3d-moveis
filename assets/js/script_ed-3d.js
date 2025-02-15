@@ -207,27 +207,41 @@ function applyDimensions() {
     const planeNormal = new THREE.Vector3(0, 1, 0); // Plano XZ
     const plane = new THREE.Plane(planeNormal, 0);
     const intersectionPoint = new THREE.Vector3();
+    const clickOffset = new THREE.Vector3(); // Guarda o deslocamento entre o clique e o canto da peça
 
-    // Detectar clique para selecionar a peça
+    // Clique para selecionar a peça e definir o ponto clicado como referência
     function onPieceClick(event) {
     mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
     mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
 
     raycaster.setFromCamera(mouse, camera);
-
     const intersects = raycaster.intersectObjects(driverBlock.children, true);
 
     if (intersects.length > 0) {
         selectedPiece = intersects[0].object;
-        console.log("Peça Selecionada:", selectedPiece);
-        isDragging = true; // Começa a arrastar após selecionar
-        controls.enabled = false; // Desabilita OrbitControls enquanto arrasta
+
+        // Identificar o ponto exato onde o mouse clicou na peça
+        const facePoint = intersects[0].point; // Coordenada global onde o clique aconteceu
+
+        // Transforma o ponto do clique para o sistema local da peça
+        const localPoint = selectedPiece.worldToLocal(facePoint);
+
+        // Vamos considerar que queremos alinhar o canto inferior esquerdo da peça
+        const cantoInferiorEsquerdo = new THREE.Vector3(0, 0, 0);
+
+        // Calcula o deslocamento entre o clique e o canto inferior esquerdo da peça
+        clickOffset.copy(localPoint).sub(cantoInferiorEsquerdo);
+
+        console.log("Selecionado:", selectedPiece.name, "Offset do Clique:", clickOffset);
+
+        isDragging = true;
+        controls.enabled = false;
     } else {
         selectedPiece = null;
     }
-}
+    }
 
-    // Mover a peça com o mouse (plano XZ)
+    // Arrastar com ajuste do ponto clicado
     function onPieceMouseMove(event) {
     if (!isDragging || !selectedPiece) return;
 
@@ -237,45 +251,16 @@ function applyDimensions() {
     raycaster.setFromCamera(mouse, camera);
     raycaster.ray.intersectPlane(plane, intersectionPoint);
 
-    // Atualizar posição apenas no XZ (mantém Y fixo)
-    selectedPiece.position.x = intersectionPoint.x;
-    selectedPiece.position.z = intersectionPoint.z;
-}
+    // Ao posicionar, consideramos o offset do clique
+    selectedPiece.position.x = intersectionPoint.x - clickOffset.x;
+    selectedPiece.position.z = intersectionPoint.z - clickOffset.z;
+    }
 
-    // Soltar a peça ao soltar o mouse
+    // Soltar a peça
     function onPieceMouseUp() {
-    if (isDragging) {
-        isDragging = false;
-        controls.enabled = true; // Reabilita OrbitControls após soltar
-    }
-}
-
-    // Mover a peça manualmente com as teclas
-    function moveSelectedPiece(event) {
-    if (!selectedPiece) return;
-
-    const step = 10;
-
-    switch (event.key) {
-        case "ArrowUp":
-            selectedPiece.position.z -= step;
-            break;
-        case "ArrowDown":
-            selectedPiece.position.z += step;
-            break;
-        case "ArrowLeft":
-            selectedPiece.position.x -= step;
-            break;
-        case "ArrowRight":
-            selectedPiece.position.x += step;
-            break;
-        case "PageUp":
-            selectedPiece.position.y += step;
-            break;
-        case "PageDown":
-            selectedPiece.position.y -= step;
-            break;
+        if (isDragging) {
+            isDragging = false;
+            controls.enabled = true;
+        }
     }
 
-    console.log("Posição Atual da Peça (Teclado):", selectedPiece.position);
-}
