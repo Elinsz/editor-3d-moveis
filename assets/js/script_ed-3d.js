@@ -131,7 +131,7 @@ function applyDimensions() {
     // let driverBlock = null;
     let lateral = null;
 
-    camera.position.z = 300;
+    // camera.position.z = 300;
 
     // Função para aplicar as dimensões e a cor ao Driver-Block
     // function applyDimensions() {
