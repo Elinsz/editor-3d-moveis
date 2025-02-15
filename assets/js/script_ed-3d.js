@@ -55,6 +55,50 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+//============================================================
+
+let driverBlock = null;
+
+function addModule() {
+    if (driverBlock) {
+        scene.remove(driverBlock);
+    }
+
+    const width = parseFloat(document.getElementById('width').value) || 500;
+    const height = parseFloat(document.getElementById('height').value) || 800;
+    const depth = parseFloat(document.getElementById('depth').value) || 500;
+
+    const geometry = new THREE.BoxGeometry(width, height, depth);
+    const material = new THREE.MeshBasicMaterial({
+        color: 0x00ff00,
+        transparent: true,
+        opacity: 0.1,
+        wireframe: false
+    });
+
+    driverBlock = new THREE.Mesh(geometry, material);
+    driverBlock.position.set(width / 2, height / 2, depth / 2);
+    scene.add(driverBlock);
+}
+
+function applyDimensions() {
+    if (!driverBlock) {
+        console.warn("Nenhum Driver-Block encontrado. Criando um novo.");
+        addModule();
+        return;
+    }
+
+    const width = parseFloat(document.getElementById('width').value) || 500;
+    const height = parseFloat(document.getElementById('height').value) || 800;
+    const depth = parseFloat(document.getElementById('depth').value) || 500;
+
+    driverBlock.geometry.dispose();
+    driverBlock.geometry = new THREE.BoxGeometry(width, height, depth);
+    driverBlock.position.set(width / 2, height / 2, depth / 2);
+}
+
+
+
 //==================================================================
 
 
@@ -76,52 +120,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //==================   Criar Componentes  =======================
 
-
-let driverBlock; // Variável global para o Driver-Block
-
-function addModule() {
-    // Remove o Driver-Block anterior se já existir
-    if (driverBlock) {
-        scene.remove(driverBlock);
-        driverBlock.geometry.dispose();
-        driverBlock.material.dispose();
-    }
-
-    // Captura as dimensões iniciais do formulário
-    const width = parseFloat(document.getElementById('width').value);
-    const height = parseFloat(document.getElementById('height').value);
-    const depth = parseFloat(document.getElementById('depth').value);
-
-    // Criação do Driver-Block transparente
-    const geometry = new THREE.BoxGeometry(width, height, depth);
-    const material = new THREE.MeshBasicMaterial({
-        color: 0x00ffff,
-        transparent: true,
-        opacity: 0.1,
-        wireframe: true, // Mantendo wireframe para visualização leve
-    });
-
-    driverBlock = new THREE.Mesh(geometry, material);
-    driverBlock.position.set(0, 0, 0); // Posição EXATA no (0, 0, 0)
-    scene.add(driverBlock);
-}
-
-function applyDimensions() {
-    if (!driverBlock) {
-        alert('Nenhum Driver-Block foi criado. Clique em "Criar Novo Bloco" primeiro.');
-        return;
-    }
-
-    // Pega as novas dimensões
-    const newWidth = parseFloat(document.getElementById('width').value);
-    const newHeight = parseFloat(document.getElementById('height').value);
-    const newDepth = parseFloat(document.getElementById('depth').value);
-
-    // Substitui a geometria mantendo o Driver-Block no (0, 0, 0)
-    driverBlock.geometry.dispose();
-    driverBlock.geometry = new THREE.BoxGeometry(newWidth, newHeight, newDepth);
-    driverBlock.position.set(0, 0, 0);
-}
 
 
 
