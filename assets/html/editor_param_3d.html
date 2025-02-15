@@ -173,6 +173,12 @@
         animate();
     }
 
+    function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+    }
+
 
     scene.background = new THREE.Color(0x121212); // Fundo cinza escuro elegante
 
@@ -192,12 +198,6 @@
         renderer.render(scene, camera);
     }
 
-
-    // function animate() {
-    //     requestAnimationFrame(animate);
-    //     controls.update();
-    //     renderer.render(scene, camera);
-    // }
 
     window.addEventListener('resize', () => {
         camera.aspect = canvasContainer.clientWidth / canvasContainer.clientHeight;
