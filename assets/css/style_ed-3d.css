@@ -10,11 +10,11 @@
         background-color: #f0f0f0;
     }
 
-    #editor-container {
+    /* #editor-container {
         flex-grow: 1;
         padding: 20px;
         background-color: #fff;
-    }
+    } */
     .config-input {
         margin: 10px 0;
     }
