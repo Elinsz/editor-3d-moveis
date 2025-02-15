@@ -78,14 +78,14 @@
 
     .dropdown-content {
 
-        display: none;
+        display: flow-root;
         padding-left: 15px;
         margin-top: 4px;
         margin-bottom: 4px;
     }
 
     .menu.active .dropdown-content {
-        display: list-item;
+        display: block;
     }
     .dropdown-content button {
         width: 100%;
