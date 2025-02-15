@@ -121,7 +121,7 @@ function applyDimensions() {
         );
 
         // Desloca a geometria para que o canto inferior esquerdo seja (0, 0, 0)
-        geometry.translate(0, 0, altura / 2);
+        geometry.translate(0, 0, espessuraPadrao / 2);
 
         const material = new THREE.MeshBasicMaterial({
             color: cor,
@@ -161,7 +161,7 @@ function applyDimensions() {
     //============================================================================
 
     // Vincular ao botão "Posicionar Peça"
-    
+
     document.getElementById("adicionarLateral").addEventListener("click", () => {
         if (!driverBlock) {
             alert("Crie um Driver-Block primeiro (Criar Novo Bloco)");
