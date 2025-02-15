@@ -158,8 +158,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // animate();
 
     // FUNÇÕES DE BOTÕES
-    function novModule() {
-    newModule();
+    function addModule() {
+    createModule();
     }
 
     function edtModule() {

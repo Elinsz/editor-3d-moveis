@@ -132,7 +132,7 @@
 
 addEnvironment();
 
-        // Função para aplicar as dimensões ao módulo
+// Função para aplicar as dimensões ao módulo
 function applyDimensions() {
     const width = parseFloat(document.getElementById('width').value);
     const height = parseFloat(document.getElementById('height').value);
@@ -143,7 +143,7 @@ function applyDimensions() {
     }
 }
 
-        // Função para aplicar os materiais
+// Função para aplicar os materiais
 function applyMaterials() {
     const lateral = document.getElementById('material-lateral').value;
     const base = document.getElementById('material-base').value;
@@ -151,7 +151,7 @@ function applyMaterials() {
     alert(`Materiais Aplicados:\nLateral: ${lateral}\nBase: ${base}\nFundo: ${fundo}`);
 }
 
-        // Variáveis de controle dos módulos
+// Variáveis de controle dos módulos
 let selectedModule = null;
 
         // EXEMPLO DE MÓDULO (caixa)
