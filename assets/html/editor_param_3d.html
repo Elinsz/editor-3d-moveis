@@ -35,30 +35,28 @@
         <div class="menu">
             <button class="dropdown-btn">Ações ▾</button>
             <div class="dropdown-content">
+                <button onclick="addModule()">Criar Novo Bloco</button>
                 <button onclick="addModule()">Adicionar Módulo</button>
                 <button onclick="edtModule()">Editar Módulo</button>
                 <button onclick="saveModules()">Salvar</button>
                 <button onclick="loadModules()">Carregar</button>
             </div>
+        </div>
 
-        <!-- <div class="menu"> -->
-            <button class="dropdown-btn">Criar Novo Bloco ▾</button>
-            <!-- </div> -->
-            <!-- <div class="menu"> -->
-                <button class="dropdown-btn">Criar Peças ▾</button>
-                <div class="dropdown-content">
-                    <select id="piece-type">
-                        <option value="Lateral Direita">Lateral Direita</option>
-                        <option value="Lateral Esquerda">Lateral Esquerda</option>
-                        <option value="Base Inf">Base Inf</option>
-                        <option value="Base Sup">Base Sup</option>
-                        <option value="Frente Gaveta">Frente Gaveta</option>
-                        <option value="Porta Dir">Porta Direita</option>
-                        <option value="Porta Esq">Porta Esquerda</option>
-                    </select>
-                    <button onclick="startPlacingPiece()">Posicionar Peça</button>
-                </div>
-            <!-- </div> -->
+        <div class="menu">
+            <button class="dropdown-btn">Criar Peças ▾</button>
+            <div class="dropdown-content">
+                <select id="piece-type">
+                    <option value="Lateral Direita">Lateral Direita</option>
+                    <option value="Lateral Esquerda">Lateral Esquerda</option>
+                    <option value="Base Inf">Base Inf</option>
+                    <option value="Base Sup">Base Sup</option>
+                    <option value="Frente Gaveta">Frente Gaveta</option>
+                    <option value="Porta Dir">Porta Direita</option>
+                    <option value="Porta Esq">Porta Esquerda</option>
+                </select>
+                <button onclick="startPlacingPiece()">Posicionar Peça</button>
+            </div>
         </div>
 
 
