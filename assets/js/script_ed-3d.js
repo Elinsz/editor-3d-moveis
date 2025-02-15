@@ -193,59 +193,47 @@ function applyDimensions() {
 
 
     let selectedPiece = null;
-
-// Detectar clique na peça
-function onPieceClick(event) {
-    const mouse = new THREE.Vector2();
+    let isDragging = false;
     const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    const planeNormal = new THREE.Vector3(0, 1, 0); // Plano XZ
+    const plane = new THREE.Plane(planeNormal, 0);
+    const intersectionPoint = new THREE.Vector3();
 
-    // Normaliza as coordenadas do mouse para o Three.js (-1 a +1)
-    mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
-    mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+    // Clique na peça (selecionar)
+    renderer.domElement.addEventListener('mousedown', (event) => {
+        mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+        mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
 
-    raycaster.setFromCamera(mouse, camera);
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(driverBlock.children, true);
 
-    const intersects = raycaster.intersectObjects(driverBlock.children, true);
+        if (intersects.length > 0) {
+            selectedPiece = intersects[0].object;
+            isDragging = true;
 
-    if (intersects.length > 0) {
-        selectedPiece = intersects[0].object;
-        console.log("Peça Selecionada:", selectedPiece);
-    } else {
-        selectedPiece = null;
-    }
-}
+            // Desabilita os controles da câmera enquanto arrasta
+            controls.enabled = false;
+        }
+    });
 
-// Função para movimentar a peça manualmente com as teclas
-function moveSelectedPiece(event) {
-    if (!selectedPiece) return;
+    // Mover a peça
+    renderer.domElement.addEventListener('mousemove', (event) => {
+        if (!isDragging || !selectedPiece) return;
 
-    const step = 10; // Define o quanto a peça se move em mm a cada tecla pressionada
+        mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+        mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
 
-    switch (event.key) {
-        case "ArrowUp":
-            selectedPiece.position.z -= step;
-            break;
-        case "ArrowDown":
-            selectedPiece.position.z += step;
-            break;
-        case "ArrowLeft":
-            selectedPiece.position.x -= step;
-            break;
-        case "ArrowRight":
-            selectedPiece.position.x += step;
-            break;
-        case "PageUp":
-            selectedPiece.position.y += step;
-            break;
-        case "PageDown":
-            selectedPiece.position.y -= step;
-            break;
-    }
+        raycaster.setFromCamera(mouse, camera);
+        raycaster.ray.intersectPlane(plane, intersectionPoint);
 
-    console.log("Posição Atual da Peça:", selectedPiece.position);
-}
+        // Atualizar posição apenas no XZ (horizontal) – Mantém Y fixo
+        selectedPiece.position.x = intersectionPoint.x;
+        selectedPiece.position.z = intersectionPoint.z;
+    });
 
-
-
-
-
+    // Soltar a peça
+    renderer.domElement.addEventListener('mouseup', () => {
+        isDragging = false;
+        controls.enabled = true; // Reabilita os controles da câmera
+    });
