@@ -52,8 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
         camera.updateProjectionMatrix();
         renderer.setSize(container.clientWidth, container.clientHeight);
     });
-});
-
 
 //============================================================
 
@@ -96,6 +94,12 @@ function applyDimensions() {
     driverBlock.geometry = new THREE.BoxGeometry(width, height, depth);
     driverBlock.position.set(width / 2, height / 2, depth / 2);
 }
+
+
+});
+
+
+
 
 
 
