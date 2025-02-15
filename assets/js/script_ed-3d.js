@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function edtModule() {
-    editModule();
+    edtModule();
     }
 
     function saveModules() {
