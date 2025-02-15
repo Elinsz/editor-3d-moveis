@@ -200,13 +200,14 @@ function applyDimensions() {
 
     let selectedPiece = null;
     let isDragging = false;
+    let pointMarker = null; // Marcador do ponto 0,0,0 da peça
 
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
-    const planeNormal = new THREE.Vector3(0, 1, 0); // Plano XZ
+    const planeNormal = new THREE.Vector3(0, 1, 0);
     const plane = new THREE.Plane(planeNormal, 0);
     const intersectionPoint = new THREE.Vector3();
-    const clickOffset = new THREE.Vector3(); // Guarda o deslocamento entre o clique e o canto da peça
+    const clickOffset = new THREE.Vector3();
 
     // Clique para selecionar a peça e definir o ponto clicado como referência
     function onPieceClick(event) {
@@ -220,23 +221,50 @@ function applyDimensions() {
         selectedPiece = intersects[0].object;
 
         // Identificar o ponto exato onde o mouse clicou na peça
-        const facePoint = intersects[0].point; // Coordenada global onde o clique aconteceu
-
-        // Transforma o ponto do clique para o sistema local da peça
+        const facePoint = intersects[0].point;
         const localPoint = selectedPiece.worldToLocal(facePoint);
-
-        // Vamos considerar que queremos alinhar o canto inferior esquerdo da peça
         const cantoInferiorEsquerdo = new THREE.Vector3(0, 0, 0);
 
-        // Calcula o deslocamento entre o clique e o canto inferior esquerdo da peça
         clickOffset.copy(localPoint).sub(cantoInferiorEsquerdo);
 
         console.log("Selecionado:", selectedPiece.name, "Offset do Clique:", clickOffset);
 
+        // Adiciona o marcador visual no ponto 0,0,0 local da peça
+        addPointMarkerToPiece(selectedPiece);
+
         isDragging = true;
         controls.enabled = false;
-    } else {
+        } else {
         selectedPiece = null;
+        removePointMarker();
+    }
+    }
+
+    // Função para adicionar o marcador do ponto 0,0,0
+    function addPointMarkerToPiece(piece) {
+    removePointMarker();
+
+    const markerGeometry = new THREE.SphereGeometry(5, 16, 16);
+    const markerMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+
+    pointMarker = new THREE.Mesh(markerGeometry, markerMaterial);
+
+    // Define a posição do marcador no ponto 0,0,0 local da peça
+    pointMarker.position.set(0, 0, 0);
+
+    // Adiciona o marcador como filho da peça
+    piece.add(pointMarker);
+    }
+
+    // Remove o marcador se existir
+    function removePointMarker() {
+    if (pointMarker) {
+        if (pointMarker.parent) {
+            pointMarker.parent.remove(pointMarker);
+        }
+        pointMarker.geometry.dispose();
+        pointMarker.material.dispose();
+        pointMarker = null;
     }
     }
 
@@ -250,16 +278,16 @@ function applyDimensions() {
     raycaster.setFromCamera(mouse, camera);
     raycaster.ray.intersectPlane(plane, intersectionPoint);
 
-    // Ao posicionar, consideramos o offset do clique
     selectedPiece.position.x = intersectionPoint.x - clickOffset.x;
     selectedPiece.position.z = intersectionPoint.z - clickOffset.z;
     }
 
-    // Soltar a peça
+    // Soltar a peça ao soltar o mouse
     function onPieceMouseUp() {
         if (isDragging) {
             isDragging = false;
             controls.enabled = true;
         }
     }
+
 
