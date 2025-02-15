@@ -20,6 +20,7 @@
     }
 
     #library-panel{
+        display: block;
         width: 220px;
         padding: 15px;
         background-color: #fff;
@@ -29,6 +30,7 @@
 
 
     #control-panel {
+        display: block;
         width: 265px;
         padding: 15px;
         background-color: #fff;
