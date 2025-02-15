@@ -26,9 +26,8 @@ function addEnvironment() {
     renderer.domElement.addEventListener('mousedown', onPieceClick);
     renderer.domElement.addEventListener('mousemove', onPieceMouseMove);
     renderer.domElement.addEventListener('mouseup', onPieceMouseUp);
-    window.addEventListener('keydown', moveSelectedPiece);
 
-
+//===============================================================================
 
         // Grade infinita
         const gridHelper = new THREE.GridHelper(10000, 500, 0x888888, 0x444444);
