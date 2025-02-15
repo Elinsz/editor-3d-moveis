@@ -153,10 +153,22 @@
         const zAxis = new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 0, 0), axisLength, 0x0000ff, arrowSize, arrowSize);
         scene.add(zAxis);
 
-        // Grade plana (opcional)
-        const gridHelper = new THREE.GridHelper(1000, 20, 0x888888, 0x444444);
-        gridHelper.position.y = 0;
+        // Grade Plana com linhas finas
+        const gridHelper = new THREE.GridHelper(1000, 100, 0xcccccc, 0xcccccc);
+        gridHelper.material.opacity = 0.5;
+        gridHelper.material.transparent = true;
         scene.add(gridHelper);
+
+        // Eixos X, Y, Z com setas nas pontas
+        const axesLength = 300;
+
+        const xArrow = new THREE.ArrowHelper(new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 0, 0), axesLength, 0xff0000);
+        const yArrow = new THREE.ArrowHelper(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, 0), axesLength, 0x00ff00);
+        const zArrow = new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 0, 0), axesLength, 0x0000ff);
+
+        scene.add(xArrow);
+        scene.add(yArrow);
+        scene.add(zArrow);
 
         animate();
     }
