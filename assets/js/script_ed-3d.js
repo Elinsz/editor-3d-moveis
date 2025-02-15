@@ -53,6 +53,31 @@ document.addEventListener("DOMContentLoaded", () => {
         renderer.setSize(container.clientWidth, container.clientHeight);
     });
 
+
+});
+
+
+
+
+
+
+//==================================================================
+
+
+    // CONTROLE DOS DROPDOWNS
+    document.querySelectorAll('.dropdown-btn').forEach(button => {
+    button.addEventListener('click', function () {
+        const menu = this.parentElement;
+        menu.classList.toggle('active');
+    });
+});
+
+// Ajusta a tela em caso de redimensionamento
+    window.addEventListener('resize', () => {
+    camera.aspect = (window.innerWidth - 250) / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth - 250, window.innerHeight);
+
 //============================================================
 
 let driverBlock = null;
@@ -96,29 +121,6 @@ function applyDimensions() {
 }
 
 
-});
-
-
-
-
-
-
-//==================================================================
-
-
-    // CONTROLE DOS DROPDOWNS
-    document.querySelectorAll('.dropdown-btn').forEach(button => {
-    button.addEventListener('click', function () {
-        const menu = this.parentElement;
-        menu.classList.toggle('active');
-    });
-});
-
-// Ajusta a tela em caso de redimensionamento
-    window.addEventListener('resize', () => {
-    camera.aspect = (window.innerWidth - 250) / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth - 250, window.innerHeight);
 });
 
 
