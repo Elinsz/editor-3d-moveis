@@ -19,17 +19,6 @@ function addEnvironment() {
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
     scene.add(ambientLight);
 
-    // const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    // directionalLight.position.set(1, 1, 1);
-    // scene.add(directionalLight);
-
-    // const axesHelper = new THREE.AxesHelper(500);
-    // scene.add(axesHelper);
-
-    // const gridHelper = new THREE.GridHelper(1000, 50, 0x888888, 0x444444);
-    // gridHelper.position.set(0, 0, 0);
-    // scene.add(gridHelper);
-
 
         // Grade infinita
         const gridHelper = new THREE.GridHelper(10000, 500, 0x888888, 0x444444);
@@ -166,51 +155,10 @@ function applyDimensions() {
         }
     }
 
-    // Quando o botão "Criar Novo Bloco" for clicado
-    // criarNovoBlocoBtn.addEventListener('click', createNewBlock);
+
 
     // Quando o botão "Adicionar Lateral" for clicado
     adicionarLateralBtn.addEventListener('click', addLateralToDriverBlock);
 
-    // Atualiza as dimensões do bloco conforme os inputs
-    // larguraInput.addEventListener('input', applyDimensions);
-    // alturaInput.addEventListener('input', applyDimensions);
-    // profundidadeInput.addEventListener('input', applyDimensions);
-    // corInput.addEventListener('input', applyDimensions);
 
-    // function animate() {
-    //     requestAnimationFrame(animate);
-    //     renderer.render(scene, camera);
-    // }
-
-    // animate();
-
-    // exportarBtn.addEventListener('click', () => {
-    //     const formato = prompt("Escolha o formato de exportação (STL ou SKP)").toLowerCase();
-    //     if (formato === 'stl') {
-    //         exportSTL();
-    //     } else if (formato === 'skp') {
-    //         exportSKP();
-    //     } else {
-    //         alert("Formato inválido!");
-    //     }
-    // });
-
-    // function exportSTL() {
-    //     const exporter = new THREE.STLExporter();
-    //     const stlData = exporter.parse(driverBlock);
-    //     downloadFile(stlData, 'componente.stl', 'application/sla');
-    // }
-
-    // function exportSKP() {
-    //     alert("Exportação para SKP ainda não implementada.");
-    // }
-
-    // function downloadFile(data, filename, mimeType) {
-    //     const blob = new Blob([data], { type: mimeType });
-    //     const link = document.createElement('a');
-    //     link.href = URL.createObjectURL(blob);
-    //     link.download = filename;
-    //     link.click();
-    // }
 
