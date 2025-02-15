@@ -121,7 +121,7 @@ function applyDimensions() {
         );
 
         // Desloca a geometria para que o canto inferior esquerdo seja (0, 0, 0)
-        geometry.translate(0,0, altura / 2);
+        geometry.translate(0, 0, altura / 2);
 
         const material = new THREE.MeshBasicMaterial({
             color: cor,
@@ -144,9 +144,6 @@ function applyDimensions() {
             espessura // Z → Espessura
         );
 
-        // Ajusta a base para que o canto inferior esquerdo (0, 0, 0) seja o canto certo
-        geometry.translate(largura / 2, profundidade / 2, 0);
-
         const material = new THREE.MeshBasicMaterial({
             color: cor,
             transparent: true,
@@ -158,10 +155,7 @@ function applyDimensions() {
         return base;
     }
 
-    //============================================================================
-
     // Vincular ao botão "Posicionar Peça"
-
     document.getElementById("adicionarLateral").addEventListener("click", () => {
         if (!driverBlock) {
             alert("Crie um Driver-Block primeiro (Criar Novo Bloco)");
@@ -172,8 +166,8 @@ function applyDimensions() {
         let piece = null;
 
         // Pegando as dimensões das configurações do Driver-Block
-        const largura = parseFloat(document.getElementById('width').value) || 500;
-        const altura = parseFloat(document.getElementById('height').value) || 800;
+        const altura = parseFloat(document.getElementById('width').value) || 500;
+        const largura = parseFloat(document.getElementById('height').value) || 800;
         const profundidade = parseFloat(document.getElementById('depth').value) || 500;
         const espessuraPadrao = 18;
 
@@ -210,7 +204,7 @@ function applyDimensions() {
     //=============== Testando Funcionalidades de Pocicionamento da Peça  ========================
 
 
-let selectedPiece = null;
+    let selectedPiece = null;
 let isDragging = false;
 let pointMarker = null;
 
