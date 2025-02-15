@@ -198,19 +198,19 @@ function applyDimensions() {
     //=============== Testando Funcionalidades de Pocicionamento da Peça  ========================
 
 
-    let selectedPiece = null;
-    let isDragging = false;
-    let pointMarker = null; // Marcador do ponto 0,0,0 da peça
+let selectedPiece = null;
+let isDragging = false;
+let pointMarker = null;
 
-    const raycaster = new THREE.Raycaster();
-    const mouse = new THREE.Vector2();
-    const planeNormal = new THREE.Vector3(0, 1, 0);
-    const plane = new THREE.Plane(planeNormal, 0);
-    const intersectionPoint = new THREE.Vector3();
-    const clickOffset = new THREE.Vector3();
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+const planeNormal = new THREE.Vector3(0, 1, 0); // Plano XZ
+const plane = new THREE.Plane(planeNormal, 0);
+const intersectionPoint = new THREE.Vector3();
+const clickOffset = new THREE.Vector3();
 
-    // Clique para selecionar a peça e definir o ponto clicado como referência
-    function onPieceClick(event) {
+// Clique para selecionar a peça e exibir ponto 0,0,0
+function onPieceClick(event) {
     mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
     mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
 
@@ -218,30 +218,29 @@ function applyDimensions() {
     const intersects = raycaster.intersectObjects(driverBlock.children, true);
 
     if (intersects.length > 0) {
-        selectedPiece = intersects[0].object;
+        const clickedPiece = intersects[0].object;
 
-        // Identificar o ponto exato onde o mouse clicou na peça
-        const facePoint = intersects[0].point;
-        const localPoint = selectedPiece.worldToLocal(facePoint);
-        const cantoInferiorEsquerdo = new THREE.Vector3(0, 0, 0);
+        // Se clicou novamente na mesma peça e no ponto marcador, inicia o arraste
+        if (selectedPiece === clickedPiece && pointMarker) {
+            const markerIntersects = raycaster.intersectObject(pointMarker);
+            if (markerIntersects.length > 0) {
+                isDragging = true;
+                controls.enabled = false;
+                return;
+            }
+        }
 
-        clickOffset.copy(localPoint).sub(cantoInferiorEsquerdo);
-
-        console.log("Selecionado:", selectedPiece.name, "Offset do Clique:", clickOffset);
-
-        // Adiciona o marcador visual no ponto 0,0,0 local da peça
-        addPointMarkerToPiece(selectedPiece);
-
-        isDragging = true;
-        controls.enabled = false;
-        } else {
+        // Seleciona a nova peça e mostra o ponto 0,0,0
+        selectedPiece = clickedPiece;
+        showPointMarker(selectedPiece);
+    } else {
         selectedPiece = null;
         removePointMarker();
     }
-    }
+}
 
-    // Função para adicionar o marcador do ponto 0,0,0
-    function addPointMarkerToPiece(piece) {
+// Exibir ponto branco no canto inferior esquerdo (0,0,0) da peça
+function showPointMarker(piece) {
     removePointMarker();
 
     const markerGeometry = new THREE.SphereGeometry(5, 16, 16);
@@ -249,15 +248,14 @@ function applyDimensions() {
 
     pointMarker = new THREE.Mesh(markerGeometry, markerMaterial);
 
-    // Define a posição do marcador no ponto 0,0,0 local da peça
+    // Define a posição do marcador NO CANTO INFERIOR ESQUERDO (0, 0, 0)
     pointMarker.position.set(0, 0, 0);
 
-    // Adiciona o marcador como filho da peça
+    // Adiciona o marcador como filho da peça (pra ele ir junto se mover)
     piece.add(pointMarker);
-    }
+}
 
-    // Remove o marcador se existir
-    function removePointMarker() {
+function removePointMarker() {
     if (pointMarker) {
         if (pointMarker.parent) {
             pointMarker.parent.remove(pointMarker);
@@ -266,10 +264,10 @@ function applyDimensions() {
         pointMarker.material.dispose();
         pointMarker = null;
     }
-    }
+}
 
-    // Arrastar com ajuste do ponto clicado
-    function onPieceMouseMove(event) {
+// Arrastar a peça no plano XZ, ajustando o ponto clicado
+function onPieceMouseMove(event) {
     if (!isDragging || !selectedPiece) return;
 
     mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
@@ -278,16 +276,18 @@ function applyDimensions() {
     raycaster.setFromCamera(mouse, camera);
     raycaster.ray.intersectPlane(plane, intersectionPoint);
 
-    selectedPiece.position.x = intersectionPoint.x - clickOffset.x;
-    selectedPiece.position.z = intersectionPoint.z - clickOffset.z;
-    }
+    // O ponto 0,0,0 da peça deve coincidir com o ponto do mouse
+    selectedPiece.position.x = intersectionPoint.x;
+    selectedPiece.position.z = intersectionPoint.z;
+}
 
-    // Soltar a peça ao soltar o mouse
-    function onPieceMouseUp() {
-        if (isDragging) {
-            isDragging = false;
-            controls.enabled = true;
-        }
+// Soltar a peça ao soltar o mouse
+function onPieceMouseUp() {
+    if (isDragging) {
+        isDragging = false;
+        controls.enabled = true;
     }
+}
+
 
 
