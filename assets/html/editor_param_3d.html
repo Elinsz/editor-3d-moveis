@@ -153,6 +153,11 @@
         const zAxis = new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 0, 0), axisLength, 0x0000ff, arrowSize, arrowSize);
         scene.add(zAxis);
 
+        // Grade plana (opcional)
+        const gridHelper = new THREE.GridHelper(1000, 20, 0x888888, 0x444444);
+        gridHelper.position.y = 0;
+        scene.add(gridHelper);
+
         animate();
     }
 
