@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Ajusta a tela em caso de redimensionamento
     window.addEventListener('resize', () => {
-    camera.aspect = (window.innerWidth - 250) / window.innerHeight;
+    // camera.aspect = (window.innerWidth - 250) / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth - 250, window.innerHeight);
 
