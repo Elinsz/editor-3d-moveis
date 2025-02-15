@@ -121,7 +121,7 @@ function applyDimensions() {
         );
 
         // Desloca a geometria para que o canto inferior esquerdo seja (0, 0, 0)
-        geometry.translate(0, 0, profundidade / 2);
+        geometry.translate(altura / 2, 0,0);
 
         const material = new THREE.MeshBasicMaterial({
             color: cor,
