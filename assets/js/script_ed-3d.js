@@ -182,6 +182,7 @@ function applyDimensions() {
 
         if (piece) {
             driverBlock.add(piece);
+            enableDrag(piece);
             // piece.position.set(0, 0, 0); // Posição inicial dentro do Driver-Block
             piece.position.set(20, 0, 0); // Exemplo de movimentação manual
 
@@ -192,61 +193,14 @@ function applyDimensions() {
     });
 
 
-    let selectedPiece = null;
+    function enableDrag(piece) {
+        const dragControls = new THREE.DragControls([piece], camera, renderer.domElement);
 
-// Detectar clique na peça
-function onPieceClick(event) {
-    const mouse = new THREE.Vector2();
-    const raycaster = new THREE.Raycaster();
+        dragControls.addEventListener('dragstart', function () {
+            controls.enabled = false; // Desabilita OrbitControls enquanto arrasta
+        });
 
-    // Normaliza as coordenadas do mouse para o Three.js (-1 a +1)
-    mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
-    mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
-
-    raycaster.setFromCamera(mouse, camera);
-
-    const intersects = raycaster.intersectObjects(driverBlock.children, true);
-
-    if (intersects.length > 0) {
-        selectedPiece = intersects[0].object;
-        console.log("Peça Selecionada:", selectedPiece);
-    } else {
-        selectedPiece = null;
+        dragControls.addEventListener('dragend', function () {
+            controls.enabled = true; // Reabilita OrbitControls após arrastar
+        });
     }
-}
-
-
-// Função para movimentar a peça manualmente com as teclas
-function moveSelectedPiece(event) {
-    if (!selectedPiece) return;
-
-    const step = 10; // Define o quanto a peça se move em mm a cada tecla pressionada
-
-    switch (event.key) {
-        case "ArrowUp":
-            selectedPiece.position.z -= step;
-            break;
-        case "ArrowDown":
-            selectedPiece.position.z += step;
-            break;
-        case "ArrowLeft":
-            selectedPiece.position.x -= step;
-            break;
-        case "ArrowRight":
-            selectedPiece.position.x += step;
-            break;
-        case "PageUp":
-            selectedPiece.position.y += step;
-            break;
-        case "PageDown":
-            selectedPiece.position.y -= step;
-            break;
-    }
-
-    console.log("Posição Atual da Peça:", selectedPiece.position);
-}
-
-
-
-
-
