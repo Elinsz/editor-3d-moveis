@@ -31,53 +31,6 @@ function addEnvironment() {
 
 //===============================================================================
 
-// Grade infinita
-const gridHelper = new THREE.GridHelper(10000, 500, 0x888888, 0x444444);
-gridHelper.material.opacity = 0.5;
-gridHelper.material.transparent = true;
-
-// Rotacionar a grade para alinhar com o sistema "Y para trás, Z para cima"
-gridHelper.rotation.x = -Math.PI / 2;
-scene.add(gridHelper);
-
-// Eixos X, Y, Z ajustados para SketchUp Style
-const axisLength = 300;
-
-// X → Direita (vermelho)
-const xAxis = new THREE.ArrowHelper(
-    new THREE.Vector3(1, 0, 0),
-    new THREE.Vector3(0, 0, 0),
-    axisLength,
-    0xff0000,
-    20,
-    10
-);
-
-// Y → Para trás (azul)
-const yAxis = new THREE.ArrowHelper(
-    new THREE.Vector3(0, 0, -1),
-    new THREE.Vector3(0, 0, 0),
-    axisLength,
-    0x0000ff,
-    20,
-    10
-);
-
-// Z → Para cima (verde)
-const zAxis = new THREE.ArrowHelper(
-    new THREE.Vector3(0, 1, 0),
-    new THREE.Vector3(0, 0, 0),
-    axisLength,
-    0x00ff00,
-    20,
-    10
-);
-
-scene.add(xAxis);
-scene.add(yAxis);
-scene.add(zAxis);
-
-
             // Grade infinita
         // const gridHelper = new THREE.GridHelper(10000, 500, 0x888888, 0x444444);
         // gridHelper.material.opacity = 0.5;
@@ -98,6 +51,51 @@ scene.add(zAxis);
         // scene.add(xAxis);
         // scene.add(yAxis);
         // scene.add(zAxis);
+
+        // Grade infinita
+const gridHelper = new THREE.GridHelper(10000, 500, 0x888888, 0x444444);
+gridHelper.material.opacity = 0.5;
+gridHelper.material.transparent = true;
+
+// Rotacionar a grade em 180 graus em torno do eixo Z
+gridHelper.rotation.y = Math.PI; // Esta rotação gira a grade como você espera
+
+scene.add(gridHelper);
+
+// Eixos X, Y, Z
+const axisLength = 300;
+
+const xAxis = new THREE.ArrowHelper(
+    new THREE.Vector3(0, 0, 1),
+    new THREE.Vector3(0, 0, 0),
+    axisLength,
+    0xff0000,
+    20,
+    10
+);
+const yAxis = new THREE.ArrowHelper(
+    new THREE.Vector3(0, 1, 0),
+    new THREE.Vector3(0, 0, 0),
+    axisLength,
+    0x00ff00,
+    20,
+    10
+);
+const zAxis = new THREE.ArrowHelper(
+    new THREE.Vector3(1, 0, 0),
+    new THREE.Vector3(0, 0, 0),
+    axisLength,
+    0x0000ff,
+    20,
+    10
+);
+
+scene.add(xAxis);
+scene.add(yAxis);
+scene.add(zAxis);
+
+animate();
+
 
 
     animate();
