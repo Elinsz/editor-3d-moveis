@@ -58,7 +58,7 @@ gridHelper.material.opacity = 0.5;
 gridHelper.material.transparent = true;
 
 // Rotacionar a grade em 180 graus em torno do eixo Z
-gridHelper.rotation.y = Math.PI; // Esta rotação gira a grade como você espera
+gridHelper.rotation.x = Math.PI; // Esta rotação gira a grade como você espera
 
 scene.add(gridHelper);
 
