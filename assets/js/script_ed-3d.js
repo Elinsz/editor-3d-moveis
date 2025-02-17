@@ -7,7 +7,10 @@ function addEnvironment() {
     const container = document.getElementById("canvas-container");
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 20000);
-    camera.position.set(500, 500, 500);
+    // camera.position.set(500, 500, 500);
+    camera.position.set(500, 300, -500); // X: direita, Y: altura, Z: para trás
+    camera.lookAt(0, 0, 0);
+
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
@@ -31,74 +34,73 @@ function addEnvironment() {
 
 //===============================================================================
 
-            // Grade infinita
-        // const gridHelper = new THREE.GridHelper(10000, 500, 0x888888, 0x444444);
-        // gridHelper.material.opacity = 0.5;
-        // gridHelper.material.transparent = true;
-
-        // scene.add(gridHelper);
-
-            // Rotacionar 180 graus em torno do eixo Z
-        // gridHelper.rotation.z = Math.PI;
-
-            // Eixos X, Y, Z
-        // const axisLength = 300;
-
-        // const xAxis = new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 0, 0), axisLength, 0xff0000, 20, 10);
-        // const yAxis = new THREE.ArrowHelper(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, 0), axisLength, 0x00ff00, 20, 10);
-        // const zAxis = new THREE.ArrowHelper(new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 0, 0), axisLength, 0x0000ff, 20, 10);
-
-        // scene.add(xAxis);
-        // scene.add(yAxis);
-        // scene.add(zAxis);
-
         // Grade infinita
-const gridHelper = new THREE.GridHelper(10000, 500, 0x888888, 0x444444);
-gridHelper.material.opacity = 0.5;
-gridHelper.material.transparent = true;
+            // const gridHelper = new THREE.GridHelper(10000, 500, 0x888888, 0x444444);
+            // gridHelper.material.opacity = 0.5;
+            // gridHelper.material.transparent = true;
 
-// Rotacionar a grade em 180 graus em torno do eixo Z
-gridHelper.rotation.x = Math.PI; // Esta rotação gira a grade como você espera
+            // scene.add(gridHelper);
 
-scene.add(gridHelper);
+        // Rotacionar 180 graus em torno do eixo Z
+            // gridHelper.rotation.z = Math.PI;
 
-// Eixos X, Y, Z
-const axisLength = 300;
+        // Eixos X, Y, Z
+            // const axisLength = 300;
 
-const xAxis = new THREE.ArrowHelper(
-    new THREE.Vector3(0, 0, 1),
-    new THREE.Vector3(0, 0, 0),
-    axisLength,
-    0xff0000,
-    20,
-    10
-);
-const yAxis = new THREE.ArrowHelper(
-    new THREE.Vector3(0, 1, 0),
-    new THREE.Vector3(0, 0, 0),
-    axisLength,
-    0x00ff00,
-    20,
-    10
-);
-const zAxis = new THREE.ArrowHelper(
-    new THREE.Vector3(1, 0, 0),
-    new THREE.Vector3(0, 0, 0),
-    axisLength,
-    0x0000ff,
-    20,
-    10
-);
+            // const xAxis = new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 0, 0), axisLength, 0xff0000, 20, 10);
+            // const yAxis = new THREE.ArrowHelper(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0, 0, 0), axisLength, 0x00ff00, 20, 10);
+            // const zAxis = new THREE.ArrowHelper(new THREE.Vector3(1, 0, 0), new THREE.Vector3(0, 0, 0), axisLength, 0x0000ff, 20, 10);
 
-scene.add(xAxis);
-scene.add(yAxis);
-scene.add(zAxis);
-
-animate();
-
-
+            // scene.add(xAxis);
+            // scene.add(yAxis);
+            // scene.add(zAxis);
 
     // animate();
+
+    // Grade infinita
+    const gridHelper = new THREE.GridHelper(10000, 500, 0x888888, 0x444444);
+    gridHelper.material.opacity = 0.5;
+    gridHelper.material.transparent = true;
+
+    // Rotacionar a grade em 180 graus em torno do eixo Z
+    gridHelper.rotation.y = Math.PI; // Esta rotação gira a grade como você espera
+
+    scene.add(gridHelper);
+
+    // Eixos X, Y, Z
+    const axisLength = 300;
+
+    const xAxis = new THREE.ArrowHelper(
+        new THREE.Vector3(0, 0, 1),
+        new THREE.Vector3(0, 0, 0),
+        axisLength,
+        0xff0000,
+        20,
+        10
+    );
+    const yAxis = new THREE.ArrowHelper(
+        new THREE.Vector3(0, 1, 0),
+        new THREE.Vector3(0, 0, 0),
+        axisLength,
+        0x00ff00,
+        20,
+        10
+    );
+    const zAxis = new THREE.ArrowHelper(
+        new THREE.Vector3(1, 0, 0),
+        new THREE.Vector3(0, 0, 0),
+        axisLength,
+        0x0000ff,
+        20,
+        10
+    );
+
+    scene.add(xAxis);
+    scene.add(yAxis);
+    scene.add(zAxis);
+
+    animate();
+
 }
 
 function animate() {
@@ -255,7 +257,7 @@ function applyDimensions() {
     //=============== Testando Funcionalidades de Pocicionamento da Peça  ========================
 
 
-    let selectedPiece = null;
+let selectedPiece = null;
 let isDragging = false;
 let pointMarker = null;
 
