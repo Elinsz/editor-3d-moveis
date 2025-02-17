@@ -33,11 +33,11 @@ function addEnvironment() {
         const gridHelper = new THREE.GridHelper(10000, 500, 0x888888, 0x444444);
         gridHelper.material.opacity = 0.5;
         gridHelper.material.transparent = true;
+        // gridHelper.rotation.z = Math.PI; // Rotaciona 180 graus em torno do eixo Z
+        gridHelper.rotation.x = Math.PI; // Rotaciona 180 graus em torno do eixo X
         scene.add(gridHelper);
 
         // Eixos X, Y, Z
-        gridHelper.rotation.z = Math.PI; // Rotaciona 180 graus em torno do eixo Z
-
         const axisLength = 300;
 
         const xAxis = new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 0, 0), axisLength, 0xff0000, 20, 10);
