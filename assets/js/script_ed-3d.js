@@ -98,7 +98,7 @@ animate();
 
 
 
-    animate();
+    // animate();
 }
 
 function animate() {
