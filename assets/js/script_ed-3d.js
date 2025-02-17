@@ -36,6 +36,8 @@ function addEnvironment() {
         scene.add(gridHelper);
 
         // Eixos X, Y, Z
+        gridHelper.rotation.z = Math.PI; // Rotaciona 180 graus em torno do eixo Z
+
         const axisLength = 300;
 
         const xAxis = new THREE.ArrowHelper(new THREE.Vector3(0, 0, 1), new THREE.Vector3(0, 0, 0), axisLength, 0xff0000, 20, 10);
