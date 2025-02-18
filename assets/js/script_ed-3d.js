@@ -125,7 +125,7 @@ function addModule() {
 
     const geometry = new THREE.BoxGeometry(width , height, depth);
     const material = new THREE.MeshBasicMaterial({
-        color: 0x00ffff,
+        color: 0xffff00,
         transparent: true,
         opacity: 0.5,
         // wireframe: false
