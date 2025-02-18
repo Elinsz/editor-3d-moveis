@@ -219,9 +219,9 @@ function applyDimensions() {
         let piece = null;
 
         // Pegando as dimensões das configurações do Driver-Block
-        const altura = parseFloat(document.getElementById('depth').value) || 500;
+        const altura = parseFloat(document.getElementById('width').value) || 500;
         const largura = parseFloat(document.getElementById('height').value) || 800;
-        const profundidade = parseFloat(document.getElementById('width').value) || 500;
+        const profundidade = parseFloat(document.getElementById('depth').value) || 500;
         const espessuraPadrao = 18;
 
         switch (pieceType) {
@@ -247,7 +247,7 @@ function applyDimensions() {
         if (piece) {
             driverBlock.add(piece);
             // piece.position.set(0, 0, 0); // Posição inicial dentro do Driver-Block
-            piece.position.set(20, 0, 0); // Exemplo de movimentação manual
+            piece.position.set(0, 20, 0); // Exemplo de movimentação manual
 
             // Aqui você pode ajustar a posição da peça manualmente depois
             console.log(`${pieceType} adicionada dentro do Driver-Block.`);
