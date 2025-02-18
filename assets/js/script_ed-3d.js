@@ -445,16 +445,16 @@ function createBase(largura, profundidade, espessura, cor = 0x00ff00) {
         }
 
         // Exibir ponto branco no canto inferior esquerdo (0,0,0) da peça
-        function showPointMarker(piece) {
-            removePointMarker();
+        // function showPointMarker(piece) {
+        //     removePointMarker();
 
-            const markerGeometry = new THREE.SphereGeometry(5, 16, 16);
-            const markerMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        //     const markerGeometry = new THREE.SphereGeometry(5, 16, 16);
+        //     const markerMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
 
-            pointMarker = new THREE.Mesh(markerGeometry, markerMaterial);
-            pointMarker.position.set(0, 0, 0);
-            piece.add(pointMarker);
-        }
+        //     pointMarker = new THREE.Mesh(markerGeometry, markerMaterial);
+        //     pointMarker.position.set(0, 0, 0);
+        //     piece.add(pointMarker);
+        // }
 
         function removePointMarker() {
             if (pointMarker) {
