@@ -241,9 +241,7 @@ function createBase(largura, profundidade, espessura, cor = 0x00ff00) {
         espessura, // X → Espessura
         altura, // Z → Altura
         profundidade // Y → Profundidade
-        // largura, // X → Largura
-        // profundidade, // Y → Profundidade
-        // espessura // Z → Espessura
+
     );
 
     const material = new THREE.MeshBasicMaterial({
@@ -298,7 +296,9 @@ function createBase(largura, profundidade, espessura, cor = 0x00ff00) {
         if (piece) {
             driverBlock.add(piece);
             // piece.position.set(0, 0, 0); // Posição inicial dentro do Driver-Block
-            piece.position.set(20, 0, 0); // Exemplo de movimentação manual
+            // piece.position.set(20, 0, 0); // Exemplo de movimentação manual
+            piece.position.set(-500, 300, -500); // X: direita, Y: altura, Z: para trás
+            piece.lookAt(0, 0, 0);
 
             // Aqui você pode ajustar a posição da peça manualmente depois
             console.log(`${pieceType} adicionada dentro do Driver-Block.`);
