@@ -247,7 +247,7 @@ function applyDimensions() {
         if (piece) {
             driverBlock.add(piece);
             // piece.position.set(0, 0, 0); // Posição inicial dentro do Driver-Block
-            piece.position.set(0, 20, 0); // Exemplo de movimentação manual
+            piece.position.set(20, 0, 0); // Exemplo de movimentação manual
 
             // Aqui você pode ajustar a posição da peça manualmente depois
             console.log(`${pieceType} adicionada dentro do Driver-Block.`);
@@ -308,7 +308,7 @@ function showPointMarker(piece) {
     pointMarker = new THREE.Mesh(markerGeometry, markerMaterial);
 
     // Define a posição do marcador NO CANTO INFERIOR ESQUERDO (0, 0, 0)
-    pointMarker.position.set(0, 0, 0);
+    pointMarker.position.set(0, 1, 0);
 
     // Adiciona o marcador como filho da peça (pra ele ir junto se mover)
     piece.add(pointMarker);
