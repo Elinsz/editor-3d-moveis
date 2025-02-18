@@ -127,9 +127,7 @@ function addModule() {
     const material = new THREE.MeshBasicMaterial({
         color: 0x00ffff,
         transparent: true,
-        opacity: 0.2,
-        Conceptual: true
-
+        opacity: 0.5,
         // wireframe: false
 
     });
