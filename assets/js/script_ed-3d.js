@@ -25,12 +25,12 @@ function addEnvironment() {
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
     scene.add(ambientLight);
 
-    renderer.domElement.addEventListener("click", onPieceClick);
-    // window.addEventListener("keydown", moveSelectedPiece);
+    // renderer.domElement.addEventListener("click", onPieceClick);
+    // // window.addEventListener("keydown", moveSelectedPiece);
 
-    renderer.domElement.addEventListener('mousedown', onPieceClick);
-    renderer.domElement.addEventListener('mousemove', onPieceMouseMove);
-    renderer.domElement.addEventListener('mouseup', onPieceMouseUp);
+    // renderer.domElement.addEventListener('mousedown', onPieceClick);
+    // renderer.domElement.addEventListener('mousemove', onPieceMouseMove);
+    // renderer.domElement.addEventListener('mouseup', onPieceMouseUp);
 
 //===============================================================================
 
@@ -305,6 +305,13 @@ function createBase(largura, profundidade, espessura, cor = 0x00ff00) {
 
     //=============== Testando Funcionalidades de Pocicionamento da Peça  ========================
 
+    renderer.domElement.addEventListener("click", onPieceClick);
+    // window.addEventListener("keydown", moveSelectedPiece);
+
+    renderer.domElement.addEventListener('mousedown', onPieceClick);
+    renderer.domElement.addEventListener('mousemove', onPieceMouseMove);
+    renderer.domElement.addEventListener('mouseup', onPieceMouseUp);
+
 
         // let selectedPiece = null;
         // let isDragging = false;
@@ -398,74 +405,7 @@ function createBase(largura, profundidade, espessura, cor = 0x00ff00) {
         // }
 
 
-        let selectedPiece = null;
-        // let isDragging = false;
-        let pointMarker = null;
 
-        const raycaster = new THREE.Raycaster();
-        const mouse = new THREE.Vector2();
-        const intersectionPoint = new THREE.Vector3();
-
-        // Clique na peça ou na área CAD
-        function onPieceClick(event) {
-            mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
-            mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
-
-            raycaster.setFromCamera(mouse, camera);
-
-            // 1️⃣ Primeiro verifica se clicou numa peça
-            const intersectsPieces = raycaster.intersectObjects(driverBlock.children, true);
-
-            if (intersectsPieces.length > 0) {
-                const clickedPiece = intersectsPieces[0].object;
-
-                // Se clicou em outra peça ou na mesma peça só pra selecionar
-                if (selectedPiece !== clickedPiece) {
-                    selectedPiece = clickedPiece;
-                    showPointMarker(selectedPiece);
-                    console.log("Peça Selecionada:", selectedPiece.name);
-                }
-                // Se clicar na mesma peça de novo não faz nada (apenas seleciona e mostra o ponto)
-                return;
-            }
-
-            // 2️⃣ Se tiver uma peça selecionada, verificar se clicou no chão (Driver-Block)
-            if (selectedPiece) {
-                const intersectsBase = raycaster.intersectObject(driverBlock, true);
-
-                if (intersectsBase.length > 0) {
-                    intersectionPoint.copy(intersectsBase[0].point);
-
-                    // Move a peça para encaixar o canto inferior esquerdo no ponto clicado
-                    selectedPiece.position.x = intersectionPoint.x;
-                    selectedPiece.position.z = intersectionPoint.z;
-                    console.log(`Peça movida para: X:${intersectionPoint.x}, Z:${intersectionPoint.z}`);
-                }
-            }
-        }
-
-        // Exibir ponto branco no canto inferior esquerdo (0,0,0) da peça
-        // function showPointMarker(piece) {
-        //     removePointMarker();
-
-        //     const markerGeometry = new THREE.SphereGeometry(5, 16, 16);
-        //     const markerMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-
-        //     pointMarker = new THREE.Mesh(markerGeometry, markerMaterial);
-        //     pointMarker.position.set(0, 0, 0);
-        //     piece.add(pointMarker);
-        // }
-
-        function removePointMarker() {
-            if (pointMarker) {
-                if (pointMarker.parent) {
-                    pointMarker.parent.remove(pointMarker);
-                }
-                pointMarker.geometry.dispose();
-                pointMarker.material.dispose();
-                pointMarker = null;
-            }
-        }
 
 
 
