@@ -218,7 +218,7 @@ function createLateral(altura, profundidade, espessura, cor = 0xff0000) {
     );
 
     // Ajusta a geometria para que o canto inferior esquerdo fique em (0, 0, 0)
-    geometry.translate(espessura / 2, altura / 2, profundidade / 2);
+    geometry.translate(espessura / 2, altura, profundidade);
 
     const material = new THREE.MeshBasicMaterial({
         color: cor,
