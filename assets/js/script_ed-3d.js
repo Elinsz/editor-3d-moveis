@@ -306,44 +306,140 @@ function createBase(largura, profundidade, espessura, cor = 0x00ff00) {
     //=============== Testando Funcionalidades de Pocicionamento da Peça  ========================
 
 
-let selectedPiece = null;
-let isDragging = false;
+        // let selectedPiece = null;
+        // let isDragging = false;
+        // let pointMarker = null;
+
+        // const raycaster = new THREE.Raycaster();
+        // const mouse = new THREE.Vector2();
+        // const planeNormal = new THREE.Vector3(0, 1, 0); // Plano XZ
+        // const plane = new THREE.Plane(planeNormal, 0);
+        // const intersectionPoint = new THREE.Vector3();
+        // const clickOffset = new THREE.Vector3();
+
+        // // Clique para selecionar a peça e exibir ponto 0,0,0
+        // function onPieceClick(event) {
+        //     mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+        //     mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+
+        //     raycaster.setFromCamera(mouse, camera);
+        //     const intersects = raycaster.intersectObjects(driverBlock.children, true);
+
+        //     if (intersects.length > 0) {
+        //         const clickedPiece = intersects[0].object;
+
+        //         // Se clicou novamente na mesma peça e no ponto marcador, inicia o arraste
+        //         if (selectedPiece === clickedPiece && pointMarker) {
+        //             const markerIntersects = raycaster.intersectObject(pointMarker);
+        //             if (markerIntersects.length > 0) {
+        //                 isDragging = true;
+        //                 controls.enabled = false;
+        //                 return;
+        //             }
+        //         }
+
+        //         // Seleciona a nova peça e mostra o ponto 0,0,0
+        //         selectedPiece = clickedPiece;
+        //         showPointMarker(selectedPiece);
+        //     } else {
+        //         selectedPiece = null;
+        //         removePointMarker();
+        //     }
+        // }
+
+        // // Exibir ponto branco no canto inferior esquerdo (0,0,0) da peça
+        // function showPointMarker(piece) {
+        //     removePointMarker();
+
+        //     const markerGeometry = new THREE.SphereGeometry(5, 16, 16);
+        //     const markerMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+
+        //     pointMarker = new THREE.Mesh(markerGeometry, markerMaterial);
+
+        //     // Define a posição do marcador NO CANTO INFERIOR ESQUERDO (0, 0, 0)
+        //     pointMarker.position.set(0, 0, 0);
+
+        //     // Adiciona o marcador como filho da peça (pra ele ir junto se mover)
+        //     piece.add(pointMarker);
+        // }
+
+        // function removePointMarker() {
+        //     if (pointMarker) {
+        //         if (pointMarker.parent) {
+        //             pointMarker.parent.remove(pointMarker);
+        //         }
+        //         pointMarker.geometry.dispose();
+        //         pointMarker.material.dispose();
+        //         pointMarker = null;
+        //     }
+        // }
+
+        // // Arrastar a peça no plano XZ, ajustando o ponto clicado
+        // function onPieceMouseMove(event) {
+        //     if (!isDragging || !selectedPiece) return;
+
+        //     mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+        //     mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+
+        //     raycaster.setFromCamera(mouse, camera);
+        //     raycaster.ray.intersectPlane(plane, intersectionPoint);
+
+        //     // O ponto 0,0,0 da peça deve coincidir com o ponto do mouse
+        //     selectedPiece.position.x = intersectionPoint.x;
+        //     selectedPiece.position.z = intersectionPoint.z;
+        // }
+
+        // // Soltar a peça ao soltar o mouse
+        // function onPieceMouseUp() {
+        //     if (isDragging) {
+        //         isDragging = false;
+        //         controls.enabled = true;
+        //     }
+        // }
+
+
+        let selectedPiece = null;
 let pointMarker = null;
 
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
-const planeNormal = new THREE.Vector3(0, 1, 0); // Plano XZ
-const plane = new THREE.Plane(planeNormal, 0);
 const intersectionPoint = new THREE.Vector3();
-const clickOffset = new THREE.Vector3();
 
-// Clique para selecionar a peça e exibir ponto 0,0,0
+// Clique na peça ou na área CAD
 function onPieceClick(event) {
     mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
     mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
 
     raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(driverBlock.children, true);
 
-    if (intersects.length > 0) {
-        const clickedPiece = intersects[0].object;
+    // 1️⃣ Primeiro tentamos clicar nas peças (seleção)
+    const intersectsPieces = raycaster.intersectObjects(driverBlock.children, true);
 
-        // Se clicou novamente na mesma peça e no ponto marcador, inicia o arraste
-        if (selectedPiece === clickedPiece && pointMarker) {
-            const markerIntersects = raycaster.intersectObject(pointMarker);
-            if (markerIntersects.length > 0) {
-                isDragging = true;
-                controls.enabled = false;
-                return;
-            }
+    if (intersectsPieces.length > 0) {
+        // Clicou em uma peça → Selecionar e exibir ponto 0,0,0
+        const clickedPiece = intersectsPieces[0].object;
+
+        // Evita "re-selecionar" desnecessariamente
+        if (selectedPiece !== clickedPiece) {
+            selectedPiece = clickedPiece;
+            showPointMarker(selectedPiece);
+            console.log("Peça Selecionada:", selectedPiece.name);
         }
+        return; // Evita continuar pro clique na base
+    }
 
-        // Seleciona a nova peça e mostra o ponto 0,0,0
-        selectedPiece = clickedPiece;
-        showPointMarker(selectedPiece);
-    } else {
-        selectedPiece = null;
-        removePointMarker();
+    // 2️⃣ Se não clicou em peça, mas tem uma peça selecionada → Posicionar na base (Driver-Block)
+    if (selectedPiece) {
+        const intersectsBase = raycaster.intersectObject(driverBlock, true); // Base ou outro objeto como piso do driver-block
+
+        if (intersectsBase.length > 0) {
+            // Encaixar o ponto (0,0,0) da lateral na posição clicada
+            intersectionPoint.copy(intersectsBase[0].point);
+
+            selectedPiece.position.x = intersectionPoint.x;
+            selectedPiece.position.z = intersectionPoint.z;
+            console.log(`Peça movida para: ${intersectionPoint.x}, ${intersectionPoint.y}, ${intersectionPoint.z}`);
+        }
     }
 }
 
@@ -355,11 +451,7 @@ function showPointMarker(piece) {
     const markerMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
 
     pointMarker = new THREE.Mesh(markerGeometry, markerMaterial);
-
-    // Define a posição do marcador NO CANTO INFERIOR ESQUERDO (0, 0, 0)
     pointMarker.position.set(0, 0, 0);
-
-    // Adiciona o marcador como filho da peça (pra ele ir junto se mover)
     piece.add(pointMarker);
 }
 
@@ -371,29 +463,6 @@ function removePointMarker() {
         pointMarker.geometry.dispose();
         pointMarker.material.dispose();
         pointMarker = null;
-    }
-}
-
-// Arrastar a peça no plano XZ, ajustando o ponto clicado
-function onPieceMouseMove(event) {
-    if (!isDragging || !selectedPiece) return;
-
-    mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
-    mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
-
-    raycaster.setFromCamera(mouse, camera);
-    raycaster.ray.intersectPlane(plane, intersectionPoint);
-
-    // O ponto 0,0,0 da peça deve coincidir com o ponto do mouse
-    selectedPiece.position.x = intersectionPoint.x;
-    selectedPiece.position.z = intersectionPoint.z;
-}
-
-// Soltar a peça ao soltar o mouse
-function onPieceMouseUp() {
-    if (isDragging) {
-        isDragging = false;
-        controls.enabled = true;
     }
 }
 
