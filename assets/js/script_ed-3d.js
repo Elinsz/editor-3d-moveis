@@ -304,20 +304,7 @@ function createBase(largura, profundidade, espessura, cor = 0x00ff00) {
     });
 
 
-        // CONTROLE DOS DROPDOWNS
-        document.querySelectorAll('.dropdown-btn').forEach(button => {
-            button.addEventListener('click', function () {
-                const menu = this.parentElement;
-                menu.classList.toggle('active');
-            });
-        });
 
-        // Ajusta a tela em caso de redimensionamento
-            window.addEventListener('resize', () => {
-            camera.aspect = (window.innerWidth - 250) / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth - 250, window.innerHeight);
-        });
 
     //=============== Testando Funcionalidades de Pocicionamento da Peça  ========================
 
@@ -389,6 +376,21 @@ function createBase(largura, profundidade, espessura, cor = 0x00ff00) {
             pointMarker = null;
         }
     }
+
+            // CONTROLE DOS DROPDOWNS
+            document.querySelectorAll('.dropdown-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    const menu = this.parentElement;
+                    menu.classList.toggle('active');
+                });
+            });
+
+            // Ajusta a tela em caso de redimensionamento
+                window.addEventListener('resize', () => {
+                camera.aspect = (window.innerWidth - 250) / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth - 250, window.innerHeight);
+            });
 
 
 
