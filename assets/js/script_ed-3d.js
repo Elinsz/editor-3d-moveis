@@ -213,12 +213,12 @@ function applyDimensions() {
 function createLateral(altura, profundidade, espessura, cor = 0xff0000) {
     const geometry = new THREE.BoxGeometry(
         espessura, // X → Espessura
-        altura, // Y → Altura
-        profundidade // Z → Profundidade
+        altura, // Z → Altura
+        profundidade // Y → Profundidade
     );
 
     // Ajusta a geometria para que o canto inferior esquerdo fique em (0, 0, 0)
-    geometry.translate(- espessura / 2, 0, 0);
+    geometry.translate(- espessura / 2, profundidade/2, altura/2);
 
     const material = new THREE.MeshBasicMaterial({
         color: cor,
