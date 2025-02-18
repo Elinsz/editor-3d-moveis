@@ -128,7 +128,8 @@ function addModule() {
         color: 0x00ffff,
         transparent: true,
         opacity: 0.9,
-        wireframe: false
+        // wireframe: false
+
     });
 
     driverBlock = new THREE.Mesh(geometry, material);
