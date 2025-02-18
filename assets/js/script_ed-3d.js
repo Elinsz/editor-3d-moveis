@@ -398,74 +398,75 @@ function createBase(largura, profundidade, espessura, cor = 0x00ff00) {
         // }
 
 
-let selectedPiece = null;
-let isDragging = false;
-let pointMarker = null;
+        let selectedPiece = null;
+        let isDragging = false;
+        let pointMarker = null;
 
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-const intersectionPoint = new THREE.Vector3();
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        const intersectionPoint = new THREE.Vector3();
 
-// Clique na peça ou na área CAD
-function onPieceClick(event) {
-    mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
-    mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
+        // Clique na peça ou na área CAD
+        function onPieceClick(event) {
+            mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
+            mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
 
-    raycaster.setFromCamera(mouse, camera);
+            raycaster.setFromCamera(mouse, camera);
 
-    // 1️⃣ Primeiro tentamos clicar nas peças (seleção)
-    const intersectsPieces = raycaster.intersectObjects(driverBlock.children, true);
+            // 1️⃣ Primeiro verifica se clicou numa peça
+            const intersectsPieces = raycaster.intersectObjects(driverBlock.children, true);
 
-    if (intersectsPieces.length > 0) {
-        // Clicou em uma peça → Selecionar e exibir ponto 0,0,0
-        const clickedPiece = intersectsPieces[0].object;
+            if (intersectsPieces.length > 0) {
+                const clickedPiece = intersectsPieces[0].object;
 
-        // Evita "re-selecionar" desnecessariamente
-        if (selectedPiece !== clickedPiece) {
-            selectedPiece = clickedPiece;
-            showPointMarker(selectedPiece);
-            console.log("Peça Selecionada:", selectedPiece.name);
+                // Se clicou em outra peça ou na mesma peça só pra selecionar
+                if (selectedPiece !== clickedPiece) {
+                    selectedPiece = clickedPiece;
+                    showPointMarker(selectedPiece);
+                    console.log("Peça Selecionada:", selectedPiece.name);
+                }
+                // Se clicar na mesma peça de novo não faz nada (apenas seleciona e mostra o ponto)
+                return;
+            }
+
+            // 2️⃣ Se tiver uma peça selecionada, verificar se clicou no chão (Driver-Block)
+            if (selectedPiece) {
+                const intersectsBase = raycaster.intersectObject(driverBlock, true);
+
+                if (intersectsBase.length > 0) {
+                    intersectionPoint.copy(intersectsBase[0].point);
+
+                    // Move a peça para encaixar o canto inferior esquerdo no ponto clicado
+                    selectedPiece.position.x = intersectionPoint.x;
+                    selectedPiece.position.z = intersectionPoint.z;
+                    console.log(`Peça movida para: X:${intersectionPoint.x}, Z:${intersectionPoint.z}`);
+                }
+            }
         }
-        return; // Evita continuar pro clique na base
-    }
 
-    // 2️⃣ Se não clicou em peça, mas tem uma peça selecionada → Posicionar na base (Driver-Block)
-    if (selectedPiece) {
-        const intersectsBase = raycaster.intersectObject(driverBlock, true); // Base ou outro objeto como piso do driver-block
+        // Exibir ponto branco no canto inferior esquerdo (0,0,0) da peça
+        function showPointMarker(piece) {
+            removePointMarker();
 
-        if (intersectsBase.length > 0) {
-            // Encaixar o ponto (0,0,0) da lateral na posição clicada
-            intersectionPoint.copy(intersectsBase[0].point);
+            const markerGeometry = new THREE.SphereGeometry(5, 16, 16);
+            const markerMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
 
-            selectedPiece.position.x = intersectionPoint.x;
-            selectedPiece.position.z = intersectionPoint.z;
-            console.log(`Peça movida para: ${intersectionPoint.x}, ${intersectionPoint.y}, ${intersectionPoint.z}`);
+            pointMarker = new THREE.Mesh(markerGeometry, markerMaterial);
+            pointMarker.position.set(0, 0, 0);
+            piece.add(pointMarker);
         }
-    }
-}
 
-// Exibir ponto branco no canto inferior esquerdo (0,0,0) da peça
-function showPointMarker(piece) {
-    removePointMarker();
-
-    const markerGeometry = new THREE.SphereGeometry(5, 16, 16);
-    const markerMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-
-    pointMarker = new THREE.Mesh(markerGeometry, markerMaterial);
-    pointMarker.position.set(0, 0, 0);
-    piece.add(pointMarker);
-}
-
-function removePointMarker() {
-    if (pointMarker) {
-        if (pointMarker.parent) {
-            pointMarker.parent.remove(pointMarker);
+        function removePointMarker() {
+            if (pointMarker) {
+                if (pointMarker.parent) {
+                    pointMarker.parent.remove(pointMarker);
+                }
+                pointMarker.geometry.dispose();
+                pointMarker.material.dispose();
+                pointMarker = null;
+            }
         }
-        pointMarker.geometry.dispose();
-        pointMarker.material.dispose();
-        pointMarker = null;
-    }
-}
+
 
 
 
