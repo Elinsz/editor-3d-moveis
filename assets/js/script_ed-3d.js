@@ -28,8 +28,8 @@ function addEnvironment() {
     renderer.domElement.addEventListener("click", onPieceClick);
 
     // renderer.domElement.addEventListener('mousedown', onPieceClick);
-    renderer.domElement.addEventListener('mousemove', onPieceMouseMove);
-    renderer.domElement.addEventListener('mouseup', onPieceMouseUp);
+    // renderer.domElement.addEventListener('mousemove', onPieceMouseMove);
+    // renderer.domElement.addEventListener('mouseup', onPieceMouseUp);
     // window.addEventListener("keydown", moveSelectedPiece);
 
     // renderer.domElement.addEventListener('mousedown', onPieceClick);
