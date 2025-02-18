@@ -238,9 +238,12 @@ function createLateral(altura, profundidade, espessura, cor = 0xff0000) {
 
 function createBase(largura, profundidade, espessura, cor = 0x00ff00) {
     const geometry = new THREE.BoxGeometry(
-        largura, // X → Largura
-        profundidade, // Y → Profundidade
-        espessura // Z → Espessura
+        espessura, // X → Espessura
+        altura, // Z → Altura
+        profundidade // Y → Profundidade
+        // largura, // X → Largura
+        // profundidade, // Y → Profundidade
+        // espessura // Z → Espessura
     );
 
     const material = new THREE.MeshBasicMaterial({
