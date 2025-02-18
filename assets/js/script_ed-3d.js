@@ -163,50 +163,98 @@ function applyDimensions() {
 
     //=======================================================================
 
-    // CRIAR PEÇAS INDIVIDUIAS
+            // // CRIAR PEÇAS INDIVIDUIAS
 
 
-    function createLateral(altura, profundidade, espessura, cor = 0xff0000) {
-        const geometry = new THREE.BoxGeometry(
-            espessura, // X → Espessura
-            profundidade, // Y → Profundidade
-            altura // Z → Altura
-        );
+            // function createLateral(altura, profundidade, espessura, cor = 0xff0000) {
+            //     const geometry = new THREE.BoxGeometry(
+            //         espessura, // X → Espessura
+            //         profundidade, // Y → Profundidade
+            //         altura // Z → Altura
+            //     );
 
-        // Ajusta a geometria para que o canto inferior esquerdo fique em (0, 0, 0)
-        geometry.translate(espessura / 2, profundidade / 2, altura / 2);
+            //     // Ajusta a geometria para que o canto inferior esquerdo fique em (0, 0, 0)
+            //     geometry.translate(espessura / 2, profundidade / 2, altura / 2);
 
-        const material = new THREE.MeshBasicMaterial({
-            color: cor,
-            transparent: true,
-            opacity: 0.5,
-        });
+            //     const material = new THREE.MeshBasicMaterial({
+            //         color: cor,
+            //         transparent: true,
+            //         opacity: 0.5,
+            //     });
 
-        const lateral = new THREE.Mesh(geometry, material);
-        lateral.userData.pieceType = 'Lateral'; // só pra facilitar se precisar no futuro
+            //     const lateral = new THREE.Mesh(geometry, material);
+            //     lateral.userData.pieceType = 'Lateral'; // só pra facilitar se precisar no futuro
 
-        return lateral;
-    }
+            //     return lateral;
+            // }
 
 
 
-    function createBase(largura, profundidade, espessura, cor = 0x00ff00) {
-        const geometry = new THREE.BoxGeometry(
-            largura, // X → Largura
-            profundidade, // Y → Profundidade
-            espessura // Z → Espessura
-        );
+            // function createBase(largura, profundidade, espessura, cor = 0x00ff00) {
+            //     const geometry = new THREE.BoxGeometry(
+            //         largura, // X → Largura
+            //         profundidade, // Y → Profundidade
+            //         espessura // Z → Espessura
+            //     );
 
-        const material = new THREE.MeshBasicMaterial({
-            color: cor,
-            transparent: true,
-            opacity: 0.5,
-        });
+            //     const material = new THREE.MeshBasicMaterial({
+            //         color: cor,
+            //         transparent: true,
+            //         opacity: 0.5,
+            //     });
 
-        const base = new THREE.Mesh(geometry, material);
-        base.position.set(0, 0, 0);
-        return base;
-    }
+            //     const base = new THREE.Mesh(geometry, material);
+            //     base.position.set(0, 0, 0);
+            //     return base;
+            // }
+
+// CRIAR PEÇAS INDIVIDUAIS
+
+function createLateral(altura, profundidade, espessura, cor = 0xff0000) {
+    const geometry = new THREE.BoxGeometry(
+        espessura, // X → Espessura
+        altura, // Y → Altura
+        profundidade // Z → Profundidade
+    );
+
+    // Ajusta a geometria para que o canto inferior esquerdo fique em (0, 0, 0)
+    geometry.translate(espessura / 2, altura / 2, profundidade / 2);
+
+    const material = new THREE.MeshBasicMaterial({
+        color: cor,
+        transparent: true,
+        opacity: 0.5,
+    });
+
+    const lateral = new THREE.Mesh(geometry, material);
+
+    // Rotaciona a peça em 90° para que ela fique "em pé"
+    lateral.rotation.x = -Math.PI / 2;
+
+    lateral.userData.pieceType = 'Lateral';
+
+    return lateral;
+}
+
+function createBase(largura, profundidade, espessura, cor = 0x00ff00) {
+    const geometry = new THREE.BoxGeometry(
+        largura, // X → Largura
+        profundidade, // Y → Profundidade
+        espessura // Z → Espessura
+    );
+
+    const material = new THREE.MeshBasicMaterial({
+        color: cor,
+        transparent: true,
+        opacity: 0.5,
+    });
+
+    const base = new THREE.Mesh(geometry, material);
+    base.position.set(0, 0, 0);
+    return base;
+}
+
+
 
     // Vincular ao botão "Posicionar Peça"
     document.getElementById("adicionarLateral").addEventListener("click", () => {
@@ -308,7 +356,7 @@ function showPointMarker(piece) {
     pointMarker = new THREE.Mesh(markerGeometry, markerMaterial);
 
     // Define a posição do marcador NO CANTO INFERIOR ESQUERDO (0, 0, 0)
-    pointMarker.position.set(0, 1, 0);
+    pointMarker.position.set(0, 0, 0);
 
     // Adiciona o marcador como filho da peça (pra ele ir junto se mover)
     piece.add(pointMarker);
