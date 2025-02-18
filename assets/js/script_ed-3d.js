@@ -26,7 +26,7 @@ function addEnvironment() {
     scene.add(ambientLight);
 
     renderer.domElement.addEventListener("click", onPieceClick);
-    window.addEventListener("keydown", moveSelectedPiece);
+    // window.addEventListener("keydown", moveSelectedPiece);
 
     renderer.domElement.addEventListener('mousedown', onPieceClick);
     renderer.domElement.addEventListener('mousemove', onPieceMouseMove);
@@ -296,7 +296,7 @@ function createBase(largura, profundidade, espessura, cor = 0x00ff00) {
         if (piece) {
             driverBlock.add(piece);
             // piece.position.set(0, 0, 0); // Posição inicial dentro do Driver-Block
-            piece.position.set(50, 0, 0); // Exemplo de movimentação manual
+            piece.position.set(height/2, 0, 0); // Exemplo de movimentação manual
 
             // Aqui você pode ajustar a posição da peça manualmente depois
             console.log(`${pieceType} adicionada dentro do Driver-Block.`);
