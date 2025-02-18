@@ -398,7 +398,8 @@ function createBase(largura, profundidade, espessura, cor = 0x00ff00) {
         // }
 
 
-        let selectedPiece = null;
+let selectedPiece = null;
+let isDragging = false;
 let pointMarker = null;
 
 const raycaster = new THREE.Raycaster();
