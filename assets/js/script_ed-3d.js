@@ -123,7 +123,7 @@ function addModule() {
     const height = parseFloat(document.getElementById('height').value) || 750;
     const depth = parseFloat(document.getElementById('width').value) || 500;
 
-    const geometry = new THREE.BoxGeometry(width , height, depth, cor = 0x0fff0);
+    const geometry = new THREE.BoxGeometry(width , height, depth, cor = 0x00ff00);
     const material = new THREE.MeshBasicMaterial({
         color: cor,
         transparent: true,
