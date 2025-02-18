@@ -120,7 +120,7 @@ function addModule() {
     const height = parseFloat(document.getElementById('height').value) || 750;
     const depth = parseFloat(document.getElementById('depth').value) || 500;
 
-    const geometry = new THREE.BoxGeometry( depth , width, height);
+    const geometry = new THREE.BoxGeometry( height , width, depth);
     const material = new THREE.MeshBasicMaterial({
         color: 0x00ffff,
         transparent: true,
@@ -144,7 +144,7 @@ function applyDimensions() {
     const depth = parseFloat(document.getElementById('depth').value) || 500;
 
     driverBlock.geometry.dispose();
-    driverBlock.geometry = new THREE.BoxGeometry( depth , width, height);
+    driverBlock.geometry = new THREE.BoxGeometry( height , width, depth);
     driverBlock.position.set(height / 2 , width / 2, depth / 2);
 }
 
