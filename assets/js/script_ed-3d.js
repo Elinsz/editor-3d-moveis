@@ -25,8 +25,8 @@ function addEnvironment() {
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
     scene.add(ambientLight);
 
-
-    // // window.addEventListener("keydown", moveSelectedPiece);
+    renderer.domElement.addEventListener("click", onPieceClick);
+    // window.addEventListener("keydown", moveSelectedPiece);
 
     // renderer.domElement.addEventListener('mousedown', onPieceClick);
 
@@ -304,11 +304,6 @@ function createBase(largura, profundidade, espessura, cor = 0x00ff00) {
 
     //=============== Testando Funcionalidades de Pocicionamento da Peça  ========================
 
-    renderer.domElement.addEventListener("click", onPieceClick);
-
-    renderer.domElement.addEventListener('mousedown', onPieceClick);
-    renderer.domElement.addEventListener('mousemove', onPieceMouseMove);
-    renderer.domElement.addEventListener('mouseup', onPieceMouseUp);
 
 
         // let selectedPiece = null;
@@ -401,6 +396,14 @@ function createBase(largura, profundidade, espessura, cor = 0x00ff00) {
         //         controls.enabled = true;
         //     }
         // }
+
+        //==============================================================
+
+        // renderer.domElement.addEventListener("click", onPieceClick);
+
+        renderer.domElement.addEventListener('mousedown', onPieceClick);
+        renderer.domElement.addEventListener('mousemove', onPieceMouseMove);
+        renderer.domElement.addEventListener('mouseup', onPieceMouseUp);
 
 
 let selectedPiece = null;
