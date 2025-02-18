@@ -129,7 +129,7 @@ function addModule() {
     });
 
     driverBlock = new THREE.Mesh(geometry, material);
-    driverBlock.position.set(- width / 2 , height / 2, depth / 2);
+    driverBlock.position.set(width / 2 , height / 2, - depth / 2);
     scene.add(driverBlock);
 }
 
@@ -139,13 +139,13 @@ function applyDimensions() {
         return;
     }
 
-    const width = parseFloat(document.getElementById('width').value) || 500;
-    const height = parseFloat(document.getElementById('height').value) || 800;
+    const width = parseFloat(document.getElementById('width').value) || 300;
+    const height = parseFloat(document.getElementById('height').value) || 750;
     const depth = parseFloat(document.getElementById('depth').value) || 500;
 
     driverBlock.geometry.dispose();
     driverBlock.geometry = new THREE.BoxGeometry(width, height, depth);
-    driverBlock.position.set(- width / 2 , height / 2, depth / 2);
+    driverBlock.position.set(width / 2 , height / 2, - depth / 2);
 }
 
     window.onload = addEnvironment;
