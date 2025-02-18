@@ -306,18 +306,6 @@ function createBase(largura, profundidade, espessura, cor = 0x00ff00) {
     //=============== Testando Funcionalidades de Pocicionamento da Peça  ========================
 
 
-    let selectedPiece = null;
-    let isDragging = false;
-    let pointMarker = null;
-
-    const raycaster = new THREE.Raycaster();
-    const mouse = new THREE.Vector2();
-    const planeNormal = new THREE.Vector3(0, 1, 0); // Plano XZ
-    const plane = new THREE.Plane(planeNormal, 0);
-    const intersectionPoint = new THREE.Vector3();
-    const clickOffset = new THREE.Vector3();
-
-    // Clique para selecionar a peça e exibir ponto 0,0,0
     function onPieceClick(event) {
         mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
         mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
@@ -328,74 +316,17 @@ function createBase(largura, profundidade, espessura, cor = 0x00ff00) {
         if (intersects.length > 0) {
             const clickedPiece = intersects[0].object;
 
-            // Se clicou novamente na mesma peça e no ponto marcador, inicia o arraste
-            if (selectedPiece === clickedPiece && pointMarker) {
-                const markerIntersects = raycaster.intersectObject(pointMarker);
-                if (markerIntersects.length > 0) {
-                    // Inicia o arraste e calcula o offset entre o ponto do clique e o ponto 0,0,0 da peça
-                    isDragging = true;
-                    controls.enabled = false;
-
-                    // Marca o ponto do clique no mundo
-                    const facePoint = markerIntersects[0].point;
-                    clickOffset.copy(facePoint).sub(selectedPiece.position);
-
-                    return;
-                }
-            }
-
-            // Seleciona a nova peça e mostra o ponto 0,0,0
+            // Seleciona a peça e já começa a arrastar
             selectedPiece = clickedPiece;
             showPointMarker(selectedPiece);
+            isDragging = true;
+            controls.enabled = false;
+
+            const facePoint = intersects[0].point;
+            clickOffset.copy(facePoint).sub(selectedPiece.position);
         } else {
             selectedPiece = null;
             removePointMarker();
-        }
-    }
-
-    // Exibir ponto branco no canto inferior esquerdo (0,0,0) da peça
-    function showPointMarker(piece) {
-        removePointMarker();
-
-        const markerGeometry = new THREE.SphereGeometry(5, 16, 16);
-        const markerMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-
-        pointMarker = new THREE.Mesh(markerGeometry, markerMaterial);
-        pointMarker.position.set(0, 0, 0);
-        piece.add(pointMarker);
-    }
-
-    function removePointMarker() {
-        if (pointMarker) {
-            if (pointMarker.parent) {
-                pointMarker.parent.remove(pointMarker);
-            }
-            pointMarker.geometry.dispose();
-            pointMarker.material.dispose();
-            pointMarker = null;
-        }
-    }
-
-    // Arrastar a peça no plano XZ, ajustando o ponto clicado
-    function onPieceMouseMove(event) {
-        if (!isDragging || !selectedPiece) return;
-
-        mouse.x = (event.clientX / renderer.domElement.clientWidth) * 2 - 1;
-        mouse.y = -(event.clientY / renderer.domElement.clientHeight) * 2 + 1;
-
-        raycaster.setFromCamera(mouse, camera);
-        raycaster.ray.intersectPlane(plane, intersectionPoint);
-
-        // Ajusta a posição considerando o offset
-        selectedPiece.position.x = intersectionPoint.x - clickOffset.x;
-        selectedPiece.position.z = intersectionPoint.z - clickOffset.z;
-    }
-
-    // Soltar a peça ao soltar o mouse
-    function onPieceMouseUp() {
-        if (isDragging) {
-            isDragging = false;
-            controls.enabled = true;
         }
     }
 
