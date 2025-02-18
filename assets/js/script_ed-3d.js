@@ -26,7 +26,7 @@ function addEnvironment() {
     scene.add(ambientLight);
 
     renderer.domElement.addEventListener("click", onPieceClick);
-    // window.addEventListener("keydown", moveSelectedPiece);
+    window.addEventListener("keydown", moveSelectedPiece);
 
     renderer.domElement.addEventListener('mousedown', onPieceClick);
     renderer.domElement.addEventListener('mousemove', onPieceMouseMove);
