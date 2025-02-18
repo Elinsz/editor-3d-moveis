@@ -8,7 +8,7 @@ function addEnvironment() {
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 20000);
     // camera.position.set(500, 500, 500);
-    camera.position.set(500, -300, 500); // X: direita, Y: altura, Z: para trás
+    camera.position.set(-500, 300, -500); // X: direita, Y: altura, Z: para trás
     camera.lookAt(0, 0, 0);
 
 
