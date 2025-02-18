@@ -27,7 +27,7 @@ function addEnvironment() {
 
     renderer.domElement.addEventListener("click", onPieceClick);
 
-    renderer.domElement.addEventListener('mousedown', onPieceClick);
+    // renderer.domElement.addEventListener('mousedown', onPieceClick);
     renderer.domElement.addEventListener('mousemove', onPieceMouseMove);
     renderer.domElement.addEventListener('mouseup', onPieceMouseUp);
     // window.addEventListener("keydown", moveSelectedPiece);
@@ -405,7 +405,7 @@ function createBase(largura, profundidade, espessura, cor = 0x00ff00) {
 
         // renderer.domElement.addEventListener("click", onPieceClick);
 
-        // renderer.domElement.addEventListener('mousedown', onPieceClick);
+        renderer.domElement.addEventListener('mousedown', onPieceClick);
         // renderer.domElement.addEventListener('mousemove', onPieceMouseMove);
         // renderer.domElement.addEventListener('mouseup', onPieceMouseUp);
 
