@@ -229,7 +229,7 @@ function createLateral(altura, profundidade, espessura, cor = 0xff0000) {
     const lateral = new THREE.Mesh(geometry, material);
 
     // Rotaciona a peça em 90° para que ela fique "em pé"
-    lateral.rotation.x = -Math.PI / 2;
+    lateral.rotation.y = -Math.PI / 2;
 
     lateral.userData.pieceType = 'Lateral';
 
