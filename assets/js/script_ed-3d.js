@@ -129,7 +129,7 @@ function addModule() {
     });
 
     driverBlock = new THREE.Mesh(geometry, material);
-    driverBlock.position.set(height / 2 , width / 2, depth / 2);
+    driverBlock.position.set(width / 2 , height / 2, depth / 2);
     scene.add(driverBlock);
 }
 
@@ -145,7 +145,7 @@ function applyDimensions() {
 
     driverBlock.geometry.dispose();
     driverBlock.geometry = new THREE.BoxGeometry(width , height, depth);
-    driverBlock.position.set(height / 2 , width / 2, depth / 2);
+    driverBlock.position.set(width / 2 , height / 2, depth / 2);
 }
 
     window.onload = addEnvironment;
