@@ -128,8 +128,9 @@ function addModule() {
         color: 0x00ffff,
         transparent: true,
         opacity: 0.2,
+        Conceptual: true
 
-        wireframe: false
+        // wireframe: false
 
     });
 
