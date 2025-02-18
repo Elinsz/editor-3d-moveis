@@ -120,7 +120,7 @@ function addModule() {
     const height = parseFloat(document.getElementById('height').value) || 750;
     const depth = parseFloat(document.getElementById('depth').value) || 500;
 
-    const geometry = new THREE.BoxGeometry(width, height, depth);
+    const geometry = new THREE.BoxGeometry( height , width, depth);
     const material = new THREE.MeshBasicMaterial({
         color: 0x00ffff,
         transparent: true,
@@ -129,7 +129,7 @@ function addModule() {
     });
 
     driverBlock = new THREE.Mesh(geometry, material);
-    driverBlock.position.set(- width / 2 , height / 2, - depth / 2);
+    driverBlock.position.set(width / 2 , height / 2, depth / 2);
     scene.add(driverBlock);
 }
 
@@ -144,8 +144,8 @@ function applyDimensions() {
     const depth = parseFloat(document.getElementById('depth').value) || 500;
 
     driverBlock.geometry.dispose();
-    driverBlock.geometry = new THREE.BoxGeometry(width, height, depth);
-    driverBlock.position.set(- width / 2 , height / 2, - depth / 2);
+    driverBlock.geometry = new THREE.BoxGeometry( height , width, depth);
+    driverBlock.position.set(width / 2 , height / 2, depth / 2);
 }
 
     window.onload = addEnvironment;
